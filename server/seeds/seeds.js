@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const product = [
   {
     sales_quantity: 0,
