@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const Product = require('../models/Product')
+
+const url = `http://localhost:${process.env.PORT}/images`
 
 const product = [
   {
@@ -444,3 +447,16 @@ const product = [
     temp: '냉장',
   },
 ]
+
+const seedProduct = async () => {
+  try {
+    if (mongoose.connection.models['Product']) await Product.collection.drop()
+    Product.insertMany(product).then((data) => {
+      console.log('Success initial Database')
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+module.exports = seedProduct
