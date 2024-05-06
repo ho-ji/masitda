@@ -1,8 +1,8 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import Home from './pages/Home'
-import GlobalStyle from './styles/GlobalStyle'
-import './styles/globalFont.css'
+import Home from 'pages/Home'
+import GlobalStyle from 'styles/GlobalStyle'
+import 'styles/globalFont.css'
 
 const App = () => {
   return (

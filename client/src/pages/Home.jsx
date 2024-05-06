@@ -1,5 +1,5 @@
-import Layout from '../components/common/Layout'
-import HomeBestList from '../components/home/HomeBestList'
+import Layout from 'components/common/Layout'
+import HomeBestList from 'components/home/HomeBestList'
 
 const Home = () => {
   return (

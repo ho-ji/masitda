@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
-import logoImage from '../../assets/images/logo.png'
-import cartImage from '../../assets/images/cart.svg'
-import userImage from '../../assets/images/user.svg'
+import logoImage from 'assets/images/logo.png'
+import cartImage from 'assets/images/cart.svg'
+import userImage from 'assets/images/user.svg'
 
 const Container = styled.header`
   display: flex;
