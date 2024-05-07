@@ -1,14 +1,12 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 import {formatSaleCost} from 'utils/cost'
 import addCartImage from 'assets/images/add_cart.svg'
 
-const Container = styled.li`
+const Container = styled(Link)`
+  width: 22rem;
   aspect-ratio: 1/1.75;
-`
-const Ranking = styled.p`
-  font-size: var(--font-size-emphasis);
-  font-weight: bold;
 `
 const ImageContainer = styled.div`
   position: relative;
@@ -20,6 +18,7 @@ const Image = styled.img`
   aspect-ratio: 1/1;
   margin: 1rem 0;
   border: 1px solid var(--color-border);
+  border-radius: 10px;
 `
 const CartButton = styled.button`
   position: absolute;
@@ -71,13 +70,9 @@ const Temp = styled.span`
   color: ${(props) => props.$temp === '냉장' && '#8fc8eb'};
 `
 
-const HomeProductCard = ({product, ranking}) => {
+const ProductCard = ({product}) => {
   return (
     <Container>
-      <Ranking>
-        {ranking.toString().padStart(2, '0')}
-        <span className="a11y-hidden">위</span>
-      </Ranking>
       <ImageContainer>
         <Image
           src={product.image}
@@ -112,4 +107,4 @@ const HomeProductCard = ({product, ranking}) => {
   )
 }
 
-export default HomeProductCard
+export default ProductCard

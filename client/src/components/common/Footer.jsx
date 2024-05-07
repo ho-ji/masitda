@@ -7,7 +7,7 @@ const Container = styled.footer`
   align-items: center;
   gap: 0.5rem;
   padding: 5rem 0;
-  border-top: 1px solid var(--color-gray);
+  border-top: 1px solid var(--color-border);
   color: var(--color-text-sub);
   font-size: var(--font-size-subtext);
 `

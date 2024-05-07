@@ -34,14 +34,12 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
   .a11y-hidden{
-    clip: rect(1px, 1px, 1px, 1px);
-    clip-path: inset(50%);
-    width: 1px;
-    height: 1px;
-    margin: -1px;
     overflow: hidden;
-    padding: 0;
     position: absolute;
+    width: 0;
+    height: 0;
+    line-height: 0;
+    text-indent: -9999px;
   }
   h1, h2, h3, p,span, strong{
     cursor: default;
@@ -51,7 +49,7 @@ const GlobalStyle = createGlobalStyle`
     --color-border: #eeeeee;
     --color-text-main: #666666;
     --color-text-sub: #888888;
-    --color-gray: #e6e6e6;
+    --color-gray: #d7d7d7;
 
     --font-size-emphasis: 2.6rem;
     --font-size-primary: 2.4rem;

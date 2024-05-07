@@ -12,3 +12,12 @@ export const getBestListAPI = async () => {
     console.error(error)
   }
 }
+
+export const getTopListAPI = async () => {
+  try {
+    const result = await instance.get('/product/top')
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}

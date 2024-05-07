@@ -6,6 +6,7 @@ import 'styles/globalFont.css'
 import Cart from 'pages/Cart'
 import User from 'pages/User'
 import NotFound from 'pages/NotFound'
+import Best from 'pages/Best'
 
 const App = () => {
   return (
@@ -15,6 +16,10 @@ const App = () => {
         <Route
           path="/"
           element={<Home />}
+        />
+        <Route
+          path="/best"
+          element={<Best />}
         />
         <Route
           path="/cart"

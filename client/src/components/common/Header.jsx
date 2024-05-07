@@ -15,7 +15,7 @@ const Container = styled.header`
   padding: 0 2rem;
   z-index: 100;
   background-color: white;
-  border-bottom: 1px solid var(--color-gray);
+  border-bottom: 1px solid var(--color-border);
 `
 const Logo = styled(Link)`
   display: block;
