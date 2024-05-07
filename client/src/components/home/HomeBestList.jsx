@@ -6,7 +6,7 @@ import HomeProductCard from './HomeProductCard'
 
 const Container = styled.section`
   margin: 5rem auto;
-  padding: 0 10rem;
+  padding: 0 5rem;
   max-width: 150rem;
 `
 const Title = styled.h2`

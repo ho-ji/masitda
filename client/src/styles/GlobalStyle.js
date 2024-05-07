@@ -43,7 +43,9 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     position: absolute;
   }
-
+  h1, h2, h3, p,span, strong{
+    cursor: default;
+  }
   :root {
     --color-main: #ff9800;
     --color-border: #eeeeee;

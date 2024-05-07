@@ -1,21 +1,35 @@
 import styled from 'styled-components'
 
 import {formatSaleCost} from 'utils/cost'
+import addCartImage from 'assets/images/add_cart.svg'
 
 const Container = styled.li`
-  aspect-ratio: 1/2;
-  position: relative;
+  aspect-ratio: 1/1.75;
 `
 const Ranking = styled.p`
   font-size: var(--font-size-emphasis);
   font-weight: bold;
 `
+const ImageContainer = styled.div`
+  position: relative;
+`
+
 const Image = styled.img`
-  aspect-ratio: 1/1;
-  object-fit: contain;
+  object-fit: cover;
   width: 100%;
+  aspect-ratio: 1/1;
   margin: 1rem 0;
   border: 1px solid var(--color-border);
+`
+const CartButton = styled.button`
+  position: absolute;
+  bottom: 2rem;
+  right: 1rem;
+  width: 4rem;
+  border-radius: 5px;
+  aspect-ratio: 1/1;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background: url(${addCartImage}) no-repeat center/2rem white;
 `
 const Name = styled.strong`
   font-size: var(--font-size-secondary);
@@ -53,9 +67,10 @@ const Rate = styled.span`
 `
 const Temp = styled.span`
   color: var(--color-text-main);
-  color: ${(props) => props.$temp === '냉동' && '#1a4568'};
-  color: ${(props) => props.$temp === '냉장' && '#b6d0e1'};
+  color: ${(props) => props.$temp === '냉동' && '#4775c0'};
+  color: ${(props) => props.$temp === '냉장' && '#8fc8eb'};
 `
+
 const HomeProductCard = ({product, ranking}) => {
   return (
     <Container>
@@ -63,10 +78,15 @@ const HomeProductCard = ({product, ranking}) => {
         {ranking.toString().padStart(2, '0')}
         <span className="a11y-hidden">위</span>
       </Ranking>
-      <Image
-        src={product.image}
-        alt="상품이미지"
-      />
+      <ImageContainer>
+        <Image
+          src={product.image}
+          alt="상품이미지"
+        />
+        <CartButton type="button">
+          <span className="a11y-hidden">장바구니 상품 담기</span>
+        </CartButton>
+      </ImageContainer>
       <Name>{product.name}</Name>
       {product.description && <Description>{product.description}</Description>}
       <CostContainer>
@@ -75,7 +95,7 @@ const HomeProductCard = ({product, ranking}) => {
           <>
             <Cost>
               <span className="a11y-hidden">정상가</span>
-              {`${product.cost}원`}
+              {`${formatSaleCost(product.cost)}원`}
             </Cost>
             <Rate>
               <span className="a11y-hidden">할인율</span>
@@ -83,8 +103,11 @@ const HomeProductCard = ({product, ranking}) => {
             </Rate>
           </>
         )}
-        <Temp $temp={product.temp}>{product.temp}</Temp>
       </CostContainer>
+      <Temp $temp={product.temp}>
+        <span className="a11y-hidden">보관방법</span>
+        {product.temp}
+      </Temp>
     </Container>
   )
 }

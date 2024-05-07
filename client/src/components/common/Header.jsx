@@ -25,7 +25,7 @@ const Logo = styled(Link)`
 `
 
 const MenuLink = styled(Link)`
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 50%;
   margin: 0 0.5rem;
 `
