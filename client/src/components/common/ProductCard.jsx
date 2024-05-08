@@ -5,7 +5,6 @@ import {formatSaleCost} from 'utils/cost'
 import addCartImage from 'assets/images/add_cart.svg'
 
 const Container = styled(Link)`
-  width: 22rem;
   aspect-ratio: 1/1.75;
 `
 const ImageContainer = styled.div`
