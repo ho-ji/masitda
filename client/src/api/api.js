@@ -21,3 +21,12 @@ export const getTopListAPI = async () => {
     console.error(error)
   }
 }
+
+export const getMDPickListAPI = async (limit) => {
+  try {
+    const result = await instance.get(`/mdpick?limit=${limit}`)
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}

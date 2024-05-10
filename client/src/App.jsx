@@ -7,6 +7,7 @@ import Cart from 'pages/Cart'
 import User from 'pages/User'
 import NotFound from 'pages/NotFound'
 import Best from 'pages/Best'
+import MDPick from 'pages/MDPick'
 
 const App = () => {
   return (
@@ -20,6 +21,10 @@ const App = () => {
         <Route
           path="/best"
           element={<Best />}
+        />
+        <Route
+          path="/mdpick"
+          element={<MDPick />}
         />
         <Route
           path="/cart"
