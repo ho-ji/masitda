@@ -32,5 +32,6 @@ init()
 // seedProduct()
 
 app.use('/api/product', require('./routes/productRoutes'))
+app.use('/api/mdpick', require('./routes/mdPickRoutes'))
 
 app.listen(port, () => console.log(`Server listening on port ${port}`))
