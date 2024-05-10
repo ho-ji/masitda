@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 import {getBestListAPI} from 'api/api'
-import ProductCard from 'components/common/ProductCard'
+import ProductRankingCard from 'components/common/ProductRankingCard'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -14,10 +14,7 @@ const List = styled.ol`
   grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
   gap: 2rem;
 `
-const Ranking = styled.p`
-  font-size: var(--font-size-emphasis);
-  font-weight: bold;
-`
+
 const ListItem = styled.li`
   display: flex;
   flex-direction: column;
@@ -45,13 +42,9 @@ const BestList = () => {
           {bestList.map((product, i) => {
             return (
               <ListItem>
-                <Ranking>
-                  {(i + 1).toString().padStart(2, '0')}
-                  <span className="a11y-hidden">위</span>
-                </Ranking>
-                <ProductCard
-                  key={product._id}
+                <ProductRankingCard
                   product={product}
+                  ranking={i + 1}
                 />
               </ListItem>
             )

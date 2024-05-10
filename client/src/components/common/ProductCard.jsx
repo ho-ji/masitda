@@ -69,9 +69,10 @@ const Temp = styled.span`
   color: ${(props) => props.$temp === '냉장' && '#8fc8eb'};
 `
 
-const ProductCard = ({product}) => {
+const ProductCard = ({product, children}) => {
   return (
     <Container>
+      {children}
       <ImageContainer>
         <Image
           src={product.image}
