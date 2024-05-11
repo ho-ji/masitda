@@ -19,7 +19,6 @@ const HomeMDPickList = () => {
       try {
         const result = await getMDPickListAPI(6)
         setList(result.data)
-        console.log(result.data)
       } catch (error) {
         console.error(error)
       }
