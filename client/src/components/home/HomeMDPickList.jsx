@@ -34,8 +34,8 @@ const HomeMDPickList = () => {
       {list?.length !== 0 &&
         list?.map((item) => {
           return (
-            <ListItem key={item.product._id}>
-              <ProductCard product={item.product} />
+            <ListItem key={item._id}>
+              <ProductCard product={item} />
             </ListItem>
           )
         })}

@@ -30,16 +30,16 @@ const ProductList = ({list, title, type}) => {
       <Title>{title}</Title>
       <List>
         {list.length !== 0 &&
-          list.map((item, i) => {
+          list.map((product, i) => {
             return (
-              <ListItem key={item._id}>
+              <ListItem key={product._id}>
                 {type === 'ranking' && (
                   <ProductRankingCard
-                    product={item}
+                    product={product}
                     ranking={i + 1}
                   />
                 )}
-                {type === 'mdpick' && <ProductMDPickCard product={item.product} />}
+                {type === 'mdpick' && <ProductMDPickCard product={product} />}
               </ListItem>
             )
           })}
