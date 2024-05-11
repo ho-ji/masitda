@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {useEffect, useState} from 'react'
 
 import {getTopListAPI} from 'api/api'
-import ProductRankingCard from 'components/common/ProductRankingCard'
+import ProductRankingCard from 'components/common/product/ProductRankingCard'
 import HomeListContainer from './HomeListContainer'
 
 const ListItem = styled.li`

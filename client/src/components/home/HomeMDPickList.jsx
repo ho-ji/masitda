@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import HomeListContainer from './HomeListContainer'
 import {getMDPickListAPI} from 'api/api'
-import ProductCard from 'components/common/ProductCard'
+import ProductCard from 'components/common/product/ProductCard'
 
 const ListItem = styled.li`
   display: flex;

@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 
 import {getMDPickListAPI} from 'api/api'
-import ProductList from 'components/common/ProductList'
+import ProductList from 'components/common/product/ProductList'
 
 const MDPickList = () => {
   const [list, setList] = useState([])
