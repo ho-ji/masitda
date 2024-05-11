@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react'
+import {useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -111,10 +111,6 @@ const HomeListContainer = ({title, link, children}) => {
     })
     setShowNextButton(false)
   }
-
-  useEffect(() => {
-    console.log(listRef.current)
-  }, [])
 
   return (
     <Container>

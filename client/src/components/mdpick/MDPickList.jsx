@@ -1,24 +1,7 @@
 import {useEffect, useState} from 'react'
-import styled from 'styled-components'
 
 import {getMDPickListAPI} from 'api/api'
-import ProductCard from 'components/common/ProductCard'
-
-const Container = styled.main`
-  margin: 5rem auto;
-  padding: 0 5rem;
-  max-width: 150rem;
-`
-const List = styled.ol`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
-  gap: 2rem;
-`
-
-const ListItem = styled.li`
-  display: flex;
-  flex-direction: column;
-`
+import ProductList from 'components/common/ProductList'
 
 const MDPickList = () => {
   const [list, setList] = useState([])
@@ -36,19 +19,11 @@ const MDPickList = () => {
   }, [])
 
   return (
-    <Container>
-      {list.length !== 0 && (
-        <List>
-          {list.map((item, i) => {
-            return (
-              <ListItem>
-                <ProductCard product={item.product} />
-              </ListItem>
-            )
-          })}
-        </List>
-      )}
-    </Container>
+    <ProductList
+      list={list}
+      type="mdpick"
+      title="MD PICK"
+    />
   )
 }
 

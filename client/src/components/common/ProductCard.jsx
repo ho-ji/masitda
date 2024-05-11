@@ -6,6 +6,7 @@ import addCartImage from 'assets/images/add_cart.svg'
 
 const Container = styled(Link)`
   aspect-ratio: 1/1.75;
+  position: relative;
 `
 const ImageContainer = styled.div`
   position: relative;
