@@ -7,7 +7,8 @@ router.get('/', async (req, res) => {
     const list = await MDPick.find({})
       .populate('product')
       .limit(limit || 0)
-    res.status(200).send(list)
+    const products = list.map((item) => item.product)
+    res.status(200).send(products)
   } catch (error) {
     res.status(500).json({
       message: 'MDPick Not Found',
