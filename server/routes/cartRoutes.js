@@ -25,7 +25,7 @@ router.post('/:uid', async (req, res) => {
 router.get('/:uid', async (req, res) => {
   const uid = req.params.uid
   try {
-    const cart = await Cart.findOne({uid}).populate({path: 'products.product', select: 'name image cost rate free_shipping company_delievery'})
+    const cart = await Cart.findOne({uid}).populate({path: 'products.product', select: 'name image cost rate'})
     if (!cart) {
       return res.status(200).send({})
     }
