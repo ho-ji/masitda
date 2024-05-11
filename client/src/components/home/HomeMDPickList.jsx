@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import HomeListContainer from './HomeListContainer'
 import {getMDPickListAPI} from 'api/api'
-import ProductCard from 'components/common/product/ProductCard'
+import ProductMDPickCard from 'components/common/product/ProductMDPickCard'
 
 const ListItem = styled.li`
   display: flex;
@@ -34,7 +34,7 @@ const HomeMDPickList = () => {
         list?.map((item) => {
           return (
             <ListItem key={item._id}>
-              <ProductCard product={item} />
+              <ProductMDPickCard product={item} />
             </ListItem>
           )
         })}
