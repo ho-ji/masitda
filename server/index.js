@@ -33,5 +33,6 @@ init()
 
 app.use('/api/product', require('./routes/productRoutes'))
 app.use('/api/mdpick', require('./routes/mdPickRoutes'))
+app.use('/api/cart', require('./routes/cartRoutes'))
 
 app.listen(port, () => console.log(`Server listening on port ${port}`))
