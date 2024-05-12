@@ -4,18 +4,9 @@ const instance = axios.create({
   baseURL: 'http://localhost:4500/api',
 })
 
-export const getBestListAPI = async () => {
+export const getBestListAPI = async (limit) => {
   try {
-    const result = await instance.get('/product/ranking')
-    return result
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export const getTopListAPI = async () => {
-  try {
-    const result = await instance.get('/product/top')
+    const result = await instance.get(`/product/ranking?limit=${limit}`)
     return result
   } catch (error) {
     console.error(error)

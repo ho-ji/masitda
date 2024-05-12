@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {useEffect, useState} from 'react'
 
-import {getTopListAPI} from 'api/api'
+import {getBestListAPI} from 'api/api'
 import ProductRankingCard from 'components/common/product/ProductRankingCard'
 import HomeListContainer from './HomeListContainer'
 
@@ -17,7 +17,7 @@ const HomeBestList = () => {
   useEffect(() => {
     const getBestList = async () => {
       try {
-        const result = await getTopListAPI()
+        const result = await getBestListAPI(7)
         setBestList(result.data)
       } catch (error) {
         console.error(error)
