@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 
 import {formatSaleCost} from 'utils/cost'
 import addCartImage from 'assets/images/add_cart.svg'
+import {postCartProductAPI} from 'api/api'
 
 const Container = styled(Link)`
   aspect-ratio: 1/1.75;
@@ -71,6 +72,9 @@ const Temp = styled.span`
 `
 
 const ProductCard = ({product, children}) => {
+  const handleCartButtonClick = () => {
+    postCartProductAPI(product._id, 1)
+  }
   return (
     <Container>
       {children}
@@ -79,7 +83,9 @@ const ProductCard = ({product, children}) => {
           src={product.image}
           alt="상품이미지"
         />
-        <CartButton type="button">
+        <CartButton
+          type="button"
+          onClick={handleCartButtonClick}>
           <span className="a11y-hidden">장바구니 상품 담기</span>
         </CartButton>
       </ImageContainer>

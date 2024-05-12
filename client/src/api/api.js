@@ -30,3 +30,26 @@ export const getMDPickListAPI = async (limit) => {
     console.error(error)
   }
 }
+
+export const postCartProductAPI = async (_id, count) => {
+  const uid = localStorage.getItem('uid')
+  try {
+    const result = await instance.post(`/cart/${uid}`, {
+      product_id: _id,
+      count: count,
+    })
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const getCartListAPI = async () => {
+  const uid = localStorage.getItem('uid')
+  try {
+    const result = await instance.get(`/cart/${uid}`)
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}
