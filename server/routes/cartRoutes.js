@@ -27,24 +27,11 @@ router.get('/:uid', async (req, res) => {
   try {
     const cart = await Cart.findOne({uid}).populate({path: 'products.product', select: 'name image cost rate'})
     if (!cart) {
-      return res.status(200).send({})
+      return res.status(200).send([])
     }
-    res.status(200).send(cart)
+    res.status(200).send(cart.products)
   } catch (error) {
     res.status(500).json({message: 'Fail to load cart'})
-  }
-})
-
-router.get('/:uid/count', async (req, res) => {
-  const uid = req.params.uid
-  try {
-    const cart = await Cart.findOne({uid})
-    if (!cart) {
-      return res.status(200).send({count: 0})
-    }
-    res.status(200).send({count: cart.products.length})
-  } catch (error) {
-    res.status(500).json({message: 'Fail to load cart count'})
   }
 })
 
