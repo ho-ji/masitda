@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
+import {useSetRecoilState} from 'recoil'
 
 import {formatSaleCost} from 'utils/cost'
 import addCartImage from 'assets/images/add_cart.svg'
 import {postCartProductAPI} from 'api/api'
+import {updateCountSelector} from 'recoil/cart/selector'
 
 const Container = styled(Link)`
   aspect-ratio: 1/1.75;
@@ -72,8 +74,11 @@ const Temp = styled.span`
 `
 
 const ProductCard = ({product, children}) => {
+  const updateCount = useSetRecoilState(updateCountSelector)
+
   const handleCartButtonClick = () => {
     postCartProductAPI(product._id, 1)
+    updateCount({id: product._id, count: 1})
   }
   return (
     <Container>

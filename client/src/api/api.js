@@ -53,3 +53,13 @@ export const getCartListAPI = async () => {
     console.error(error)
   }
 }
+
+export const getCartCountAPI = async () => {
+  const uid = localStorage.getItem('uid')
+  try {
+    const result = await instance.get(`/cart/${uid}/count`)
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}
