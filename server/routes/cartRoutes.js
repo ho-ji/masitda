@@ -35,4 +35,36 @@ router.get('/:uid', async (req, res) => {
   }
 })
 
+router.delete('/:uid/delete', async (req, res) => {
+  const uid = req.params.uid
+  const {product_id} = req.body
+  try {
+    let cart = await Cart.findOne({uid})
+    if (cart) {
+      cart.products = cart.products.filter((item) => item.product.toString() !== product_id.toString())
+      await cart.save()
+      res.status(200).json({message: 'Cart product deleted'})
+    }
+  } catch (error) {
+    res.status(500).json({message: 'Fail to delete one cart product'})
+  }
+})
+
+router.delete('/:uid/deletemultiple', async (req, res) => {
+  const uid = req.params.uid
+  const product_ids = req.body.product_ids
+  try {
+    let cart = await Cart.findOne({uid})
+    if (cart) {
+      for (const product_id of product_ids) {
+        cart.products = cart.products.filter((item) => item.product.toString() !== product_id.toString())
+      }
+      await cart.save()
+      res.status(200).json({message: 'Multiple Cart product deleted'})
+    }
+  } catch (error) {
+    res.status(500).json({message: 'Fail to delete cart products'})
+  }
+})
+
 module.exports = router
