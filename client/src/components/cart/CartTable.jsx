@@ -1,4 +1,4 @@
-import {useRecoilValue} from 'recoil'
+import {useRecoilValue, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
 
 import {cartListState} from 'recoil/cart/atom'
@@ -6,6 +6,7 @@ import {formatCostWithComma, formatSaleCost} from 'utils/cost'
 import checkImage from 'assets/images/check.svg'
 import plusImage from 'assets/images/plus.svg'
 import minusImage from 'assets/images/minus.svg'
+import {updateSelectSelector} from 'recoil/cart/selector'
 
 const Container = styled.table`
   border-top: 1px solid black;
@@ -133,6 +134,11 @@ const DeleteButton = styled.button`
 `
 const CartTable = () => {
   const cartList = useRecoilValue(cartListState)
+  const updateCheck = useSetRecoilState(updateSelectSelector)
+
+  const handleSelectChange = (id) => (e) => {
+    updateCheck({id, isSelected: e.target.checked})
+  }
 
   return (
     <Container>
@@ -155,7 +161,10 @@ const CartTable = () => {
             <Tr key={i}>
               <td>
                 <Label>
-                  <input type="checkbox"></input>
+                  <input
+                    type="checkbox"
+                    checked={item.isSelected === undefined ? true : item.isSelected}
+                    onChange={handleSelectChange(item.product._id)}></input>
                 </Label>
               </td>
               <td>

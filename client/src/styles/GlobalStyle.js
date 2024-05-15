@@ -32,6 +32,12 @@ const GlobalStyle = createGlobalStyle`
   }
   input{
     margin: 0;
+    [type="checkbox"]{
+    cursor: pointer;
+  }
+  }
+  input[type="checkbox"]{
+    cursor: pointer;
   }
   .a11y-hidden{
     overflow: hidden;

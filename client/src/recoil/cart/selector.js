@@ -22,3 +22,30 @@ export const updateCountSelector = selector({
     set(cartListState, updatedCartList)
   },
 })
+
+export const updateAllSelectSelector = selector({
+  key: 'updateAllSelect',
+  get: ({get}) => get(cartListState),
+  set: ({get, set}, isSelected) => {
+    const currentCartList = get(cartListState)
+    const updatedCartList = currentCartList.map((item) => ({...item, isSelected: isSelected}))
+
+    set(cartListState, updatedCartList)
+  },
+})
+
+export const updateSelectSelector = selector({
+  key: 'updateSelect',
+  get: ({get}) => get(cartListState),
+  set: ({get, set}, v) => {
+    const {id, isSelected} = v
+    const currentCartList = get(cartListState)
+    const indexToUpdate = currentCartList.findIndex((item) => item.product._id === id)
+    const updatedCartList = [...currentCartList]
+    updatedCartList[indexToUpdate] = {
+      ...updatedCartList[indexToUpdate],
+      isSelected: isSelected,
+    }
+    set(cartListState, updatedCartList)
+  },
+})

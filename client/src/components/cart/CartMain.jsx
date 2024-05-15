@@ -1,11 +1,12 @@
-import {useEffect} from 'react'
-import {useRecoilState} from 'recoil'
+import {useEffect, useState} from 'react'
+import {useRecoilState, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
 
 import {getCartListAPI} from 'api/api'
 import {cartListState} from 'recoil/cart/atom'
 import checkImage from 'assets/images/check.svg'
 import CartTable from './CartTable'
+import {updateAllSelectSelector} from 'recoil/cart/selector'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -67,6 +68,13 @@ const NoItem = styled.p`
 
 const CartMain = () => {
   const [cartList, setCartList] = useRecoilState(cartListState)
+  const updateAllSelect = useSetRecoilState(updateAllSelectSelector)
+  const [isAllSelect, setIsAllSelect] = useState(true)
+
+  const handleAllSelectChange = (e) => {
+    updateAllSelect(e.target.checked)
+    setIsAllSelect(e.target.checked)
+  }
 
   useEffect(() => {
     const getCartList = async () => {
@@ -95,7 +103,10 @@ const CartMain = () => {
         <>
           <SelectContainer>
             <label>
-              <input type="checkbox"></input>
+              <input
+                type="checkbox"
+                checked={isAllSelect}
+                onChange={handleAllSelectChange}></input>
               전체선택
             </label>
             <button type="button">선택삭제</button>
