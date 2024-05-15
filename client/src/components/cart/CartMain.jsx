@@ -1,0 +1,112 @@
+import {useEffect} from 'react'
+import {useRecoilState} from 'recoil'
+import styled from 'styled-components'
+
+import {getCartListAPI} from 'api/api'
+import {cartListState} from 'recoil/cart/atom'
+import checkImage from 'assets/images/check.svg'
+import CartTable from './CartTable'
+
+const Container = styled.main`
+  margin: 5rem auto;
+  padding: 0 10rem;
+  max-width: 150rem;
+`
+
+const CartHeader = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  > h2 {
+    font-weight: bold;
+    font-size: var(--font-size-primary);
+  }
+`
+
+const SelectContainer = styled.div`
+  display: flex;
+  margin: 3rem 0;
+  color: var(--color-text-main);
+  > label {
+    > input {
+      margin-right: 1rem;
+      float: left;
+      appearance: none;
+      border: 1px solid var(--color-gray);
+      width: 2.5rem;
+      height: 2.5rem;
+      &:checked {
+        background: url(${checkImage}) no-repeat center/2rem;
+        background-color: var(--color-main);
+      }
+    }
+  }
+  > button {
+    padding-left: 2rem;
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 1px;
+      height: 2rem;
+      background-color: var(--color-gray);
+      margin-right: 2rem;
+      vertical-align: middle;
+    }
+  }
+`
+
+const NoItem = styled.p`
+  width: 100%;
+  padding: 10rem 0;
+  margin-top: 3rem;
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: var(--font-size-secondary);
+  background: #f7f7f7;
+`
+
+const CartMain = () => {
+  const [cartList, setCartList] = useRecoilState(cartListState)
+
+  useEffect(() => {
+    const getCartList = async () => {
+      try {
+        const result = await getCartListAPI()
+        if (result.data?.products) setCartList(result.data.products)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    getCartList()
+  }, [setCartList])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  return (
+    <Container>
+      <CartHeader>
+        <h2>장바구니</h2>
+        <span>{`상품 (${cartList.length})`}</span>
+        <span className="a11y-hidden">개</span>
+      </CartHeader>
+      {cartList.length ? (
+        <>
+          <SelectContainer>
+            <label>
+              <input type="checkbox"></input>
+              전체선택
+            </label>
+            <button type="button">선택삭제</button>
+          </SelectContainer>
+          <CartTable />
+        </>
+      ) : (
+        <NoItem>장바구니가 비어 있습니다</NoItem>
+      )}
+    </Container>
+  )
+}
+
+export default CartMain

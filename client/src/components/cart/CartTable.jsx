@@ -1,0 +1,208 @@
+import {useRecoilValue} from 'recoil'
+import styled from 'styled-components'
+
+import {cartListState} from 'recoil/cart/atom'
+import {formatCostWithComma, formatSaleCost} from 'utils/cost'
+import checkImage from 'assets/images/check.svg'
+import plusImage from 'assets/images/plus.svg'
+import minusImage from 'assets/images/minus.svg'
+
+const Container = styled.table`
+  border-top: 1px solid black;
+  width: 100%;
+  text-align: center;
+  table-layout: fixed;
+`
+
+const Thead = styled.thead`
+  background-color: var(--color-gray);
+  border-bottom: 1px solid var(--color-border);
+`
+
+const Th = styled.th`
+  background: #fafafa;
+  padding: 2rem;
+  width: 15rem;
+  &:first-child {
+    width: 5rem;
+  }
+  &:nth-child(2) {
+    width: auto;
+  }
+`
+
+const Tr = styled.tr`
+  border-bottom: 1px solid var(--color-border);
+  > td {
+    padding: 2rem 1rem;
+    vertical-align: middle;
+    &:first-child {
+      padding: 0;
+    }
+  }
+`
+
+const Label = styled.label`
+  display: flex;
+  > input {
+    appearance: none;
+    border: 1px solid #b4b4b4;
+    width: 2.5rem;
+    height: 2.5rem;
+    &:checked {
+      background: url(${checkImage}) no-repeat center/2rem;
+      background-color: var(--color-main);
+    }
+  }
+`
+
+const ProductName = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  > img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+  }
+  > p {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    word-break: break-all;
+  }
+`
+const Cost = styled.p`
+  font-weight: 500;
+`
+
+const RegularCost = styled.p`
+  text-decoration: line-through;
+  color: #666;
+  font-size: var(--font-size-subtext);
+`
+
+const Count = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-subtext);
+  > button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--color-gray);
+  }
+  > p {
+    width: 5rem;
+    height: 2.5rem;
+    border-top: 1px solid var(--color-gray);
+    border-bottom: 1px solid var(--color-gray);
+  }
+`
+
+const MinusButton = styled.button`
+  background: url(${minusImage}) no-repeat center/2rem;
+`
+
+const PlusButton = styled.button`
+  background: url(${plusImage}) no-repeat center/2rem;
+`
+
+const Select = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  > button {
+    width: fit-content;
+    border: 1px solid var(--color-gray);
+    padding: 0.5rem 1.5rem;
+  }
+`
+
+const BuyNowButton = styled.button`
+  background-color: var(--color-main);
+  color: white;
+`
+
+const DeleteButton = styled.button`
+  background-color: white;
+  color: var(--color-text-sub);
+`
+const CartTable = () => {
+  const cartList = useRecoilValue(cartListState)
+
+  return (
+    <Container>
+      <caption className="a11y-hidden">장바구니 상품리스트</caption>
+      <Thead>
+        <tr>
+          <Th>
+            <span className="a11y-hidden">체크</span>
+          </Th>
+          <Th scope="col">상품명</Th>
+          <Th scope="col">구매가</Th>
+          <Th scope="col">수량</Th>
+          <Th scope="col">금액</Th>
+          <Th scope="col">선택</Th>
+        </tr>
+      </Thead>
+      <tbody>
+        {cartList.map((item, i) => {
+          return (
+            <Tr key={i}>
+              <td>
+                <Label>
+                  <input type="checkbox"></input>
+                </Label>
+              </td>
+              <td>
+                <ProductName>
+                  <img
+                    src={item.product.image}
+                    alt={`${item.product.name} 이미지`}
+                  />
+                  <p>{item.product.name}</p>
+                </ProductName>
+              </td>
+              <td>
+                <>
+                  <Cost>{`${formatSaleCost(item.product.cost, item.product.rate)}원`}</Cost>
+                  {item.product.rate !== 0 && <RegularCost>{`${formatCostWithComma(item.product.cost)}원`}</RegularCost>}
+                </>
+              </td>
+              <td>
+                <Count>
+                  <MinusButton
+                    $count="minus"
+                    type="button">
+                    <span className="a11y-hidden">상품수량감소</span>
+                  </MinusButton>
+                  <p>{item.count}</p>
+                  <PlusButton
+                    $count="plus"
+                    type="button">
+                    <span className="a11y-hidden">상품수량증가</span>
+                  </PlusButton>
+                </Count>
+              </td>
+              <td>
+                <p>{`${formatSaleCost(item.product.cost, item.product.rate, item.count)}원`}</p>
+              </td>
+              <td>
+                <Select>
+                  <BuyNowButton type="button">바로구매</BuyNowButton>
+                  <DeleteButton type="button">삭제하기</DeleteButton>
+                </Select>
+              </td>
+            </Tr>
+          )
+        })}
+      </tbody>
+    </Container>
+  )
+}
+
+export default CartTable
