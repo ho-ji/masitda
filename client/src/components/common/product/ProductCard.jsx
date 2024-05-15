@@ -1,13 +1,12 @@
 import styled from 'styled-components'
-import {Link, Navigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {useSetRecoilState} from 'recoil'
-import {useState} from 'react'
 
 import {formatSaleCost} from 'utils/cost'
 import addCartImage from 'assets/images/add_cart.svg'
 import {postCartProductAPI} from 'api/api'
 import {updateCountSelector} from 'recoil/cart/selector'
-import Modal from '../Modal'
+import useModal from 'hooks/useModal'
 
 const Container = styled(Link)`
   aspect-ratio: 1/1.75;
@@ -75,23 +74,18 @@ const Temp = styled.span`
   color: ${(props) => props.$temp === '냉장' && '#8fc8eb'};
 `
 
-const modalContent = {
-  title: '장바구니',
-  text: '선택한 상품이 장바구니에 담겼습니다.',
-  subText: '장바구니로 이동하겠습니까?',
-  cancelButtonText: '장바구니 확인하기',
-  okButtonText: '계속 쇼핑하기',
-}
-
 const ProductCard = ({product, children}) => {
-  const [showModal, setShowModal] = useState(false)
+  const navigate = useNavigate()
+  const {updateModal, openModal} = useModal()
   const updateCount = useSetRecoilState(updateCountSelector)
 
   const handleCartButtonClick = () => {
     postCartProductAPI(product._id, 1)
     updateCount({id: product._id, count: 1})
-    setShowModal(true)
+    updateModal('cart', navigate)
+    openModal()
   }
+
   return (
     <>
       <Container>
@@ -129,17 +123,6 @@ const ProductCard = ({product, children}) => {
           {product.temp}
         </Temp>
       </Container>
-      {showModal && (
-        <Modal
-          {...modalContent}
-          close={() => setShowModal(false)}
-          handleCancelClick={() => {
-            Navigate('/cart')
-            setShowModal(false)
-          }}
-          handleOkClick={() => setShowModal(false)}
-        />
-      )}
     </>
   )
 }

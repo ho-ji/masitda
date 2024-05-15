@@ -2,6 +2,7 @@ import {useEffect} from 'react'
 import styled from 'styled-components'
 
 import closeImage from 'assets/images/close.svg'
+import useModal from 'hooks/useModal'
 
 const Dialog = styled.dialog`
   position: fixed;
@@ -82,50 +83,60 @@ const allowScroll = (prevScroll) => {
   window.scrollTo(0, prevScroll)
 }
 
-const Modal = ({close, title, text, subText, okButtonText, cancelButtonText, handleOkClick, handleCancelClick}) => {
+const Modal = () => {
+  const {modal, closeModal} = useModal()
   const handleOutsideClick = (e) => {
-    if (e.target.nodeName === 'DIALOG') close()
+    if (e.target.nodeName === 'DIALOG') closeModal()
   }
 
   const handleEscapeKeyDown = (e) => {
     if (e.key === 'Escape') {
-      close()
+      closeModal()
       e.target.blur()
     }
   }
 
   useEffect(() => {
-    const prevScroll = preventScroll()
-    document.addEventListener('keydown', handleEscapeKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKeyDown)
-      allowScroll(prevScroll)
+    if (modal.isOpen) {
+      const prevScroll = preventScroll()
+      document.addEventListener('keydown', handleEscapeKeyDown)
+      return () => {
+        document.removeEventListener('keydown', handleEscapeKeyDown)
+        allowScroll(prevScroll)
+        closeModal()
+      }
     }
   })
 
   return (
-    <Dialog onClick={handleOutsideClick}>
-      <Container>
-        <Title>{title}</Title>
-        <Text>{text}</Text>
-        <SubText>{subText}</SubText>
-        <ButtonContainer>
-          <CancelButton
-            type="button"
-            onClick={handleCancelClick}>
-            {cancelButtonText}
-          </CancelButton>
-          <OkButton
-            type="button"
-            onClick={handleOkClick}>
-            {okButtonText}
-          </OkButton>
-        </ButtonContainer>
-        <CloseButton onClick={close}>
-          <span className="a11y-hidden">팝업창닫기</span>
-        </CloseButton>
-      </Container>
-    </Dialog>
+    <>
+      {modal.isOpen && (
+        <>
+          <Dialog onClick={handleOutsideClick}>
+            <Container>
+              <Title>{modal.title}</Title>
+              <Text>{modal.text}</Text>
+              <SubText>{modal.subText}</SubText>
+              <ButtonContainer>
+                <CancelButton
+                  type="button"
+                  onClick={modal.handleCancelClick}>
+                  {modal.cancelButtonText}
+                </CancelButton>
+                <OkButton
+                  type="button"
+                  onClick={modal.handleOkClick}>
+                  {modal.okButtonText}
+                </OkButton>
+              </ButtonContainer>
+              <CloseButton onClick={closeModal}>
+                <span className="a11y-hidden">팝업창닫기</span>
+              </CloseButton>
+            </Container>
+          </Dialog>
+        </>
+      )}
+    </>
   )
 }
 

@@ -10,7 +10,6 @@ export const updateCountSelector = selector({
     const currentCartList = get(cartListState)
     const indexToUpdate = currentCartList.findIndex((item) => item.product._id === id)
     const updatedCartList = [...currentCartList]
-    console.log(updatedCartList, id, count)
     if (indexToUpdate === -1) {
       updatedCartList.push({product: {_id: id}, count: 1})
     } else {
