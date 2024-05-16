@@ -98,7 +98,7 @@ const CartMain = () => {
     const getCartList = async () => {
       try {
         const result = await getCartListAPI()
-        if (result.data?.products) setCartList(result.data.products)
+        setCartList(result.data)
       } catch (error) {
         console.error(error)
       }

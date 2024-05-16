@@ -6,7 +6,8 @@ import {formatCostWithComma, formatSaleCost} from 'utils/cost'
 import checkImage from 'assets/images/check.svg'
 import plusImage from 'assets/images/plus.svg'
 import minusImage from 'assets/images/minus.svg'
-import {updateSelectSelector} from 'recoil/cart/selector'
+import {updateCountSelector, updateSelectSelector} from 'recoil/cart/selector'
+import {postCartProductAPI} from 'api/api'
 
 const Container = styled.table`
   border-top: 1px solid black;
@@ -135,9 +136,21 @@ const DeleteButton = styled.button`
 const CartTable = () => {
   const cartList = useRecoilValue(cartListState)
   const updateCheck = useSetRecoilState(updateSelectSelector)
+  const updateCount = useSetRecoilState(updateCountSelector)
 
   const handleSelectChange = (id) => (e) => {
     updateCheck({id, isSelected: e.target.checked})
+  }
+
+  const handleCountButtonClick = (currentCount, id, count) => async () => {
+    if (currentCount + count > 0) {
+      try {
+        await postCartProductAPI(id, count)
+        updateCount({id, count})
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 
   return (
@@ -186,13 +199,15 @@ const CartTable = () => {
                 <Count>
                   <MinusButton
                     $count="minus"
-                    type="button">
+                    type="button"
+                    onClick={handleCountButtonClick(item.count, item.product._id, -1)}>
                     <span className="a11y-hidden">상품수량감소</span>
                   </MinusButton>
                   <p>{item.count}</p>
                   <PlusButton
                     $count="plus"
-                    type="button">
+                    type="button"
+                    onClick={handleCountButtonClick(item.count, item.product._id, 1)}>
                     <span className="a11y-hidden">상품수량증가</span>
                   </PlusButton>
                 </Count>
