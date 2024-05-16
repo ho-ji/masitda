@@ -6,8 +6,9 @@ import {formatCostWithComma, formatSaleCost} from 'utils/cost'
 import checkImage from 'assets/images/check.svg'
 import plusImage from 'assets/images/plus.svg'
 import minusImage from 'assets/images/minus.svg'
-import {updateCountSelector, updateSelectSelector} from 'recoil/cart/selector'
-import {postCartProductAPI} from 'api/api'
+import {deleteOneSelector, updateCountSelector, updateSelectSelector} from 'recoil/cart/selector'
+import {deleleCartProductAPI, postCartProductAPI} from 'api/api'
+import useModal from 'hooks/useModal'
 
 const Container = styled.table`
   border-top: 1px solid black;
@@ -137,6 +138,8 @@ const CartTable = () => {
   const cartList = useRecoilValue(cartListState)
   const updateCheck = useSetRecoilState(updateSelectSelector)
   const updateCount = useSetRecoilState(updateCountSelector)
+  const deleteOne = useSetRecoilState(deleteOneSelector)
+  const {updateModal, openModal} = useModal()
 
   const handleSelectChange = (id) => (e) => {
     updateCheck({id, isSelected: e.target.checked})
@@ -151,6 +154,20 @@ const CartTable = () => {
         console.error(error)
       }
     }
+  }
+
+  const deleteProduct = async (id) => {
+    try {
+      deleteOne(id)
+      await deleleCartProductAPI(id)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleDeleteOneClick = (id) => () => {
+    updateModal('delete', () => deleteProduct(id))
+    openModal()
   }
 
   return (
@@ -218,7 +235,11 @@ const CartTable = () => {
               <td>
                 <Select>
                   <BuyNowButton type="button">바로구매</BuyNowButton>
-                  <DeleteButton type="button">삭제하기</DeleteButton>
+                  <DeleteButton
+                    type="button"
+                    onClick={handleDeleteOneClick(item.product._id)}>
+                    삭제하기
+                  </DeleteButton>
                 </Select>
               </td>
             </Tr>

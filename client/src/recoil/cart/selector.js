@@ -67,3 +67,13 @@ export const getSelectedIdListSelector = selector({
     return selectedList
   },
 })
+
+export const deleteOneSelector = selector({
+  key: 'deleteOneProduct',
+  get: ({get}) => get(cartListState),
+  set: ({get, set}, id) => {
+    const currentCartList = get(cartListState)
+    const updatedCartList = currentCartList.filter((item) => item.product._id !== id)
+    set(cartListState, updatedCartList)
+  },
+})
