@@ -48,3 +48,22 @@ export const updateSelectSelector = selector({
     set(cartListState, updatedCartList)
   },
 })
+
+export const deleteMultipleSelector = selector({
+  key: 'deleteMultiple',
+  get: ({get}) => get(cartListState),
+  set: ({get, set}) => {
+    const currentCartList = get(cartListState)
+    const updatedCartList = currentCartList.filter((item) => item.isSelected === false)
+    set(cartListState, updatedCartList)
+  },
+})
+
+export const getSelectedIdListSelector = selector({
+  key: 'getSelectedIdList',
+  get: ({get}) => {
+    const currentCartList = get(cartListState)
+    const selectedList = currentCartList.filter((item) => item.isSelected !== false).map((item) => item.product._id)
+    return selectedList
+  },
+})

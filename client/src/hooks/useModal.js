@@ -16,7 +16,7 @@ const useModal = () => {
     })
   }
 
-  const updateModal = (type, navigate) => {
+  const updateModal = (type, okFunc) => {
     switch (type) {
       case 'cart': {
         const cartModal = {
@@ -24,13 +24,13 @@ const useModal = () => {
           title: '장바구니',
           text: '선택한 상품이 장바구니에 담겼습니다.',
           subText: '장바구니로 이동하겠습니까?',
-          cancelButtonText: '장바구니 확인하기',
-          okButtonText: '계속 쇼핑하기',
+          cancelButtonText: '계속 쇼핑하기',
+          okButtonText: '장바구니 확인하기',
           handleCancelClick: () => {
-            navigate('/cart')
             closeModal()
           },
           handleOkClick: () => {
+            okFunc('/cart')
             closeModal()
           },
         }
@@ -38,6 +38,22 @@ const useModal = () => {
         break
       }
       case 'delete': {
+        const deleteModal = {
+          ...modal,
+          title: '장바구니 상품 삭제',
+          text: '삭제 시 복원되지 않습니다.',
+          subText: '선택된 상품을 삭제하시겠습니까?',
+          cancelButtonText: '취소',
+          okButtonText: '확인',
+          handleCancelClick: () => {
+            closeModal()
+          },
+          handleOkClick: () => {
+            okFunc()
+            closeModal()
+          },
+        }
+        setModal(deleteModal)
         break
       }
       default: {

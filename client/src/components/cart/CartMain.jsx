@@ -1,12 +1,13 @@
 import {useEffect, useState} from 'react'
-import {useRecoilState, useSetRecoilState} from 'recoil'
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
 
-import {getCartListAPI} from 'api/api'
+import {deleleMultipleCartProductAPI, getCartListAPI} from 'api/api'
 import {cartListState} from 'recoil/cart/atom'
 import checkImage from 'assets/images/check.svg'
 import CartTable from './CartTable'
-import {updateAllSelectSelector} from 'recoil/cart/selector'
+import {deleteMultipleSelector, getSelectedIdListSelector, updateAllSelectSelector} from 'recoil/cart/selector'
+import useModal from 'hooks/useModal'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -69,11 +70,28 @@ const NoItem = styled.p`
 const CartMain = () => {
   const [cartList, setCartList] = useRecoilState(cartListState)
   const updateAllSelect = useSetRecoilState(updateAllSelectSelector)
+  const selectedIdList = useRecoilValue(getSelectedIdListSelector)
+  const deleteMultiple = useSetRecoilState(deleteMultipleSelector)
   const [isAllSelect, setIsAllSelect] = useState(true)
+  const {updateModal, openModal} = useModal()
 
   const handleAllSelectChange = (e) => {
     updateAllSelect(e.target.checked)
     setIsAllSelect(e.target.checked)
+  }
+
+  const deleteSelectedProduct = async () => {
+    try {
+      await deleleMultipleCartProductAPI(selectedIdList)
+      deleteMultiple()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleDeleteClick = () => {
+    updateModal('delete', deleteSelectedProduct)
+    openModal()
   }
 
   useEffect(() => {
@@ -109,7 +127,11 @@ const CartMain = () => {
                 onChange={handleAllSelectChange}></input>
               전체선택
             </label>
-            <button type="button">선택삭제</button>
+            <button
+              type="button"
+              onClick={handleDeleteClick}>
+              선택삭제
+            </button>
           </SelectContainer>
           <CartTable />
         </>

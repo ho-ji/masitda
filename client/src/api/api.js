@@ -54,3 +54,17 @@ export const getCartCountAPI = async () => {
     console.error(error)
   }
 }
+
+export const deleleMultipleCartProductAPI = async (idList) => {
+  const uid = localStorage.getItem('uid')
+  try {
+    const result = await instance.delete(`/cart/${uid}/deletemultiple`, {
+      data: {
+        product_ids: idList,
+      },
+    })
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}
