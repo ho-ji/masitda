@@ -58,9 +58,8 @@ const GlobalStyle = createGlobalStyle`
     --color-gray: #d7d7d7;
     --color-light-gray: #fafafa;
 
-    --font-size-emphasis: 2.6rem;
-    --font-size-primary: 2.4rem;
-    --font-size-secondary: 1.7rem;
+    --font-size-emphasis: 2.4rem;
+    --font-size-primary: 1.7rem;
     --font-size-subtext: 1.4rem;
   }
 `

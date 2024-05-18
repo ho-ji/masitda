@@ -28,7 +28,7 @@ const Container = styled.div`
 `
 const Title = styled.h3`
   font-weight: bold;
-  font-size: var(--font-size-secondary);
+  font-size: var(--font-size-primary);
 `
 
 const Text = styled.p`

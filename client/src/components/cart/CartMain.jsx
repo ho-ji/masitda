@@ -9,6 +9,7 @@ import CartTable from './CartTable'
 import {deleteMultipleSelector, getSelectedIdListSelector, updateAllSelectSelector} from 'recoil/cart/selector'
 import useModal from 'hooks/useModal'
 import CartCost from './CartCost'
+import CartPurchase from './CartPurchase'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -22,7 +23,7 @@ const CartHeader = styled.div`
   align-items: baseline;
   > h2 {
     font-weight: bold;
-    font-size: var(--font-size-primary);
+    font-size: var(--font-size-emphasis);
   }
 `
 
@@ -64,7 +65,7 @@ const NoItem = styled.p`
   margin-top: 3rem;
   text-align: center;
   color: var(--color-text-sub);
-  font-size: var(--font-size-secondary);
+  font-size: var(--font-size-primary);
   background: #f7f7f7;
 `
 
@@ -136,6 +137,7 @@ const CartMain = () => {
           </SelectContainer>
           <CartTable />
           <CartCost />
+          <CartPurchase />
         </>
       ) : (
         <NoItem>장바구니가 비어 있습니다</NoItem>

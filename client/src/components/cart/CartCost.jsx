@@ -37,7 +37,7 @@ const Equal = styled(Exp)`
 `
 
 const Cost = styled.p`
-  font-size: var(--font-size-primary);
+  font-size: var(--font-size-emphasis);
   font-weight: 500;
   > span {
     font-size: var(--font-size-subtext);

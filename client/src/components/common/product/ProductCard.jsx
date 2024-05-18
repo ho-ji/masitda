@@ -35,7 +35,7 @@ const CartButton = styled.button`
   background: url(${addCartImage}) no-repeat center/2rem white;
 `
 const Name = styled.strong`
-  font-size: var(--font-size-secondary);
+  font-size: var(--font-size-primary);
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -56,11 +56,11 @@ const CostContainer = styled.div`
   gap: 1rem;
 `
 const SaleCost = styled.span`
-  font-size: var(--font-size-primary);
+  font-size: var(--font-size-emphasis);
   font-weight: bold;
 `
 const Cost = styled.span`
-  font-size: var(--font-size-secondary);
+  font-size: var(--font-size-primary);
   color: var(--color-text-main);
   text-decoration: line-through;
 `

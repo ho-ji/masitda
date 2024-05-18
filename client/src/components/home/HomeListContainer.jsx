@@ -9,7 +9,7 @@ const Container = styled.section`
 `
 const Title = styled.h2`
   font-weight: bold;
-  font-size: var(--font-size-primary);
+  font-size: var(--font-size-emphasis);
   margin-bottom: 2rem;
   display: inline-block;
 `
