@@ -49,10 +49,9 @@ const TotalCost = styled(Cost)`
 `
 
 const DeliveryText = styled.span`
-  text-align: right;
+  margin-left: 0.2rem;
   font-size: var(--font-size-subtext);
   color: var(--color-text-sub);
-  margin-top: 1rem;
 `
 
 const CartCost = () => {
