@@ -84,7 +84,7 @@ export const getTotalCostSelector = selector({
   get: ({get}) => {
     const currentCartList = get(cartListState)
     const totalCost = currentCartList.reduce((acc, item) => {
-      if (item.checked !== false) {
+      if (item.isSelected !== false) {
         return acc + calculateSaleCost(item.product.cost, item.product.rate) * item.count
       }
       return acc
