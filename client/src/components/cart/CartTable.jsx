@@ -19,7 +19,7 @@ const Container = styled.table`
 
 const Thead = styled.thead`
   background-color: var(--color-gray);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px soㄷlid var(--color-border);
 `
 
 const Th = styled.th`
@@ -69,14 +69,28 @@ const ProductName = styled.div`
     object-fit: cover;
     border: 1px solid var(--color-border);
   }
-  > p {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    word-break: break-all;
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
   }
 `
+
+const Temp = styled.span`
+  width: fit-content;
+  font-size: var(--font-size-subtext);
+  border: 1px solid var(--color-gray);
+  border-radius: 3px;
+  padding: 0 0.5rem;
+`
+const Name = styled.p`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+`
+
 const Cost = styled.p`
   font-weight: 500;
 `
@@ -203,7 +217,10 @@ const CartTable = () => {
                     src={item.product.image}
                     alt={`${item.product.name} 이미지`}
                   />
-                  <p>{item.product.name}</p>
+                  <div>
+                    <Temp>{item.product.temp}</Temp>
+                    <Name>{item.product.name}</Name>
+                  </div>
                 </ProductName>
               </td>
               <td>

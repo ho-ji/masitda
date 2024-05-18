@@ -7,10 +7,9 @@ const Container = styled.div`
   display: flex;
   justify-content: space-around;
   margin-top: 7rem;
-  margin-bottom: 2rem;
   border-top: 1px solid black;
   border-bottom: 1px solid #eee;
-  padding: 2rem 0;
+  padding: 1rem 0;
 `
 const CostContainer = styled.div`
   width: 100%;
@@ -36,33 +35,43 @@ const TotalCost = styled(Cost)`
   color: var(--color-main);
 `
 
+const DeliveryText = styled.p`
+  text-align: right;
+  font-size: var(--font-size-subtext);
+  color: var(--color-text-sub);
+  margin-top: 1rem;
+`
+
 const CartCost = () => {
   const {totalCost, deliveryFee} = useRecoilValue(getTotalCostSelector)
 
   return (
-    <Container>
-      <CostContainer>
-        <Name>총 금액</Name>
-        <Cost>
-          {formatCostWithComma(totalCost)}
-          <span>원</span>
-        </Cost>
-      </CostContainer>
-      <CostContainer>
-        <Name>배송비</Name>
-        <Cost>
-          {formatCostWithComma(deliveryFee)}
-          <span>원</span>
-        </Cost>
-      </CostContainer>
-      <CostContainer>
-        <Name>결제금액</Name>
-        <TotalCost>
-          {formatCostWithComma(totalCost + deliveryFee)}
-          <span>원</span>
-        </TotalCost>
-      </CostContainer>
-    </Container>
+    <>
+      <Container>
+        <CostContainer>
+          <Name>총 금액</Name>
+          <Cost>
+            {formatCostWithComma(totalCost)}
+            <span>원</span>
+          </Cost>
+        </CostContainer>
+        <CostContainer>
+          <Name>배송비</Name>
+          <Cost>
+            {formatCostWithComma(deliveryFee)}
+            <span>원</span>
+          </Cost>
+        </CostContainer>
+        <CostContainer>
+          <Name>결제금액</Name>
+          <TotalCost>
+            {formatCostWithComma(totalCost + deliveryFee)}
+            <span>원</span>
+          </TotalCost>
+        </CostContainer>
+      </Container>
+      {deliveryFee !== 0 && <DeliveryText>* 30,000원 이상 무료배송</DeliveryText>}
+    </>
   )
 }
 
