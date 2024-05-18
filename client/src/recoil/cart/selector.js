@@ -89,7 +89,7 @@ export const getTotalCostSelector = selector({
       }
       return acc
     }, 0)
-    const deliveryFee = totalCost >= 30000 ? 0 : 3000
+    const deliveryFee = totalCost >= 30000 || totalCost === 0 ? 0 : 3000
     return {totalCost, deliveryFee}
   },
 })
