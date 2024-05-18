@@ -18,12 +18,11 @@ const Container = styled.table`
 `
 
 const Thead = styled.thead`
-  background-color: var(--color-gray);
-  border-bottom: 1px soㄷlid var(--color-border);
+  background-color: var(--color-light-gray);
+  border-bottom: 1px solid var(--color-border);
 `
 
 const Th = styled.th`
-  background: #fafafa;
   padding: 2rem;
   width: 15rem;
   &:first-child {
@@ -35,7 +34,9 @@ const Th = styled.th`
 `
 
 const Tr = styled.tr`
-  border-bottom: 1px solid var(--color-border);
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-border);
+  }
   > td {
     padding: 2rem 1rem;
     vertical-align: middle;
