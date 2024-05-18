@@ -1,6 +1,7 @@
 import {selector} from 'recoil'
 
 import {cartListState} from './atom'
+import {calculateSaleCost} from 'utils/cost'
 
 export const updateCountSelector = selector({
   key: 'updateCountSelector',
@@ -75,5 +76,20 @@ export const deleteOneSelector = selector({
     const currentCartList = get(cartListState)
     const updatedCartList = currentCartList.filter((item) => item.product._id !== id)
     set(cartListState, updatedCartList)
+  },
+})
+
+export const getTotalCostSelector = selector({
+  key: 'getTotalCost',
+  get: ({get}) => {
+    const currentCartList = get(cartListState)
+    const totalCost = currentCartList.reduce((acc, item) => {
+      if (item.checked !== false) {
+        return acc + calculateSaleCost(item.product.cost, item.product.rate) * item.count
+      }
+      return acc
+    }, 0)
+    const deliveryFee = totalCost >= 30000 ? 0 : 3000
+    return {totalCost, deliveryFee}
   },
 })

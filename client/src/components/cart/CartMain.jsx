@@ -8,6 +8,7 @@ import checkImage from 'assets/images/check.svg'
 import CartTable from './CartTable'
 import {deleteMultipleSelector, getSelectedIdListSelector, updateAllSelectSelector} from 'recoil/cart/selector'
 import useModal from 'hooks/useModal'
+import CartCost from './CartCost'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -134,6 +135,7 @@ const CartMain = () => {
             </button>
           </SelectContainer>
           <CartTable />
+          <CartCost />
         </>
       ) : (
         <NoItem>장바구니가 비어 있습니다</NoItem>
