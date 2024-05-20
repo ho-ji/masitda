@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../models/User')
+const jwt = require('jsonwebtoken')
 
 router.post('/signup', async (req, res) => {
   const info = req.body
@@ -35,6 +36,24 @@ router.get('/check/:userid', async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: 'User ID is not available',
+    })
+  }
+})
+
+router.post('login', async (req, res) => {
+  const {userid, password} = req.body
+  try {
+    const user = await User.findOne({userid})
+    if (!user) return res.status(401).json({message: 'Invalid ID or password'})
+
+    const successLogin = await user.passwordCheck(password)
+    if (!successLogin) return res.status(401).json({message: 'Invalid ID or password'})
+
+    const token = jwt.sign({_id: user._id}, 'masitdajwtsecretkey', {expiresIn: '1h'})
+    res.status(200).json({message: 'Success to Login', token})
+  } catch (error) {
+    res.status(500).json({
+      message: 'Fail to Login',
     })
   }
 })
