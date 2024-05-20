@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const User = require('../models/User')
-const jwt = require('jsonwebtoken')
+const checkAuth = require('../middlewares/checkAuth')
 
 router.post('/signup', async (req, res) => {
   const info = req.body
@@ -40,7 +40,7 @@ router.get('/check/:userid', async (req, res) => {
   }
 })
 
-router.post('login', async (req, res) => {
+router.post('/login', async (req, res) => {
   const {userid, password} = req.body
   try {
     const user = await User.findOne({userid})
@@ -49,12 +49,23 @@ router.post('login', async (req, res) => {
     const successLogin = await user.passwordCheck(password)
     if (!successLogin) return res.status(401).json({message: 'Invalid ID or password'})
 
-    const token = jwt.sign({_id: user._id}, process.env.TOKEN_KEY, {expiresIn: '1h'})
-    res.status(200).json({message: 'Success to Login', token})
+    const token = jwt.sign({_id: user._id}, process.env.AUTH_KEY, {expiresIn: '1h'})
+    res.status(200).json(token)
   } catch (error) {
     res.status(500).json({
       message: 'Fail to Login',
     })
+  }
+})
+
+router.get('/', checkAuth, async (req, res) => {
+  const {uid} = req
+  try {
+    const user = await User.findById(uid)
+    if (!user) return res.status(401).json({message: 'User not found'})
+    res.status(200).send(user.name)
+  } catch (error) {
+    res.status(500).json({message: 'Fail to Find User'})
   }
 })
 
