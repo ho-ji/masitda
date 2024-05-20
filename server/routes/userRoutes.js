@@ -49,7 +49,7 @@ router.post('login', async (req, res) => {
     const successLogin = await user.passwordCheck(password)
     if (!successLogin) return res.status(401).json({message: 'Invalid ID or password'})
 
-    const token = jwt.sign({_id: user._id}, 'masitdajwtsecretkey', {expiresIn: '1h'})
+    const token = jwt.sign({_id: user._id}, process.env.TOKEN_KEY, {expiresIn: '1h'})
     res.status(200).json({message: 'Success to Login', token})
   } catch (error) {
     res.status(500).json({
