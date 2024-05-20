@@ -15,7 +15,7 @@ router.post('/signup', async (req, res) => {
     res.status(201).json({message: 'User registered'})
   } catch (error) {
     res.status(500).json({
-      message: 'Fail to',
+      message: 'Fail to Signup',
     })
   }
 })
