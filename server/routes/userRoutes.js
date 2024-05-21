@@ -4,7 +4,7 @@ const checkAuth = require('../middlewares/checkAuth')
 
 router.post('/signup', controller.postUserSignUp)
 
-router.get('/check/:userid', controller.getUserCheckUserId)
+router.get('/check/:userId', controller.getUserCheckUserId)
 
 router.post('/login', controller.postUserLogin)
 

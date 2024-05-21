@@ -6,12 +6,12 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  phone_number: {
+  phoneNumber: {
     type: String,
     required: true,
     match: /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/,
   },
-  userid: {
+  userId: {
     type: String,
     required: true,
     unique: true,
