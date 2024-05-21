@@ -1,13 +1,17 @@
-const Product = require('../models/Product')
+const servie = require('../services/productService')
 
-module.exports.getProductRanking = async (req, res) => {
+const getProductRanking = async (req, res) => {
+  const limit = parseInt(req.query.limit) || 50
   try {
-    const limit = parseInt(req.query.limit) || 50
-    const ranking = await Product.find({}).sort({sales_count: -1}).limit(limit)
+    const ranking = await servie.getProductRankingList(limit)
     res.status(200).send(ranking)
   } catch (error) {
     res.status(500).json({
       message: 'Ranking Not Found',
     })
   }
+}
+
+module.exports = {
+  getProductRanking,
 }

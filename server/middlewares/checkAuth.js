@@ -5,7 +5,7 @@ const checkAuth = (req, res, next) => {
 
   if (!token) return res.status(400).json({message: 'No token provided'})
 
-  jwt.verify(token, process.env.AUTH_KEY, (error, decoded) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (error, decoded) => {
     if (error) {
       return res.status(401).json({message: 'Fail to authentication'})
     }

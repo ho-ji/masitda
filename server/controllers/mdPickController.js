@@ -1,14 +1,17 @@
-const MDPick = require('../models/MDPick')
+const service = require('../services/mdPickService')
 
-module.exports.getMDPick = async (req, res) => {
+const getMDPick = async (req, res) => {
+  const limit = parseInt(req.query.limit) || 0
   try {
-    const limit = parseInt(req.query.limit) || 0
-    const list = await MDPick.find({}).populate('product').limit(limit)
-    const products = list.map((item) => item.product)
-    res.status(200).send(products)
+    const list = await service.getMDPickProductList(limit)
+    res.status(200).send(list.map((item) => item.product))
   } catch (error) {
     res.status(500).json({
       message: 'MDPick Not Found',
     })
   }
+}
+
+module.exports = {
+  getMDPick,
 }
