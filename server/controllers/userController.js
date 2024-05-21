@@ -40,7 +40,7 @@ const getUserCheckUserId = async (req, res) => {
 const postUserLogin = async (req, res) => {
   const {userId, password} = req.body
   try {
-    const user = await service.getUserByUserId(userId)
+    const user = await service.getUserByUserId(userI)
     if (!user) return res.status(401).json({message: 'Invalid ID or password'})
 
     const successLogin = await user.passwordCheck(password)
@@ -61,7 +61,7 @@ const postUserLogin = async (req, res) => {
 const getUser = async (req, res) => {
   const {uid} = req
   try {
-    const user = await User.findById(uid)
+    const user = await service.getUserByUid(uid)
     if (!user) return res.status(401).json({message: 'User not found'})
     res.status(200).send(user.name)
   } catch (error) {
