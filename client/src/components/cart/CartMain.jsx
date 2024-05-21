@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
 
-import {deleleMultipleCartProductAPI, getCartListAPI} from 'api/api'
+import {deleleCartProductAPI, getCartListAPI} from 'api/api'
 import {cartListState} from 'recoil/cart/atom'
 import checkImage from 'assets/images/check.svg'
 import CartTable from './CartTable'
@@ -84,7 +84,7 @@ const CartMain = () => {
 
   const deleteSelectedProduct = async () => {
     try {
-      await deleleMultipleCartProductAPI(selectedIdList)
+      await deleleCartProductAPI(selectedIdList)
       deleteMultiple()
     } catch (error) {
       console.log(error)

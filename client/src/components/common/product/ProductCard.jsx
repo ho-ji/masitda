@@ -81,7 +81,7 @@ const ProductCard = ({product, children}) => {
 
   const handleCartButtonClick = () => {
     postCartProductAPI(product._id, 1)
-    updateCount({id: product._id, count: 1})
+    updateCount({productId: product._id, count: 1})
     updateModal('cart', navigate)
     openModal()
   }

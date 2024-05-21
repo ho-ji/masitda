@@ -156,32 +156,32 @@ const CartTable = () => {
   const deleteOne = useSetRecoilState(deleteOneSelector)
   const {updateModal, openModal} = useModal()
 
-  const handleSelectChange = (id) => (e) => {
-    updateCheck({id, isSelected: e.target.checked})
+  const handleSelectChange = (productId) => (e) => {
+    updateCheck({productId, isSelected: e.target.checked})
   }
 
-  const handleCountButtonClick = (currentCount, id, count) => async () => {
+  const handleCountButtonClick = (currentCount, productId, count) => async () => {
     if (currentCount + count > 0) {
       try {
-        await postCartProductAPI(id, count)
-        updateCount({id, count})
+        await postCartProductAPI(productId, count)
+        updateCount({productId, count})
       } catch (error) {
         console.error(error)
       }
     }
   }
 
-  const deleteProduct = async (id) => {
+  const deleteProduct = async (productId) => {
     try {
-      deleteOne(id)
-      await deleleCartProductAPI(id)
+      deleteOne(productId)
+      await deleleCartProductAPI([productId])
     } catch (error) {
       console.error(error)
     }
   }
 
-  const handleDeleteOneClick = (id) => () => {
-    updateModal('delete', () => deleteProduct(id))
+  const handleDeleteOneClick = (productId) => () => {
+    updateModal('delete', () => deleteProduct(productId))
     openModal()
   }
 

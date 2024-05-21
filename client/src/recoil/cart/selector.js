@@ -7,12 +7,12 @@ export const updateCountSelector = selector({
   key: 'updateCountSelector',
   get: ({get}) => get(cartListState),
   set: ({get, set}, v) => {
-    const {id, count} = v
+    const {productId, count} = v
     const currentCartList = get(cartListState)
-    const indexToUpdate = currentCartList.findIndex((item) => item.product._id === id)
+    const indexToUpdate = currentCartList.findIndex((item) => item.product._id === productId)
     const updatedCartList = [...currentCartList]
     if (indexToUpdate === -1) {
-      updatedCartList.push({product: {_id: id}, count: 1})
+      updatedCartList.push({product: {_id: productId}, count: 1})
     } else {
       updatedCartList[indexToUpdate] = {
         ...updatedCartList[indexToUpdate],
@@ -38,9 +38,9 @@ export const updateSelectSelector = selector({
   key: 'updateSelect',
   get: ({get}) => get(cartListState),
   set: ({get, set}, v) => {
-    const {id, isSelected} = v
+    const {productId, isSelected} = v
     const currentCartList = get(cartListState)
-    const indexToUpdate = currentCartList.findIndex((item) => item.product._id === id)
+    const indexToUpdate = currentCartList.findIndex((item) => item.product._id === productId)
     const updatedCartList = [...currentCartList]
     updatedCartList[indexToUpdate] = {
       ...updatedCartList[indexToUpdate],
@@ -72,9 +72,9 @@ export const getSelectedIdListSelector = selector({
 export const deleteOneSelector = selector({
   key: 'deleteOneProduct',
   get: ({get}) => get(cartListState),
-  set: ({get, set}, id) => {
+  set: ({get, set}, productId) => {
     const currentCartList = get(cartListState)
-    const updatedCartList = currentCartList.filter((item) => item.product._id !== id)
+    const updatedCartList = currentCartList.filter((item) => item.product._id !== productId)
     set(cartListState, updatedCartList)
   },
 })

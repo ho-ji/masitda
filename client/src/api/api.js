@@ -26,7 +26,7 @@ export const postCartProductAPI = async (_id, count) => {
   const uid = localStorage.getItem('uid')
   try {
     const result = await instance.post(`/cart/${uid}`, {
-      product_id: _id,
+      productId: _id,
       count: count,
     })
     return result
@@ -45,36 +45,12 @@ export const getCartListAPI = async () => {
   }
 }
 
-export const getCartCountAPI = async () => {
+export const deleleCartProductAPI = async (idList) => {
   const uid = localStorage.getItem('uid')
   try {
-    const result = await instance.get(`/cart/${uid}/count`)
-    return result
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export const deleleMultipleCartProductAPI = async (idList) => {
-  const uid = localStorage.getItem('uid')
-  try {
-    const result = await instance.delete(`/cart/${uid}/deletemultiple`, {
+    const result = await instance.delete(`/cart/${uid}`, {
       data: {
-        product_ids: idList,
-      },
-    })
-    return result
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export const deleleCartProductAPI = async (id) => {
-  const uid = localStorage.getItem('uid')
-  try {
-    const result = await instance.delete(`/cart/${uid}/delete`, {
-      data: {
-        product_id: id,
+        productId: idList,
       },
     })
     return result
