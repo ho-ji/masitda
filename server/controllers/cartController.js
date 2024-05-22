@@ -4,7 +4,7 @@ const postCart = async (req, res) => {
   const uid = req.params.uid
   const {productId, count} = req.body
   try {
-    await service.addToCartByUid(uid, productId, count)
+    await service.addToCart({uid, productId, count})
     res.status(200).json({message: 'Product added to cart'})
   } catch (error) {
     res.status(500).json({message: 'Fail to add product to cart'})

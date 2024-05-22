@@ -18,7 +18,7 @@ const updateCart = async (cart) => {
   await cart.save()
 }
 
-const addToCart = async (uid, productId, count) => {
+const addToCart = async ({uid, productId, count}) => {
   let cart = await getCartByUid(uid)
   if (!cart) cart = createCart(uid)
   const index = cart.products.findIndex((item) => item.product.toString() === productId.toString())
@@ -31,12 +31,12 @@ const addToCart = async (uid, productId, count) => {
 }
 
 const deleteCartProduct = async (uid, idList) => {
-  let cart = await service.getCart(uid)
+  let cart = await getCartByUid(uid)
   if (cart) {
     for (const idItem of idList) {
-      cart.products = cart.products.filter((item) => item.product.toString() !== idItem.toString())
+      cart.products = cart.products.filter((item) => item.product._id.toString() !== idItem.toString())
     }
-    await service.updateCart(cart)
+    await updateCart(cart)
   }
 }
 
