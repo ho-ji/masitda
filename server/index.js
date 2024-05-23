@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 // const seedProduct = require('./seeds/seeds')
 
 const app = express()
@@ -12,6 +13,7 @@ const databaseURL = process.env.DATABASE_URL
 app.use(express.static('public'))
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 
 const init = async (retryCount = 0) => {
   try {

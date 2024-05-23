@@ -1,4 +1,5 @@
 const service = require('../services/userService')
+const {verifyAccessToken} = require('../utils/token')
 
 const postUserSignUp = async (req, res) => {
   const info = req.body
@@ -40,15 +41,13 @@ const getUserCheckUserId = async (req, res) => {
 const postUserLogin = async (req, res) => {
   const {userId, password} = req.body
   try {
-    const user = await service.getUserByUserId(userI)
+    const user = await service.getUserByUserId(userId)
     if (!user) return res.status(401).json({message: 'Invalid ID or password'})
 
     const successLogin = await user.passwordCheck(password)
     if (!successLogin) return res.status(401).json({message: 'Invalid ID or password'})
 
-    const accessToken = jwt.sign({_id: user._id}, process.env.ACCESS_TOKEN_KEY, {expiresIn: '10m'})
-    const refreshToken = jwt.sign({_id: user._id}.process.env.REFRESH_TOKEN_KEY, {expiresIn: '7d'})
-
+    const {accessToken, refreshToken} = await service.createToken(user._id)
     res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true})
     res.status(200).json(accessToken)
   } catch (error) {
@@ -59,11 +58,25 @@ const postUserLogin = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-  const {uid} = req
+  const {uid, accessToken} = req.body
+  const refreshToken = req.cookies.refreshToken
   try {
+    const {accessTokenValid, accessTokenError} = verifyAccessToken(accessToken, uid)
+    if (accessTokenError) {
+      return res.status(400).json({message: accessTokenError})
+    }
+    if (!accessTokenValid) {
+      const {refreshTokenValid, refreshTokenError} = service.verifyRefreshToken({uid, refreshToken})
+      if (!refreshTokenValid) {
+        return res.status(400).json({message: refreshTokenError})
+      }
+    }
+    const {newAccessToken, newRefreshToken} = service.createToken(uid)
     const user = await service.getUserByUid(uid)
     if (!user) return res.status(401).json({message: 'User not found'})
-    res.status(200).send(user.name)
+
+    res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
+    res.status(200).json({accessToken: newAccessToken, user: {name: user.name}})
   } catch (error) {
     res.status(500).json({message: 'Fail to Find User'})
   }

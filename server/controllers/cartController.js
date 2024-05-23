@@ -16,9 +16,9 @@ const getCart = async (req, res) => {
   try {
     const cart = await service.getCartProductByUid(uid)
     if (!cart) {
-      return res.status(200).send([])
+      return res.status(200).json([])
     }
-    res.status(200).send(cart.products)
+    res.status(200).json(cart.products)
   } catch (error) {
     res.status(500).json({message: 'Fail to load cart'})
   }
