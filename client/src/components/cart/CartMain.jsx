@@ -32,6 +32,7 @@ const SelectContainer = styled.div`
   margin: 3rem 0;
   color: var(--color-text-main);
   > label {
+    margin-right: 2rem;
     > input {
       margin-right: 1rem;
       float: left;
@@ -44,16 +45,13 @@ const SelectContainer = styled.div`
         background-color: var(--color-main);
       }
     }
-  }
-  > button {
-    padding-left: 2rem;
-    &::before {
+    &::after {
       content: '';
       display: inline-block;
       width: 1px;
       height: 2rem;
       background-color: var(--color-gray);
-      margin-right: 2rem;
+      margin-left: 2rem;
       vertical-align: middle;
     }
   }
