@@ -17,7 +17,7 @@ const HomeMDPickList = () => {
   useEffect(() => {
     const getMDPickList = async () => {
       try {
-        const result = await getMDPickListAPI(6)
+        const result = await getMDPickListAPI(7)
         setList(result.data)
       } catch (error) {
         console.error(error)

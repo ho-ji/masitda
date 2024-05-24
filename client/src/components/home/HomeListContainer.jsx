@@ -101,6 +101,7 @@ const HomeListContainer = ({title, link, children}) => {
       behavior: 'smooth',
       left: 0,
     })
+    setShowNextButton(true)
     setShowPrevButton(false)
   }
 
@@ -109,6 +110,7 @@ const HomeListContainer = ({title, link, children}) => {
       behavior: 'smooth',
       left: listRef.current.scrollWidth,
     })
+    setShowPrevButton(true)
     setShowNextButton(false)
   }
 
