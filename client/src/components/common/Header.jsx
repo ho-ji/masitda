@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import {useRecoilState} from 'recoil'
+import {useRecoilState, useRecoilValue} from 'recoil'
 import {useEffect} from 'react'
 
 import logoImage from 'assets/images/logo.png'
@@ -8,6 +8,7 @@ import cartImage from 'assets/images/cart.svg'
 import userImage from 'assets/images/user.svg'
 import {cartListState} from 'recoil/cart/atom'
 import {getCartListAPI} from 'api/api'
+import {userState} from 'recoil/user/atom'
 
 const Container = styled.header`
   display: flex;
@@ -24,7 +25,7 @@ const Container = styled.header`
 const Logo = styled(Link)`
   display: block;
   width: 10rem;
-  height: 5rem;
+  aspect-ratio: 2/1;
   background: url(${logoImage}) no-repeat center/contain;
 `
 
@@ -57,6 +58,7 @@ const CartCount = styled.strong`
 
 const Header = () => {
   const [cartList, setCartList] = useRecoilState(cartListState)
+  const user = useRecoilValue(userState)
 
   const handleLogoClick = () => {
     window.scrollTo(0, 0)
@@ -93,7 +95,7 @@ const Header = () => {
             <span className="a11y-hidden">개</span>
           </CartCount>
         </MenuLink>
-        <MenuLink to="/user">
+        <MenuLink to={user.accessToken ? '/user' : '/login'}>
           <MenuImage
             src={userImage}
             alt="마이페이지"

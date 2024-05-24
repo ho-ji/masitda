@@ -3,14 +3,16 @@ import {RecoilRoot} from 'recoil'
 import {v4 as uuidv4} from 'uuid'
 import {useEffect} from 'react'
 
-import Home from 'pages/Home'
 import GlobalStyle from 'styles/GlobalStyle'
+import Home from 'pages/Home'
 import 'styles/globalFont.css'
 import Cart from 'pages/Cart'
 import User from 'pages/User'
 import NotFound from 'pages/NotFound'
 import Best from 'pages/Best'
 import MDPick from 'pages/MDPick'
+import LogIn from 'pages/LogIn'
+import SignUp from 'pages/SignUp'
 
 const checkUID = () => {
   if (!localStorage.getItem('uid')) {
@@ -47,6 +49,14 @@ const App = () => {
           <Route
             path="/user"
             element={<User />}
+          />
+          <Route
+            path="/login"
+            element={<LogIn />}
+          />
+          <Route
+            path="/signup"
+            element={<SignUp />}
           />
           <Route
             path="/*"

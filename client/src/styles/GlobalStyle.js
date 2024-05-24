@@ -31,7 +31,9 @@ const GlobalStyle = createGlobalStyle`
     vertical-align: top;
   }
   input{
+    font: inherit;
     margin: 0;
+    border: none;
     [type="checkbox"]{
     cursor: pointer;
   }
@@ -62,6 +64,7 @@ const GlobalStyle = createGlobalStyle`
     --font-size-primary: 1.7rem;
     --font-size-subtext: 1.4rem;
   }
+
 `
 
 export default GlobalStyle
