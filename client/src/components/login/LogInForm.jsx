@@ -1,3 +1,4 @@
+import {useRef, useState} from 'react'
 import styled from 'styled-components'
 
 const Form = styled.form`
@@ -37,19 +38,47 @@ const LogInButton = styled.button`
 `
 
 const LogInForm = () => {
+  const [idInput, setIdInput] = useState('')
+  const [passwordInput, setPasswordInput] = useState('')
+  const idRef = useRef(null)
+  const passwordRef = useRef(null)
+
+  const handleLogInSubmit = (e) => {
+    e.preventDefault()
+
+    if (idInput === '') {
+      alert('아이디를 입력해주세요')
+      idRef.current.focus()
+      return
+    }
+    if (passwordInput === '') {
+      alert('비밀번호를 입력해주세요')
+      passwordRef.current.focus()
+      return
+    }
+    alert('hi')
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleLogInSubmit}>
       <InputContainer>
         <IdInput
           placeholder="아이디"
           title="아이디"
+          value={idInput}
+          onChange={(e) => setIdInput(e.target.value)}
+          ref={idRef}
         />
         <PasswordInput
           placeholder="비밀번호"
           title="비밀번호"
+          value={passwordInput}
+          onChange={(e) => setPasswordInput(e.target.value)}
+          ref={passwordRef}
+          type="password"
         />
       </InputContainer>
-      <LogInButton>로그인</LogInButton>
+      <LogInButton type="submit">로그인</LogInButton>
     </Form>
   )
 }
