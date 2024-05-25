@@ -34,12 +34,16 @@ const GlobalStyle = createGlobalStyle`
     font: inherit;
     margin: 0;
     border: none;
-    [type="checkbox"]{
-    cursor: pointer;
-  }
   }
   input[type="checkbox"]{
     cursor: pointer;
+  }
+  input:not([type="checkbox"]){
+    &:focus {
+      z-index: 2;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.3);
+    }
   }
   .a11y-hidden{
     overflow: hidden;
@@ -64,7 +68,11 @@ const GlobalStyle = createGlobalStyle`
     --font-size-primary: 1.7rem;
     --font-size-subtext: 1.4rem;
   }
-
+  input{
+    &::placeholder{
+      color: var(--color-text-sub);
+    }
+  }
 `
 
 export default GlobalStyle

@@ -1,9 +1,10 @@
-import {postLoginAPI} from 'api/user'
-import {useRef, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
-import {useSetRecoilState} from 'recoil'
-import {userState} from 'recoil/user/atom'
 import styled from 'styled-components'
+import {useSetRecoilState} from 'recoil'
+import {useNavigate} from 'react-router-dom'
+import {useRef, useState} from 'react'
+import {userState} from 'recoil/user/atom'
+
+import {postLoginAPI} from 'api/user'
 
 const Form = styled.form`
   width: 100%;
@@ -18,11 +19,6 @@ const Input = styled.input`
   width: 100%;
   padding: 1.2rem 1rem;
   position: relative;
-  &:focus {
-    z-index: 2;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.3);
-  }
 `
 const IdInput = styled(Input)`
   border-radius: 5px 5px 0 0;
