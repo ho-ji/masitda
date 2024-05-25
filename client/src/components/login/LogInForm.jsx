@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import {useSetRecoilState} from 'recoil'
 import {useNavigate} from 'react-router-dom'
-import {useRef, useState} from 'react'
+import {useRef} from 'react'
 import {userState} from 'recoil/user/atom'
 
 import {postLoginAPI} from 'api/user'
+import useInput from 'hooks/useInput'
 
 const Form = styled.form`
   width: 100%;
@@ -38,12 +39,12 @@ const LogInButton = styled.button`
 `
 
 const LogInForm = () => {
-  const [idInput, setIdInput] = useState('')
-  const [passwordInput, setPasswordInput] = useState('')
   const idRef = useRef(null)
   const passwordRef = useRef(null)
   const setUser = useSetRecoilState(userState)
   const navigate = useNavigate()
+  const {value: idInput, handler: handleIdChange} = useInput()
+  const {value: passwordInput, handler: handlePasswordChange, clear: clearPassword} = useInput()
 
   const postLogin = async () => {
     try {
@@ -54,7 +55,7 @@ const LogInForm = () => {
       navigate(-1)
     } catch (error) {
       alert('아이디 또는 비밀번호가 일치하지 않습니다.')
-      setPasswordInput('')
+      clearPassword()
       passwordRef.current.focus()
     }
   }
@@ -83,14 +84,14 @@ const LogInForm = () => {
           placeholder="아이디"
           title="아이디"
           value={idInput}
-          onChange={(e) => setIdInput(e.target.value)}
+          onChange={handleIdChange}
           ref={idRef}
         />
         <PasswordInput
           placeholder="비밀번호"
           title="비밀번호"
           value={passwordInput}
-          onChange={(e) => setPasswordInput(e.target.value)}
+          onChange={handlePasswordChange}
           ref={passwordRef}
           type="password"
         />
