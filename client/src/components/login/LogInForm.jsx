@@ -1,4 +1,8 @@
+import {postLoginAPI} from 'api/user'
 import {useRef, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {useSetRecoilState} from 'recoil'
+import {userState} from 'recoil/user/atom'
 import styled from 'styled-components'
 
 const Form = styled.form`
@@ -42,6 +46,22 @@ const LogInForm = () => {
   const [passwordInput, setPasswordInput] = useState('')
   const idRef = useRef(null)
   const passwordRef = useRef(null)
+  const setUser = useSetRecoilState(userState)
+  const navigate = useNavigate()
+
+  const postLogin = async () => {
+    try {
+      const loginResult = await postLoginAPI(idInput, passwordInput)
+      const {accessToken, uid} = loginResult
+      localStorage.setItem('uid', uid)
+      setUser({accessToken})
+      navigate(-1)
+    } catch (error) {
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.')
+      setPasswordInput('')
+      passwordRef.current.focus()
+    }
+  }
 
   const handleLogInSubmit = (e) => {
     e.preventDefault()
@@ -56,7 +76,8 @@ const LogInForm = () => {
       passwordRef.current.focus()
       return
     }
-    alert('hi')
+
+    postLogin()
   }
 
   return (

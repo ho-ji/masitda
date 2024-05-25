@@ -4,6 +4,5 @@ export const userState = atom({
   key: 'user',
   default: {
     accessToken: '',
-    uid: '',
   },
 })
