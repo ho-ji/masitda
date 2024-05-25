@@ -1,26 +1,4 @@
-import axios from 'axios'
-
-const instance = axios.create({
-  baseURL: 'http://localhost:4500/api',
-})
-
-export const getBestListAPI = async (limit) => {
-  try {
-    const result = await instance.get(`/product/ranking?limit=${limit}`)
-    return result
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export const getMDPickListAPI = async (limit) => {
-  try {
-    const result = await instance.get(`/mdpick?limit=${limit}`)
-    return result
-  } catch (error) {
-    console.error(error)
-  }
-}
+import instance from 'api'
 
 export const postCartProductAPI = async (_id, count) => {
   const uid = localStorage.getItem('uid')

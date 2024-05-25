@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {useEffect, useState} from 'react'
 
-import {getBestListAPI} from 'api/api'
+import {getBestListAPI} from 'api/product'
 import ProductRankingCard from 'components/common/product/ProductRankingCard'
 import HomeListContainer from './HomeListContainer'
 

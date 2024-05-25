@@ -7,8 +7,8 @@ import checkImage from 'assets/images/check.svg'
 import plusImage from 'assets/images/plus.svg'
 import minusImage from 'assets/images/minus.svg'
 import {deleteOneSelector, updateCountSelector, updateSelectSelector} from 'recoil/cart/selector'
-import {deleleCartProductAPI, postCartProductAPI} from 'api/api'
 import useModal from 'hooks/useModal'
+import {deleleCartProductAPI, postCartProductAPI} from 'api/cart'
 
 const Container = styled.table`
   border-top: 1px solid black;

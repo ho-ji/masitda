@@ -4,7 +4,7 @@ import {useSetRecoilState} from 'recoil'
 
 import {formatSaleCost} from 'utils/cost'
 import addCartImage from 'assets/images/add_cart.svg'
-import {postCartProductAPI} from 'api/api'
+import {postCartProductAPI} from 'api/cart'
 import {updateCountSelector} from 'recoil/cart/selector'
 import useModal from 'hooks/useModal'
 

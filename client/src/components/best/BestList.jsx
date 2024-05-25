@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import {getBestListAPI} from 'api/api'
+import {getBestListAPI} from 'api/product'
 import ProductList from 'components/common/product/ProductList'
 
 const BestList = () => {

@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
 
-import {deleleCartProductAPI, getCartListAPI} from 'api/api'
+import {deleleCartProductAPI, getCartListAPI} from 'api/cart'
 import {cartListState} from 'recoil/cart/atom'
 import checkImage from 'assets/images/check.svg'
 import CartTable from './CartTable'

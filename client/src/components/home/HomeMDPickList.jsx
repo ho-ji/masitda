@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 import HomeListContainer from './HomeListContainer'
-import {getMDPickListAPI} from 'api/api'
+import {getMDPickListAPI} from 'api/product'
 import ProductMDPickCard from 'components/common/product/ProductMDPickCard'
 
 const ListItem = styled.li`

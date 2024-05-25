@@ -7,7 +7,7 @@ import logoImage from 'assets/images/logo.png'
 import cartImage from 'assets/images/cart.svg'
 import userImage from 'assets/images/user.svg'
 import {cartListState} from 'recoil/cart/atom'
-import {getCartListAPI} from 'api/api'
+import {getCartListAPI} from 'api/cart'
 import {userState} from 'recoil/user/atom'
 
 const Container = styled.header`
