@@ -15,7 +15,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 30rem;
+    width: 35rem;
   }
 `
 

@@ -63,6 +63,7 @@ const GlobalStyle = createGlobalStyle`
     --color-text-sub: #888888;
     --color-gray: #d7d7d7;
     --color-light-gray: #fafafa;
+    --color-red: #d64141;
 
     --font-size-emphasis: 2.4rem;
     --font-size-primary: 1.7rem;
