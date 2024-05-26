@@ -1,5 +1,5 @@
 const signUpText = {
-  userId: {
+  account: {
     label: '아이디',
     placeholder: '5~16자리/영문,숫자',
     validationError: '5~16자리 영문,숫자를 입력해주세요.',

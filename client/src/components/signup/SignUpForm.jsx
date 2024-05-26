@@ -26,7 +26,7 @@ const Button = styled.button`
 const SignUpForm = () => {
   const formRef = useRef()
   const [isValid, setIsValid] = useState(false)
-  const [userIdError, setUserIdError] = useState(true)
+  const [accountError, setaccountError] = useState(true)
   const [passwordError, setPasswordError] = useState(true)
   const [passwordCheckError, setPasswordCheckError] = useState(true)
   const [nameError, setNameError] = useState(true)
@@ -35,10 +35,10 @@ const SignUpForm = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault()
-    const {userId, password, name, phoneNumber, email} = formRef.current
+    const {account, password, name, phoneNumber, email} = formRef.current
 
     const info = {
-      userId: userId.value,
+      account: account.value,
       password: password.value,
       name: name.value,
       phoneNumber: phoneNumber.value,
@@ -51,17 +51,17 @@ const SignUpForm = () => {
   }
 
   useEffect(() => {
-    setIsValid(!userIdError && !passwordError && !passwordCheckError && !nameError && !phoneNumberError && !emailError)
-  }, [userIdError, passwordError, passwordCheckError, nameError, phoneNumberError, emailError])
+    setIsValid(!accountError && !passwordError && !passwordCheckError && !nameError && !phoneNumberError && !emailError)
+  }, [accountError, passwordError, passwordCheckError, nameError, phoneNumberError, emailError])
 
   return (
     <Container
       ref={formRef}
       onSubmit={handleSignUp}>
       <SignUpInput
-        type="userId"
-        validator={(v) => regex.userId.test(v)}
-        setValidError={setUserIdError}
+        type="account"
+        validator={(v) => regex.account.test(v)}
+        setValidError={setaccountError}
       />
       <SignUpInput
         type="password"

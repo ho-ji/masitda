@@ -1,9 +1,9 @@
 import instance from 'api'
 
-export const postLoginAPI = async (userId, password) => {
+export const postLoginAPI = async (account, password) => {
   try {
     const result = await instance.post('/user/login', {
-      userId,
+      account,
       password,
     })
     return result
@@ -12,9 +12,9 @@ export const postLoginAPI = async (userId, password) => {
   }
 }
 
-export const getCheckUserIdAPI = async (userId) => {
+export const getCheckaccountAPI = async (account) => {
   try {
-    const result = await instance.get(`/user/check/${userId}
+    const result = await instance.get(`/user/check/${account}
     `)
     return result
   } catch (error) {

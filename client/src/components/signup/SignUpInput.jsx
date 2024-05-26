@@ -3,7 +3,7 @@ import {useState} from 'react'
 
 import signUpText from 'constants/signUpText'
 import useInput from 'hooks/useInput'
-import {getCheckUserIdAPI} from 'api/user'
+import {getCheckaccountAPI} from 'api/user'
 
 const Label = styled.label`
   display: flex;
@@ -26,14 +26,14 @@ const ErrorText = styled.p`
 const SignUpInput = ({type, validator, setValidError}) => {
   const {value: inputValue, handler: handleChange} = useInput()
   const [error, setError] = useState(false)
-  const [isDuplicateUserId, setIsDuplicateuserID] = useState(false)
+  const [isDuplicateaccount, setIsDuplicateaccount] = useState(false)
 
-  const checkUserId = async () => {
+  const checkaccount = async () => {
     try {
-      await getCheckUserIdAPI(inputValue)
-      setIsDuplicateuserID(false)
+      await getCheckaccountAPI(inputValue)
+      setIsDuplicateaccount(false)
     } catch (error) {
-      setIsDuplicateuserID(true)
+      setIsDuplicateaccount(true)
       setError(true)
       setValidError(true)
       console.error(error)
@@ -49,8 +49,8 @@ const SignUpInput = ({type, validator, setValidError}) => {
       setError(true)
       setValidError(true)
     } else {
-      if (type === 'userID') {
-        checkUserId()
+      if (type === 'account') {
+        checkaccount()
       }
       setValidError(false)
     }
@@ -70,7 +70,7 @@ const SignUpInput = ({type, validator, setValidError}) => {
           type={type.includes('password') ? 'password' : 'text'}
         />
       </Label>
-      {error && <ErrorText>{isDuplicateUserId ? signUpText[type].duplicateError : signUpText[type].validationError}</ErrorText>}
+      {error && <ErrorText>{isDuplicateaccount ? signUpText[type].duplicateError : signUpText[type].validationError}</ErrorText>}
     </div>
   )
 }
