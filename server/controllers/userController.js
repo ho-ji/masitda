@@ -4,7 +4,7 @@ const {verifyAccessToken} = require('../utils/token')
 const postUserSignUp = async (req, res) => {
   const info = req.body
   try {
-    const user = await service.getUserByUserId(info.userId)
+    const user = await service.getUserByaccount(info.account)
     if (user) {
       return res.status(409).json({
         message: 'User ID already exists',
@@ -19,10 +19,10 @@ const postUserSignUp = async (req, res) => {
   }
 }
 
-const getUserCheckUserId = async (req, res) => {
-  const {userId} = req.params
+const getUserCheckaccount = async (req, res) => {
+  const {account} = req.params
   try {
-    const user = await service.getUserByUserId(userId)
+    const user = await service.getUserByaccount(account)
     if (user) {
       return res.status(409).json({
         message: 'User ID already exists',
@@ -39,9 +39,9 @@ const getUserCheckUserId = async (req, res) => {
 }
 
 const postUserLogin = async (req, res) => {
-  const {userId, password} = req.body
+  const {account, password} = req.body
   try {
-    const user = await service.getUserByUserId(userId)
+    const user = await service.getUserByaccount(account)
     if (!user) return res.status(401).json({message: 'Invalid ID or password'})
 
     const successLogin = await user.passwordCheck(password)
@@ -85,6 +85,6 @@ const getUser = async (req, res) => {
 module.exports = {
   postUserLogin,
   postUserSignUp,
-  getUserCheckUserId,
+  getUserCheckaccount,
   getUser,
 }

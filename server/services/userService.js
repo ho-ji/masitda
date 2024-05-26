@@ -1,8 +1,8 @@
 const User = require('../models/User')
 const Token = require('../models/Token')
 
-const getUserByUserId = async (userId) => {
-  return await User.findOne({userId: userId})
+const getUserByaccount = async (account) => {
+  return await User.findOne({account: account})
 }
 
 const getUserByUid = async (uid) => {
@@ -50,7 +50,7 @@ const verifyRefreshToken = async ({uid, refreshToken}) => {
 }
 
 module.exports = {
-  getUserByUserId,
+  getUserByaccount,
   getUserByUid,
   updateUser,
   signUpUser,
