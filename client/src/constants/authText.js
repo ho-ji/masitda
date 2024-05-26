@@ -1,4 +1,10 @@
-const signUpText = {
+export const logInText = {
+  idError: '아이디를 입력해주세요.',
+  passwordError: '비밀번호를 입력해주세요.',
+  logInError: '아이디 또는 비밀번호가 일치하지 않습니다.',
+}
+
+export const signUpText = {
   account: {
     label: '아이디',
     placeholder: '5~16자리/영문,숫자',
@@ -36,5 +42,3 @@ const signUpText = {
     validationError: '주소를 입력해주세요.',
   },
 }
-
-export default signUpText

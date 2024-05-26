@@ -2,10 +2,11 @@ import styled from 'styled-components'
 import {useSetRecoilState} from 'recoil'
 import {useNavigate} from 'react-router-dom'
 import {useRef} from 'react'
-import {userState} from 'recoil/user/atom'
 
+import {userState} from 'recoil/user/atom'
 import {postLoginAPI} from 'api/user'
 import useInput from 'hooks/useInput'
+import {logInText} from 'constants/authText'
 
 const Form = styled.form`
   width: 100%;
@@ -54,7 +55,7 @@ const LogInForm = () => {
       setUser({accessToken})
       navigate(-1)
     } catch (error) {
-      alert('아이디 또는 비밀번호가 일치하지 않습니다.')
+      alert(logInText.logInError)
       clearPassword()
       passwordRef.current.focus()
     }
@@ -64,12 +65,12 @@ const LogInForm = () => {
     e.preventDefault()
 
     if (idInput === '') {
-      alert('아이디를 입력해주세요')
+      alert(logInText.idError)
       idRef.current.focus()
       return
     }
     if (passwordInput === '') {
-      alert('비밀번호를 입력해주세요')
+      alert(logInText.passwordError)
       passwordRef.current.focus()
       return
     }

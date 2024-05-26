@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import {useState} from 'react'
 
-import signUpText from 'constants/signUpText'
 import useInput from 'hooks/useInput'
 import {getCheckaccountAPI} from 'api/user'
+import {signUpText} from 'constants/authText'
 
 const Label = styled.label`
   display: flex;

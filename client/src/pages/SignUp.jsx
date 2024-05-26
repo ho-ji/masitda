@@ -1,7 +1,8 @@
+import styled from 'styled-components'
+import {Link} from 'react-router-dom'
+
 import AuthLayout from 'components/common/AuthLayout'
 import SignUpForm from 'components/signup/SignUpForm'
-import {Link} from 'react-router-dom'
-import styled from 'styled-components'
 
 const Title = styled.h2`
   font-size: var(--font-size-primary);
