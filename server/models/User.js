@@ -27,9 +27,9 @@ const userSchema = mongoose.Schema({
     match: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   },
   address: {
-    zonecode: {type: String, required: true, match: /[0-9\-]{5}/},
-    road_address: {type: String, required: true},
-    detail_addresss: {type: String, required: true},
+    zonecode: {type: String, match: /[0-9\-]{5}/},
+    road_address: {type: String},
+    detail_addresss: {type: String},
   },
 })
 

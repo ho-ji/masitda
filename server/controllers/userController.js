@@ -48,8 +48,8 @@ const postUserLogin = async (req, res) => {
     if (!successLogin) return res.status(401).json({message: 'Invalid ID or password'})
 
     const {accessToken, refreshToken} = await service.createToken(user._id)
-    res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true})
-    res.status(200).json(accessToken)
+    res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 * 1000})
+    res.status(200).json({accessToken, uid: user._id})
   } catch (error) {
     res.status(500).json({
       message: 'Fail to Login',
