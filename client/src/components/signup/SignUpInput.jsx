@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import {useState} from 'react'
 
 import useInput from 'hooks/useInput'
-import {getCheckaccountAPI} from 'api/user'
 import {signUpText} from 'constants/authText'
+import {getCheckAccountAPI} from 'api/user'
 
 const Label = styled.label`
   display: flex;
@@ -34,7 +34,7 @@ const SignUpInput = ({type, validator, setValidError}) => {
 
   const checkAccount = async () => {
     try {
-      await getCheckaccountAPI(inputValue)
+      await getCheckAccountAPI(inputValue)
       setIsDuplicateAccount(false)
     } catch (error) {
       setIsDuplicateAccount(true)

@@ -4,6 +4,7 @@ import {useEffect, useRef, useState} from 'react'
 import SignUpInput from './SignUpInput'
 import regex from 'constants/regex'
 import {postSignUpAPI} from 'api/user'
+import {useNavigate} from 'react-router-dom'
 
 const Container = styled.form`
   width: 100%;
@@ -14,7 +15,7 @@ const Container = styled.form`
 
 const Button = styled.button`
   margin-top: 3rem;
-  background-color: var(--color-main);
+  background-color: ${(props) => (props.$valid ? 'var(--color-main)' : 'var(--color-gray)')};
   color: white;
   padding: 1rem;
   border-radius: 5px;
@@ -24,6 +25,7 @@ const Button = styled.button`
 `
 
 const SignUpForm = () => {
+  const navigator = useNavigate()
   const formRef = useRef()
   const [isValid, setIsValid] = useState(false)
   const [accountError, setaccountError] = useState(true)
@@ -35,6 +37,7 @@ const SignUpForm = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault()
+    if (!isValid) return
     const {account, password, name, phoneNumber, email} = formRef.current
 
     const info = {
@@ -45,9 +48,11 @@ const SignUpForm = () => {
       email: email.value,
     }
     try {
-      const result = await postSignUpAPI(info)
-      console.log(result)
-    } catch (error) {}
+      await postSignUpAPI(info)
+      navigator('/login')
+    } catch (error) {
+      alert('회원가입 실패! 잠시 후 다시 시도해주세요')
+    }
   }
 
   useEffect(() => {
@@ -88,7 +93,7 @@ const SignUpForm = () => {
         validator={(v) => regex.email.test(v)}
         setValidError={setEmailError}
       />
-      <Button disabled={!isValid}>회원가입</Button>
+      <Button $valid={isValid}>회원가입</Button>
     </Container>
   )
 }

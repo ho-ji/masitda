@@ -8,11 +8,12 @@ export const postLoginAPI = async (account, password) => {
     })
     return result
   } catch (error) {
+    console.error(error)
     throw error
   }
 }
 
-export const getCheckaccountAPI = async (account) => {
+export const getCheckAccountAPI = async (account) => {
   try {
     const result = await instance.get(`/user/check/${account}
     `)
@@ -22,7 +23,7 @@ export const getCheckaccountAPI = async (account) => {
   }
 }
 
-export const postSignUpAPI = async ({info}) => {
+export const postSignUpAPI = async (info) => {
   try {
     const result = await instance.post('/user/signup', {
       info,

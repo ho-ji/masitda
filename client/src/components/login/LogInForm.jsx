@@ -47,7 +47,7 @@ const LogInForm = () => {
   const {value: idInput, handler: handleIdChange} = useInput()
   const {value: passwordInput, handler: handlePasswordChange, clear: clearPassword} = useInput()
 
-  const postLogin = async () => {
+  const postLogIn = async () => {
     try {
       const loginResult = await postLoginAPI(idInput, passwordInput)
       const {accessToken, uid} = loginResult
@@ -75,7 +75,7 @@ const LogInForm = () => {
       return
     }
 
-    postLogin()
+    postLogIn()
   }
 
   return (
