@@ -1,8 +1,9 @@
 const User = require('../models/User')
 const Token = require('../models/Token')
+const jwt = require('jsonwebtoken')
 
-const getUserByaccount = async (account) => {
-  return await User.findOne({account: account})
+const getUserByAccount = async (account) => {
+  return await User.findOne({account})
 }
 
 const getUserByUid = async (uid) => {
@@ -22,7 +23,7 @@ const createToken = async (uid) => {
   const accessToken = jwt.sign({uid}, process.env.ACCESS_TOKEN_KEY, {expiresIn: '10m'})
   const refreshToken = jwt.sign({uid}, process.env.REFRESH_TOKEN_KEY, {expiresIn: '7d'})
 
-  await token.deleteMany({refreshToken})
+  await Token.deleteMany({refreshToken})
 
   const token = new Token({
     uid,
@@ -50,7 +51,7 @@ const verifyRefreshToken = async ({uid, refreshToken}) => {
 }
 
 module.exports = {
-  getUserByaccount,
+  getUserByAccount,
   getUserByUid,
   updateUser,
   signUpUser,

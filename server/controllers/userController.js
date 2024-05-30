@@ -2,15 +2,15 @@ const service = require('../services/userService')
 const {verifyAccessToken} = require('../utils/token')
 
 const postUserSignUp = async (req, res) => {
-  const info = req.body
+  const info = req.body.info
   try {
-    const user = await service.getUserByaccount(info.account)
+    const user = await service.getUserByAccount(info.account)
     if (user) {
       return res.status(409).json({
         message: 'User ID already exists',
       })
     }
-    await service.signUpUser(user)
+    await service.signUpUser(info)
     res.status(201).json({message: 'User registered'})
   } catch (error) {
     res.status(500).json({
@@ -19,10 +19,10 @@ const postUserSignUp = async (req, res) => {
   }
 }
 
-const getUserCheckaccount = async (req, res) => {
+const getUserCheckAccount = async (req, res) => {
   const {account} = req.params
   try {
-    const user = await service.getUserByaccount(account)
+    const user = await service.getUserByAccount(account)
     if (user) {
       return res.status(409).json({
         message: 'User ID already exists',
@@ -38,14 +38,14 @@ const getUserCheckaccount = async (req, res) => {
   }
 }
 
-const postUserLogin = async (req, res) => {
+const postUserLogIn = async (req, res) => {
   const {account, password} = req.body
   try {
-    const user = await service.getUserByaccount(account)
+    const user = await service.getUserByAccount(account)
     if (!user) return res.status(401).json({message: 'Invalid ID or password'})
 
-    const successLogin = await user.passwordCheck(password)
-    if (!successLogin) return res.status(401).json({message: 'Invalid ID or password'})
+    const successLogIn = await user.checkPassword(password)
+    if (!successLogIn) return res.status(401).json({message: 'Invalid ID or password'})
 
     const {accessToken, refreshToken} = await service.createToken(user._id)
     res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 * 1000})
@@ -83,8 +83,8 @@ const getUser = async (req, res) => {
 }
 
 module.exports = {
-  postUserLogin,
+  postUserLogIn,
   postUserSignUp,
-  getUserCheckaccount,
+  getUserCheckAccount,
   getUser,
 }
