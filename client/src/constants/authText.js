@@ -10,6 +10,7 @@ export const signUpText = {
     placeholder: '5~16자리/영문,숫자',
     validationError: '5~16자리 영문,숫자를 입력해주세요.',
     duplicateError: '이미 사용 중인 아이디입니다.',
+    available: '사용 가능한 아이디입니다.',
   },
   password: {
     label: '비밀번호',

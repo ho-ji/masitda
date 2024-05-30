@@ -22,18 +22,22 @@ const ErrorText = styled.p`
   color: var(--color-red);
   font-size: var(--font-size-subtext);
 `
+const AvailableText = styled.p`
+  color: var(--color-main);
+  font-size: var(--font-size-subtext);
+`
 
 const SignUpInput = ({type, validator, setValidError}) => {
   const {value: inputValue, handler: handleChange} = useInput()
   const [error, setError] = useState(false)
-  const [isDuplicateaccount, setIsDuplicateaccount] = useState(false)
+  const [isDuplicateAccount, setIsDuplicateAccount] = useState(null)
 
-  const checkaccount = async () => {
+  const checkAccount = async () => {
     try {
       await getCheckaccountAPI(inputValue)
-      setIsDuplicateaccount(false)
+      setIsDuplicateAccount(false)
     } catch (error) {
-      setIsDuplicateaccount(true)
+      setIsDuplicateAccount(true)
       setError(true)
       setValidError(true)
       console.error(error)
@@ -43,6 +47,7 @@ const SignUpInput = ({type, validator, setValidError}) => {
   const handleFocus = () => {
     setError(false)
     setValidError(true)
+    setIsDuplicateAccount(null)
   }
   const handleBlur = () => {
     if (!validator(inputValue)) {
@@ -50,7 +55,7 @@ const SignUpInput = ({type, validator, setValidError}) => {
       setValidError(true)
     } else {
       if (type === 'account') {
-        checkaccount()
+        checkAccount()
       }
       setValidError(false)
     }
@@ -70,7 +75,8 @@ const SignUpInput = ({type, validator, setValidError}) => {
           type={type.includes('password') ? 'password' : 'text'}
         />
       </Label>
-      {error && <ErrorText>{isDuplicateaccount ? signUpText[type].duplicateError : signUpText[type].validationError}</ErrorText>}
+      {error && <ErrorText>{isDuplicateAccount ? signUpText[type].duplicateError : signUpText[type].validationError}</ErrorText>}
+      {isDuplicateAccount === false && <AvailableText>{signUpText[type].available}</AvailableText>}
     </div>
   )
 }
