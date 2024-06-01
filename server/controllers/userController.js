@@ -13,6 +13,7 @@ const postUserSignUp = async (req, res) => {
     await service.signUpUser(info)
     res.status(201).json({message: 'User registered'})
   } catch (error) {
+    console.error(error)
     res.status(500).json({
       message: 'Fail to Signup',
     })
@@ -32,6 +33,7 @@ const getUserCheckAccount = async (req, res) => {
       message: 'User ID does not exist',
     })
   } catch (error) {
+    console.error(error)
     res.status(500).json({
       message: 'User ID is not available',
     })
@@ -51,6 +53,7 @@ const postUserLogIn = async (req, res) => {
     res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 * 1000})
     res.status(200).json({accessToken, uid: user._id})
   } catch (error) {
+    console.error(error)
     res.status(500).json({
       message: 'Fail to Login',
     })
@@ -78,6 +81,7 @@ const getUser = async (req, res) => {
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
     res.status(200).json({accessToken: newAccessToken, user: {name: user.name}})
   } catch (error) {
+    console.error(error)
     res.status(500).json({message: 'Fail to Find User'})
   }
 }

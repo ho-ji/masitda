@@ -20,7 +20,7 @@ const updateCart = async (cart) => {
 
 const addToCart = async ({uid, productId, count}) => {
   let cart = await getCartByUid(uid)
-  if (!cart) cart = createCart(uid)
+  if (!cart) cart = createCartByUid(uid)
   const index = cart.products.findIndex((item) => item.product.toString() === productId.toString())
   if (index !== -1) {
     cart.products[index].count += parseInt(count)

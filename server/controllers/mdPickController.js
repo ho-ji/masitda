@@ -6,6 +6,7 @@ const getMDPick = async (req, res) => {
     const list = await service.getMDPickProductList(limit)
     res.status(200).json(list.map((item) => item.product))
   } catch (error) {
+    console.error(error)
     res.status(500).json({
       message: 'MDPick Not Found',
     })

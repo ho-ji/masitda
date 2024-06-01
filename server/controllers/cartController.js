@@ -7,6 +7,7 @@ const postCart = async (req, res) => {
     await service.addToCart({uid, productId, count})
     res.status(200).json({message: 'Product added to cart'})
   } catch (error) {
+    console.error(error)
     res.status(500).json({message: 'Fail to add product to cart'})
   }
 }
@@ -20,6 +21,7 @@ const getCart = async (req, res) => {
     }
     res.status(200).json(cart.products)
   } catch (error) {
+    console.error(error)
     res.status(500).json({message: 'Fail to load cart'})
   }
 }
@@ -31,6 +33,7 @@ const deleteCart = async (req, res) => {
     await service.deleteCartProduct(uid, idList)
     res.status(200).json({message: 'Cart product deleted'})
   } catch (error) {
+    console.error(error)
     res.status(500).json({message: 'Fail to delete cart product'})
   }
 }
