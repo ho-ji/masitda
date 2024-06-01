@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {useRecoilState, useRecoilValue} from 'recoil'
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 
 import logoImage from 'assets/images/logo.png'
 import cartImage from 'assets/images/cart.svg'
@@ -58,6 +58,7 @@ const CartCount = styled.strong`
 
 const Header = () => {
   const [cartList, setCartList] = useRecoilState(cartListState)
+  const [error, setError] = useState(false)
   const user = useRecoilValue(userState)
 
   const handleLogoClick = () => {
@@ -70,7 +71,7 @@ const Header = () => {
         const result = await getCartListAPI()
         setCartList(result.data)
       } catch (error) {
-        console.error(error)
+        setError(true)
       }
     }
     getCartCount()
@@ -91,7 +92,7 @@ const Header = () => {
             alt="장바구니"
           />
           <CartCount>
-            {cartList.length >= 100 ? '99+' : cartList.length}
+            {!error ? (cartList.length >= 100 ? '99+' : cartList.length) : ' '}
             <span className="a11y-hidden">개</span>
           </CartCount>
         </MenuLink>

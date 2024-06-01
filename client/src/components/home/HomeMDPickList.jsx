@@ -34,14 +34,13 @@ const HomeMDPickList = () => {
     <HomeListContainer
       title="MD Pick"
       link="/mdpick">
-      {loading
+      {loading || list.length === 0
         ? Array.from({length: 7}).map((_, i) => (
             <ListItem key={i}>
               <SkeletonProductCard />
             </ListItem>
           ))
-        : list?.length !== 0 &&
-          list?.map((item) => {
+        : list.map((item) => {
             return (
               <ListItem key={item._id}>
                 <ProductCard

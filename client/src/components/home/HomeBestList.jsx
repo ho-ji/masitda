@@ -34,14 +34,13 @@ const HomeBestList = () => {
     <HomeListContainer
       title="베스트"
       link="/best">
-      {loading
+      {loading || bestList.length === 0
         ? Array.from({length: 7}).map((_, i) => (
             <ListItem key={i}>
               <SkeletonProductCard ranking={true} />
             </ListItem>
           ))
-        : bestList.length !== 0 &&
-          bestList.map((product, i) => {
+        : bestList.map((product, i) => {
             return (
               <ListItem key={product._id}>
                 <ProductCard
