@@ -5,7 +5,7 @@ export const getBestListAPI = async (limit) => {
     const result = await instance.get(`/product/ranking?limit=${limit}`)
     return result
   } catch (error) {
-    console.error(error)
+    throw error
   }
 }
 
@@ -14,6 +14,6 @@ export const getMDPickListAPI = async (limit) => {
     const result = await instance.get(`/mdpick?limit=${limit}`)
     return result
   } catch (error) {
-    console.error(error)
+    throw error
   }
 }

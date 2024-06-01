@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 import HomeListContainer from './HomeListContainer'
 import {getMDPickListAPI} from 'api/product'
-import ProductMDPickCard from 'components/common/product/ProductMDPickCard'
+import SkeletonProductCard from 'components/common/product/SkeletonProductCard'
+import ProductCard from 'components/common/product/ProductCard'
 
 const ListItem = styled.li`
   display: flex;
@@ -13,14 +14,17 @@ const ListItem = styled.li`
 
 const HomeMDPickList = () => {
   const [list, setList] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const getMDPickList = async () => {
       try {
+        setLoading(true)
         const result = await getMDPickListAPI(7)
         setList(result.data)
+        setLoading(false)
       } catch (error) {
-        console.error(error)
+        setLoading(false)
       }
     }
     getMDPickList()
@@ -30,14 +34,23 @@ const HomeMDPickList = () => {
     <HomeListContainer
       title="MD Pick"
       link="/mdpick">
-      {list?.length !== 0 &&
-        list?.map((item) => {
-          return (
-            <ListItem key={item._id}>
-              <ProductMDPickCard product={item} />
+      {loading
+        ? Array.from({length: 7}).map((_, i) => (
+            <ListItem key={i}>
+              <SkeletonProductCard />
             </ListItem>
-          )
-        })}
+          ))
+        : list?.length !== 0 &&
+          list?.map((item) => {
+            return (
+              <ListItem key={item._id}>
+                <ProductCard
+                  product={item}
+                  type="mdpick"
+                />
+              </ListItem>
+            )
+          })}
     </HomeListContainer>
   )
 }

@@ -9,7 +9,7 @@ export const postCartProductAPI = async (_id, count) => {
     })
     return result
   } catch (error) {
-    console.error(error)
+    throw error
   }
 }
 
@@ -19,7 +19,7 @@ export const getCartListAPI = async () => {
     const result = await instance.get(`/cart/${uid}`)
     return result
   } catch (error) {
-    console.error(error)
+    throw error
   }
 }
 
@@ -33,6 +33,6 @@ export const deleleCartProductAPI = async (idList) => {
     })
     return result
   } catch (error) {
-    console.error(error)
+    throw error
   }
 }

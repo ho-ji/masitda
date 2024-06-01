@@ -12,6 +12,22 @@ const Container = styled(Link)`
   aspect-ratio: 1/1.75;
   position: relative;
 `
+const Ranking = styled.p`
+  font-size: var(--font-size-emphasis);
+  font-weight: bold;
+`
+
+const Flag = styled.div`
+  position: absolute;
+  top: 1.5rem;
+  left: 0.5rem;
+  background-color: var(--color-main);
+  color: white;
+  padding: 0 1.5rem 0 1rem;
+  z-index: 2;
+  clip-path: polygon(100% 0, 100% 0, 90% 100%, 0 100%, 0 0);
+`
+
 const ImageContainer = styled.div`
   position: relative;
 `
@@ -74,7 +90,7 @@ const Temp = styled.span`
   color: ${(props) => props.$temp === '냉장' && '#8fc8eb'};
 `
 
-const ProductCard = ({product, children}) => {
+const ProductCard = ({product, type, ranking}) => {
   const navigate = useNavigate()
   const {updateModal, openModal} = useModal()
   const updateCount = useSetRecoilState(updateCountSelector)
@@ -89,7 +105,13 @@ const ProductCard = ({product, children}) => {
   return (
     <>
       <Container>
-        {children}
+        {type === 'mdpick' && <Flag>MD Pick</Flag>}
+        {type === 'ranking' && (
+          <Ranking>
+            {ranking.toString().padStart(2, '0')}
+            <span className="a11y-hidden">위</span>
+          </Ranking>
+        )}
         <ImageContainer>
           <Image
             src={product.image}

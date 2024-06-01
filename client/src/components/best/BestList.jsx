@@ -11,9 +11,7 @@ const BestList = () => {
       try {
         const result = await getBestListAPI()
         setList(result.data)
-      } catch (error) {
-        console.error(error)
-      }
+      } catch (error) {}
     }
     getBestList()
   }, [])

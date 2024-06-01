@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import ProductRankingCard from './ProductRankingCard'
-import ProductMDPickCard from './ProductMDPickCard'
+import ProductCard from './ProductCard'
+import SkeletonProductCard from './SkeletonProductCard'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -29,20 +29,23 @@ const ProductList = ({list, title, type}) => {
     <Container>
       <Title>{title}</Title>
       <List>
-        {list.length !== 0 &&
-          list.map((product, i) => {
-            return (
-              <ListItem key={product._id}>
-                {type === 'ranking' && (
-                  <ProductRankingCard
+        {list.length !== 0
+          ? list.map((product, i) => {
+              return (
+                <ListItem key={product._id}>
+                  <ProductCard
                     product={product}
+                    type={type}
                     ranking={i + 1}
                   />
-                )}
-                {type === 'mdpick' && <ProductMDPickCard product={product} />}
+                </ListItem>
+              )
+            })
+          : Array.from({length: 10}).map((_, i) => (
+              <ListItem key={i}>
+                <SkeletonProductCard ranking={type === 'ranking'} />
               </ListItem>
-            )
-          })}
+            ))}
       </List>
     </Container>
   )
