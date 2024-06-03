@@ -8,7 +8,6 @@ export const postLoginAPI = async (account, password) => {
     })
     return result
   } catch (error) {
-    console.error(error)
     throw error
   }
 }
@@ -19,7 +18,7 @@ export const getCheckAccountAPI = async (account) => {
     `)
     return result
   } catch (error) {
-    console.error(error)
+    throw error
   }
 }
 
@@ -30,6 +29,6 @@ export const postSignUpAPI = async (info) => {
     })
     return result
   } catch (error) {
-    console.error(error)
+    throw error
   }
 }

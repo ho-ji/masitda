@@ -34,13 +34,16 @@ const SignUpInput = ({type, validator, setValidError}) => {
 
   const checkAccount = async () => {
     try {
-      await getCheckAccountAPI(inputValue)
-      setIsDuplicateAccount(false)
+      const result = await getCheckAccountAPI(inputValue)
+      if (result.data.success) setIsDuplicateAccount(false)
+      else {
+        setIsDuplicateAccount(true)
+        setError(true)
+        setValidError(true)
+      }
     } catch (error) {
-      setIsDuplicateAccount(true)
       setError(true)
       setValidError(true)
-      console.error(error)
     }
   }
 
