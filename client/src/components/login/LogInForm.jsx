@@ -3,10 +3,10 @@ import {useSetRecoilState} from 'recoil'
 import {useNavigate} from 'react-router-dom'
 import {useRef} from 'react'
 
-import {userState} from 'recoil/user/atom'
 import {postLoginAPI} from 'api/user'
 import useInput from 'hooks/useInput'
 import {logInText} from 'constants/authText'
+import {tokenState} from 'recoil/token/atom'
 
 const Form = styled.form`
   width: 100%;
@@ -42,23 +42,23 @@ const LogInButton = styled.button`
 const LogInForm = () => {
   const idRef = useRef(null)
   const passwordRef = useRef(null)
-  const setUser = useSetRecoilState(userState)
-  const navigate = useNavigate()
+  const setToken = useSetRecoilState(tokenState)
   const {value: idInput, handler: handleIdChange} = useInput()
   const {value: passwordInput, handler: handlePasswordChange, clear: clearPassword} = useInput()
 
   const postLogIn = async () => {
     try {
       const loginResult = await postLoginAPI(idInput, passwordInput)
-      const {accessToken, uid} = loginResult
-      localStorage.setItem('uid', uid)
-      setUser({accessToken})
-      navigate(-1)
-    } catch (error) {
-      alert(logInText.logInError)
-      clearPassword()
-      passwordRef.current.focus()
-    }
+      if (loginResult.data.success) {
+        const {accessToken, uid} = loginResult.data
+        localStorage.setItem('uid', uid)
+        setToken(accessToken)
+      } else {
+        alert(logInText.logInError)
+        clearPassword()
+        passwordRef.current.focus()
+      }
+    } catch (error) {}
   }
 
   const handleLogInSubmit = (e) => {

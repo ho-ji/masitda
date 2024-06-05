@@ -5,6 +5,7 @@ import SignUpInput from './SignUpInput'
 import regex from 'constants/regex'
 import {postSignUpAPI} from 'api/user'
 import {useNavigate} from 'react-router-dom'
+import useCheckLogIn from 'hooks/useCheckLogIn'
 
 const Container = styled.form`
   width: 100%;

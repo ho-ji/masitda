@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
-import {useRecoilState, useRecoilValue} from 'recoil'
+import {Link, useLocation} from 'react-router-dom'
+import {useRecoilState} from 'recoil'
 import {useEffect, useState} from 'react'
 
 import logoImage from 'assets/images/logo.png'
@@ -8,7 +8,7 @@ import cartImage from 'assets/images/cart.svg'
 import userImage from 'assets/images/user.svg'
 import {cartListState} from 'recoil/cart/atom'
 import {getCartListAPI} from 'api/cart'
-import {userState} from 'recoil/user/atom'
+import useCheckLogIn from 'hooks/useCheckLogIn'
 
 const Container = styled.header`
   display: flex;
@@ -59,11 +59,19 @@ const CartCount = styled.strong`
 const Header = () => {
   const [cartList, setCartList] = useRecoilState(cartListState)
   const [error, setError] = useState(false)
-  const user = useRecoilValue(userState)
+  const [isLogIn, setIsLogin] = useState(false)
+  const location = useLocation()
+  const checkLogIn = useCheckLogIn()
 
   const handleLogoClick = () => {
+    if (location.pathname === '/') window.location.reload()
     window.scrollTo(0, 0)
   }
+
+  useEffect(() => {
+    if (checkLogIn()) setIsLogin(true)
+    else setIsLogin(false)
+  }, [checkLogIn])
 
   useEffect(() => {
     const getCartCount = async () => {
@@ -96,7 +104,7 @@ const Header = () => {
             <span className="a11y-hidden">개</span>
           </CartCount>
         </MenuLink>
-        <MenuLink to={user.accessToken ? '/user' : '/login'}>
+        <MenuLink to={isLogIn ? '/user' : '/login'}>
           <MenuImage
             src={userImage}
             alt="마이페이지"
