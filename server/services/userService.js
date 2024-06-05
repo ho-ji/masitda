@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const Token = require('../models/Token')
 const jwt = require('jsonwebtoken')
+const {verifyAccessToken} = require('../utils/token')
 
 const getUserByAccount = async (account) => {
   return await User.findOne({account})
@@ -34,20 +35,26 @@ const createToken = async (uid) => {
   return {accessToken, refreshToken}
 }
 
-const verifyRefreshToken = async ({uid, refreshToken}) => {
-  const token = await Token.findOne({refreshToken})
-  if (!token) {
-    return {refreshTokenValid: false, refreshTokenError: 'Token Error'}
+const verifyToken = async ({uid, accessToken, refreshToken}) => {
+  const {accessTokenValid, accessTokenError} = verifyAccessToken(accessToken, uid)
+  if (accessTokenError) {
+    return {success: false, message: accessTokenError}
   }
-  if (token.uid !== uid) {
-    return {refreshTokenValid: false, refreshTokenError: 'Token Error'}
+  if (!accessTokenValid) {
+    const token = await Token.findOne({refreshToken})
+    if (!token) {
+      return {success: false, message: 'Token Error'}
+    }
+    if (token.uid !== uid) {
+      return {success: false, message: 'Token Error'}
+    }
+    const currentTime = new Date()
+    if (currentTime - token.expiresAt > 0) {
+      await token.deleteOne({refreshToken})
+      return {success: false, message: 'Re-Login'}
+    }
   }
-  const currentTime = new Date()
-  if (currentTime - token.expiresAt > 0) {
-    await token.deleteOne({refreshToken})
-    return {refreshTokenValid: false, refreshTokenError: 'Re-Login'}
-  }
-  return {refreshTokenValid: true}
+  return {success: true}
 }
 
 module.exports = {
@@ -56,5 +63,5 @@ module.exports = {
   updateUser,
   signUpUser,
   createToken,
-  verifyRefreshToken,
+  verifyToken,
 }

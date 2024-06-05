@@ -8,6 +8,8 @@ router.get('/check/:account', controller.getUserCheckAccount)
 
 router.post('/login', controller.postUserLogIn)
 
-router.get('/', checkAuth, controller.getUser)
+router.get('/:uid', checkAuth, controller.getUser)
+
+router.get('/login/:uid', controller.getVerifyToken)
 
 module.exports = router

@@ -12,7 +12,12 @@ const databaseURL = process.env.DATABASE_URL
 
 app.use(express.static('public'))
 app.use(express.json())
-app.use(cors())
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+)
 app.use(cookieParser())
 
 const init = async (retryCount = 0) => {

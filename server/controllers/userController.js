@@ -1,5 +1,4 @@
 const service = require('../services/userService')
-const {verifyAccessToken} = require('../utils/token')
 
 const postUserSignUp = async (req, res) => {
   const info = req.body.info
@@ -64,20 +63,15 @@ const postUserLogIn = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-  const {uid, accessToken} = req.body
+  const uid = req.params.uid
+  const accessToken = req.headers.authorization.split('Bearer ')[1]
   const refreshToken = req.cookies.refreshToken
   try {
-    const {accessTokenValid, accessTokenError} = verifyAccessToken(accessToken, uid)
-    if (accessTokenError) {
-      return res.status(200).json({success: false, message: accessTokenError})
+    const result = await service.verifyToken({uid, accessToken, refreshToken})
+    if (!result.success) {
+      return res.status(200).json(result)
     }
-    if (!accessTokenValid) {
-      const {refreshTokenValid, refreshTokenError} = service.verifyRefreshToken({uid, refreshToken})
-      if (!refreshTokenValid) {
-        return res.status(200).json({success: false, message: refreshTokenError})
-      }
-    }
-    const {newAccessToken, newRefreshToken} = service.createToken(uid)
+    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
     const user = await service.getUserByUid(uid)
     if (!user) return res.status(200).json({success: false, message: 'User not found'})
 
@@ -89,9 +83,31 @@ const getUser = async (req, res) => {
   }
 }
 
+const getVerifyToken = async (req, res) => {
+  const uid = req.params.uid
+  const accessToken = req.headers.authorization.split('Bearer ')[1]
+  const refreshToken = req.cookies.refreshToken
+  try {
+    const result = await service.verifyToken({uid, accessToken, refreshToken})
+    if (!result.success) {
+      return res.status(200).json(result)
+    }
+    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
+    const user = await service.getUserByUid(uid)
+    if (!user) return res.status(200).json({success: false, message: 'User not found'})
+
+    res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
+    res.status(200).json({success: true, accessToken: newAccessToken, message: 'User is be logged in'})
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({message: 'Fail to Check Log In'})
+  }
+}
+
 module.exports = {
   postUserLogIn,
   postUserSignUp,
   getUserCheckAccount,
   getUser,
+  getVerifyToken,
 }
