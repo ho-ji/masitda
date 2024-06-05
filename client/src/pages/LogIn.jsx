@@ -12,8 +12,12 @@ const LogIn = () => {
   const [loadingLogIn, setLoadingLogIn] = useState(false)
 
   useEffect(() => {
-    if (checkLogIn) navigate(-1)
-    else setLoadingLogIn(true)
+    const check = async () => {
+      const isLogin = await checkLogIn()
+      if (isLogin) navigate(-1)
+      else setLoadingLogIn(true)
+    }
+    check()
   }, [checkLogIn, navigate])
 
   return (

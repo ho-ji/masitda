@@ -7,9 +7,12 @@ const useCheckLogIn = () => {
 
   const checkLogin = async () => {
     try {
-      const result = await getVerifyTokenAPI(token)
-      setToken(result.data.accessToken)
-      return result.data.success
+      if (token === '') {
+        const result = await getVerifyTokenAPI(token)
+        if (result.data.success) setToken(result.data.accessToken)
+        return result.data.success
+      }
+      return true
     } catch (error) {
       setToken('')
     }
