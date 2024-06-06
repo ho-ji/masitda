@@ -35,7 +35,7 @@ const createToken = async (uid) => {
 
 const verifyToken = async ({uid, accessToken, refreshToken}) => {
   const token = await Token.findOne({uid, refreshToken})
-  if (accessToken !== '') {
+  if (!accessToken) {
     const {accessTokenValid, accessTokenError} = verifyAccessToken(accessToken, uid)
     if (accessTokenError) {
       return {success: false, message: accessTokenError}

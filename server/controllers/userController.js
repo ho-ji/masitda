@@ -64,7 +64,7 @@ const postUserLogIn = async (req, res) => {
 
 const getUser = async (req, res) => {
   const uid = req.params.uid
-  const accessToken = req.headers.authorization.split('Bearer ')[1]
+  const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies.refreshToken
   try {
     const result = await service.verifyToken({uid, accessToken, refreshToken})
@@ -76,16 +76,16 @@ const getUser = async (req, res) => {
     if (!user) return res.status(200).json({success: false, message: 'User not found'})
 
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    res.status(200).json({success: true, accessToken: newAccessToken, user: {name: user.name}})
+    return res.status(200).json({success: true, accessToken: newAccessToken, user: {name: user.name}})
   } catch (error) {
     console.error(error)
-    res.status(500).json({message: 'Fail to Find User'})
+    return res.status(500).json({message: 'Fail to Find User'})
   }
 }
 
 const getVerifyToken = async (req, res) => {
   const uid = req.params.uid
-  const accessToken = req.headers.authorization.split('Bearer ')[1]
+  const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies.refreshToken
   try {
     const result = await service.verifyToken({uid, accessToken, refreshToken})
