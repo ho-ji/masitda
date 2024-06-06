@@ -24,8 +24,6 @@ const createToken = async (uid) => {
   const accessToken = jwt.sign({uid}, process.env.ACCESS_TOKEN_KEY, {expiresIn: '10m'})
   const refreshToken = jwt.sign({uid}, process.env.REFRESH_TOKEN_KEY, {expiresIn: '7d'})
 
-  await Token.deleteMany({refreshToken})
-
   const token = new Token({
     uid,
     refreshToken,
@@ -36,23 +34,25 @@ const createToken = async (uid) => {
 }
 
 const verifyToken = async ({uid, accessToken, refreshToken}) => {
-  const {accessTokenValid, accessTokenError} = verifyAccessToken(accessToken, uid)
-  if (accessTokenError) {
-    return {success: false, message: accessTokenError}
+  const token = await Token.findOne({uid, refreshToken})
+  if (accessToken !== '') {
+    const {accessTokenValid, accessTokenError} = verifyAccessToken(accessToken, uid)
+    if (accessTokenError) {
+      return {success: false, message: accessTokenError}
+    }
+    if (accessTokenValid) {
+      await Token.deleteOne({refreshToken})
+      return {success: true}
+    }
   }
-  if (!accessTokenValid) {
-    const token = await Token.findOne({refreshToken})
-    if (!token) {
-      return {success: false, message: 'Token Error'}
-    }
-    if (token.uid !== uid) {
-      return {success: false, message: 'Token Error'}
-    }
-    const currentTime = new Date()
-    if (currentTime - token.expiresAt > 0) {
-      await token.deleteOne({refreshToken})
-      return {success: false, message: 'Re-Login'}
-    }
+  if (!token) {
+    return {success: false, message: 'Token Error'}
+  }
+  await Token.deleteOne({_id: token._id})
+
+  const currentTime = new Date()
+  if (currentTime - token.expiresAt > 0) {
+    return {success: false, message: 'Re-Login'}
   }
   return {success: true}
 }

@@ -99,8 +99,7 @@ const getVerifyToken = async (req, res) => {
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
     res.status(200).json({success: true, accessToken: newAccessToken, message: 'User is be logged in'})
   } catch (error) {
-    console.error(error)
-    res.status(500).json({message: 'Fail to Check Log In'})
+    res.status(200).json({success: false, message: 'No Log In'})
   }
 }
 
