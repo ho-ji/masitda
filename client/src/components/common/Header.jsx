@@ -69,9 +69,13 @@ const Header = () => {
   }
 
   useEffect(() => {
-    if (checkLogIn()) setIsLogin(true)
-    else setIsLogin(false)
-  }, [checkLogIn])
+    const check = async () => {
+      const result = await checkLogIn()
+      if (result) setIsLogin(true)
+      else setIsLogin(false)
+    }
+    check()
+  }, [checkLogIn, isLogIn])
 
   useEffect(() => {
     const getCartCount = async () => {
