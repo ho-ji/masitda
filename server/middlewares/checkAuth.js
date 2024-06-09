@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 const checkAuth = (req, res, next) => {
-  const token = req.headers.authorization.split('Bearer ')[1]
+  const token = req.headers.authorization?.split('Bearer ')[1]
 
   if (!token) return res.status(200).json({success: false, message: 'No token provided'})
 
@@ -10,8 +10,8 @@ const checkAuth = (req, res, next) => {
       return res.status(200).json({success: false, message: 'Fail to authentication'})
     }
     req.uid = decoded._id
+    next()
   })
-  next()
 }
 
 module.exports = checkAuth
