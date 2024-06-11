@@ -59,23 +59,12 @@ const CartCount = styled.strong`
 const Header = () => {
   const [cartList, setCartList] = useRecoilState(cartListState)
   const [error, setError] = useState(false)
-  const [isLogIn, setIsLogin] = useState(false)
   const location = useLocation()
-  const checkLogIn = useCheckLogIn()
 
   const handleLogoClick = () => {
     if (location.pathname === '/') window.location.reload()
     window.scrollTo(0, 0)
   }
-
-  useEffect(() => {
-    const check = async () => {
-      const result = await checkLogIn()
-      if (result) setIsLogin(true)
-      else setIsLogin(false)
-    }
-    check()
-  }, [checkLogIn, isLogIn])
 
   useEffect(() => {
     const getCartCount = async () => {
@@ -108,7 +97,7 @@ const Header = () => {
             <span className="a11y-hidden">개</span>
           </CartCount>
         </MenuLink>
-        <MenuLink to={isLogIn ? '/user' : '/login'}>
+        <MenuLink to="/user">
           <MenuImage
             src={userImage}
             alt="마이페이지"
