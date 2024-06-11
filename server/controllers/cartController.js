@@ -1,4 +1,5 @@
 const service = require('../services/cartService')
+const userService = require('../services/userService')
 const {getExpiresAt} = require('../utils/getExpiresAt')
 
 const postCart = async (req, res) => {
@@ -9,11 +10,11 @@ const postCart = async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
   try {
     if (isLogIn) {
-      const result = await service.verifyToken({uid, accessToken, refreshToken})
+      const result = await userService.verifyToken({uid, accessToken, refreshToken})
       if (!result.success) {
         return res.status(200).json(result)
       }
-      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
       await service.addToCart({uid, productId, count})
       res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
       return res.status(200).json({success: true, accessToken: newAccessToken, message: 'Product added to cart'})
@@ -34,22 +35,22 @@ const getCart = async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
   try {
     if (isLogIn) {
-      const result = await service.verifyToken({uid, accessToken, refreshToken})
+      const result = await userService.verifyToken({uid, accessToken, refreshToken})
       if (!result.success) {
         return res.status(200).json(result)
       }
-      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
-      const cart = await service.getCartProductByUid(uid)
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
+      let cart = await service.getCartProductByUid(uid)
       if (!cart) {
-        cart = await createCartByUid(uid)
+        cart = await service.createCartByUid(uid)
       }
       res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
       return res.status(200).json({success: true, accessToken: newAccessToken, products: cart.products})
     }
-    const cart = await service.getCartProductByUid(uid)
+    let cart = await service.getCartProductByUid(uid)
     if (!cart) {
       const expiresAt = getExpiresAt()
-      cart = await createCartByUid(uid, expiresAt)
+      cart = await service.createCartByUid(uid, expiresAt)
     }
     return res.status(200).json({success: true, products: cart.products})
   } catch (error) {
@@ -66,11 +67,11 @@ const deleteCart = async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
   try {
     if (isLogIn) {
-      const result = await service.verifyToken({uid, accessToken, refreshToken})
+      const result = await userService.verifyToken({uid, accessToken, refreshToken})
       if (!result.success) {
         return res.status(200).json(result)
       }
-      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
       await service.deleteCartProduct(uid, idList)
       res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
       return res.status(200).json({success: true, accessToken: newAccessToken, message: 'Cart product deleted'})
