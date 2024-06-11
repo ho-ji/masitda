@@ -10,6 +10,8 @@ import {deleteMultipleSelector, getSelectedIdListSelector, updateAllSelectSelect
 import useModal from 'hooks/useModal'
 import CartCost from './CartCost'
 import CartPurchase from './CartPurchase'
+import {tokenState} from 'recoil/token/atom'
+import {updateUID} from 'utils/uid'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -96,6 +98,7 @@ const ErrorItem = styled(NoItem)`
 `
 
 const CartMain = () => {
+  const [token, setToken] = useRecoilState(tokenState)
   const [cartList, setCartList] = useRecoilState(cartListState)
   const updateAllSelect = useSetRecoilState(updateAllSelectSelector)
   const selectedIdList = useRecoilValue(getSelectedIdListSelector)
@@ -112,8 +115,13 @@ const CartMain = () => {
 
   const deleteSelectedProduct = async () => {
     try {
-      await deleleCartProductAPI(selectedIdList)
-      deleteMultiple()
+      const result = await deleleCartProductAPI(selectedIdList, token)
+      if (result.data.success) {
+        if (result.data.accessToken) setToken(result.data.accessToken)
+        deleteMultiple()
+      } else {
+        setToken('')
+      }
     } catch (error) {}
   }
 
@@ -126,15 +134,22 @@ const CartMain = () => {
     const getCartList = async () => {
       try {
         setLoading(true)
-        const result = await getCartListAPI()
-        setCartList(result.data)
+        const result = await getCartListAPI(token)
+        if (result.data.success) {
+          if (result.data.accessToken) setToken(result.data.accessToken)
+          setCartList(result.data.products)
+        } else {
+          setToken('')
+          setCartList([])
+          updateUID()
+        }
         setLoading(false)
       } catch (error) {
         setError(true)
       }
     }
     getCartList()
-  }, [setCartList])
+  }, [setCartList, token, setToken])
 
   useEffect(() => {
     window.scrollTo(0, 0)

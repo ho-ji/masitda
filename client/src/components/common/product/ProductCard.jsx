@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import {Link, useNavigate} from 'react-router-dom'
-import {useSetRecoilState} from 'recoil'
+import {useRecoilState, useSetRecoilState} from 'recoil'
 
 import {formatSaleCost} from 'utils/cost'
 import addCartImage from 'assets/images/add_cart.svg'
 import {postCartProductAPI} from 'api/cart'
 import {updateCountSelector} from 'recoil/cart/selector'
 import useModal from 'hooks/useModal'
+import {tokenState} from 'recoil/token/atom'
 
 const Container = styled(Link)`
   aspect-ratio: 1/1.75;
@@ -91,15 +92,21 @@ const Temp = styled.span`
 `
 
 const ProductCard = ({product, type, ranking}) => {
+  const [token, setToken] = useRecoilState(tokenState)
   const navigate = useNavigate()
   const {updateModal, openModal} = useModal()
   const updateCount = useSetRecoilState(updateCountSelector)
 
-  const handleCartButtonClick = () => {
-    postCartProductAPI(product._id, 1)
-    updateCount({productId: product._id, count: 1})
-    updateModal('cart', navigate)
-    openModal()
+  const handleCartButtonClick = async () => {
+    const result = await postCartProductAPI({productId: product._id, count: 1, accessToken: token})
+    if (result.data.success) {
+      if (result.data.accessToken) setToken(result.data.accessToken)
+      updateCount({productId: product._id, count: 1})
+      updateModal('cart', navigate)
+      openModal()
+    } else {
+      setToken('')
+    }
   }
 
   return (

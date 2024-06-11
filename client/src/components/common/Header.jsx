@@ -8,6 +8,8 @@ import cartImage from 'assets/images/cart.svg'
 import userImage from 'assets/images/user.svg'
 import {cartListState} from 'recoil/cart/atom'
 import {getCartListAPI} from 'api/cart'
+import {tokenState} from 'recoil/token/atom'
+import {updateUID} from 'utils/uid'
 
 const Container = styled.header`
   display: flex;
@@ -58,6 +60,7 @@ const CartCount = styled.strong`
 const Header = () => {
   const [cartList, setCartList] = useRecoilState(cartListState)
   const [error, setError] = useState(false)
+  const [token, setToken] = useRecoilState(tokenState)
   const location = useLocation()
 
   const handleLogoClick = () => {
@@ -72,14 +75,21 @@ const Header = () => {
   useEffect(() => {
     const getCartCount = async () => {
       try {
-        const result = await getCartListAPI()
-        setCartList(result.data)
+        const result = await getCartListAPI(token)
+        if (result.data.success) {
+          if (result.data.accessToken) setToken(result.data.accessToken)
+          setCartList(result.data.products)
+        } else {
+          setToken('')
+          setCartList([])
+          updateUID()
+        }
       } catch (error) {
         setError(true)
       }
     }
     getCartCount()
-  }, [setCartList])
+  }, [setCartList, token, setToken])
 
   return (
     <Container>

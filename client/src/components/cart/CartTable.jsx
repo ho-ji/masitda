@@ -1,4 +1,4 @@
-import {useRecoilValue, useSetRecoilState} from 'recoil'
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
 
 import {cartListState} from 'recoil/cart/atom'
@@ -9,6 +9,7 @@ import minusImage from 'assets/images/minus.svg'
 import {deleteOneSelector, updateCountSelector, updateSelectSelector} from 'recoil/cart/selector'
 import useModal from 'hooks/useModal'
 import {deleleCartProductAPI, postCartProductAPI} from 'api/cart'
+import {tokenState} from 'recoil/token/atom'
 
 const Container = styled.table`
   border-top: 1px solid black;
@@ -150,6 +151,7 @@ const DeleteButton = styled.button`
   color: var(--color-text-sub);
 `
 const CartTable = () => {
+  const [token, setToken] = useRecoilState(tokenState)
   const cartList = useRecoilValue(cartListState)
   const updateCheck = useSetRecoilState(updateSelectSelector)
   const updateCount = useSetRecoilState(updateCountSelector)
@@ -163,8 +165,13 @@ const CartTable = () => {
   const handleCountButtonClick = (currentCount, productId, count) => async () => {
     if (currentCount + count > 0) {
       try {
-        await postCartProductAPI(productId, count)
-        updateCount({productId, count})
+        const result = await postCartProductAPI({productId, count, accessToken: token})
+        if (result.data.success) {
+          if (result.data.accessToken) setToken(result.data.accessToken)
+          updateCount({productId, count})
+        } else {
+          setToken('')
+        }
       } catch (error) {
         console.error(error)
       }
@@ -173,8 +180,13 @@ const CartTable = () => {
 
   const deleteProduct = async (productId) => {
     try {
-      deleteOne(productId)
-      await deleleCartProductAPI([productId])
+      const result = await deleleCartProductAPI([productId], token)
+      if (result.data.success) {
+        if (result.data.accessToken) setToken(result.data.accessToken)
+        deleteOne(productId)
+      } else {
+        setToken('')
+      }
     } catch (error) {
       console.error(error)
     }

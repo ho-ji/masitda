@@ -1,6 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import {RecoilRoot} from 'recoil'
-import {v4 as uuidv4} from 'uuid'
 import {useEffect} from 'react'
 
 import GlobalStyle from 'styles/GlobalStyle'
@@ -13,12 +12,7 @@ import Best from 'pages/Best'
 import MDPick from 'pages/MDPick'
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
-
-const checkUID = () => {
-  if (!localStorage.getItem('uid')) {
-    localStorage.setItem('uid', uuidv4())
-  }
-}
+import {checkUID} from 'utils/uid'
 
 const App = () => {
   useEffect(() => {
