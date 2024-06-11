@@ -65,7 +65,7 @@ const postUserLogIn = async (req, res) => {
 const getUser = async (req, res) => {
   const uid = req.params.uid
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
-  const refreshToken = req.cookies.refreshToken
+  const refreshToken = req.cookies?.refreshToken
   try {
     const result = await service.verifyToken({uid, accessToken, refreshToken})
     if (!result.success) {
@@ -86,7 +86,7 @@ const getUser = async (req, res) => {
 const getVerifyToken = async (req, res) => {
   const uid = req.params.uid
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
-  const refreshToken = req.cookies.refreshToken
+  const refreshToken = req.cookies?.refreshToken
   try {
     const result = await service.verifyToken({uid, accessToken, refreshToken})
     if (!result.success) {
