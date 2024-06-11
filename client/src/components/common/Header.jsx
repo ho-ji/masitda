@@ -8,7 +8,6 @@ import cartImage from 'assets/images/cart.svg'
 import userImage from 'assets/images/user.svg'
 import {cartListState} from 'recoil/cart/atom'
 import {getCartListAPI} from 'api/cart'
-import useCheckLogIn from 'hooks/useCheckLogIn'
 
 const Container = styled.header`
   display: flex;
@@ -66,6 +65,10 @@ const Header = () => {
     window.scrollTo(0, 0)
   }
 
+  const handleCartClick = () => {
+    if (location.pathname === '/cart') window.location.reload()
+  }
+
   useEffect(() => {
     const getCartCount = async () => {
       try {
@@ -87,7 +90,9 @@ const Header = () => {
           onClick={handleLogoClick}></Logo>
       </h1>
       <nav>
-        <MenuLink to="/cart">
+        <MenuLink
+          to="/cart"
+          onClick={handleCartClick}>
           <MenuImage
             src={cartImage}
             alt="장바구니"
