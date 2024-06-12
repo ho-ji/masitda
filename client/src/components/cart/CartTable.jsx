@@ -169,8 +169,6 @@ const CartTable = () => {
         if (result.data.success) {
           if (result.data.accessToken) setToken(result.data.accessToken)
           updateCount({productId, count})
-        } else {
-          setToken('')
         }
       } catch (error) {
         console.error(error)

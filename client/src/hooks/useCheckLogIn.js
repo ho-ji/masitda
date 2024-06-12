@@ -7,6 +7,7 @@ const useCheckLogIn = () => {
 
   const checkLogin = async () => {
     try {
+      if (localStorage.getItem('uid').startsWith('guest')) return false
       if (token === '') {
         const result = await getVerifyTokenAPI(token)
         if (result.data.success) setToken(result.data.accessToken)

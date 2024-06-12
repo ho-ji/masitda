@@ -33,11 +33,11 @@ const UserInformation = () => {
     const getUserInformation = async () => {
       try {
         const result = await getUserInformationAPI(token)
-        if (result.data.success) setName(result.data.user.name)
-        else setToken('')
-      } catch (error) {
-        setToken('')
-      }
+        if (result.data.success) {
+          if (result.data.accessToken) setToken(result.data.accessToken)
+          setName(result.data.user.name)
+        }
+      } catch (error) {}
     }
     getUserInformation()
   }, [token, setToken])

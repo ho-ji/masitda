@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
 
-import {deleleCartProductAPI, getCartListAPI} from 'api/cart'
+import {deleleCartProductAPI} from 'api/cart'
 import {cartListState} from 'recoil/cart/atom'
 import checkImage from 'assets/images/check.svg'
 import CartTable from './CartTable'
@@ -11,7 +11,6 @@ import useModal from 'hooks/useModal'
 import CartCost from './CartCost'
 import CartPurchase from './CartPurchase'
 import {tokenState} from 'recoil/token/atom'
-import {updateUID} from 'utils/uid'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -70,43 +69,14 @@ const NoItem = styled.p`
   background: #f7f7f7;
 `
 
-const ErrorItem = styled(NoItem)`
-  position: relative;
-  overflow: hidden;
-  background-color: #eee;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 200%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-    animation: wave 2.5s infinite;
-  }
-  @keyframes wave {
-    0% {
-      transform: translateX(-100%);
-    }
-    50% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-`
-
 const CartMain = () => {
   const [token, setToken] = useRecoilState(tokenState)
-  const [cartList, setCartList] = useRecoilState(cartListState)
+  const cartList = useRecoilValue(cartListState)
   const updateAllSelect = useSetRecoilState(updateAllSelectSelector)
   const selectedIdList = useRecoilValue(getSelectedIdListSelector)
   const deleteMultiple = useSetRecoilState(deleteMultipleSelector)
   const [isAllSelect, setIsAllSelect] = useState(true)
   const {updateModal, openModal} = useModal()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
 
   const handleAllSelectChange = (e) => {
     updateAllSelect(e.target.checked)
@@ -131,27 +101,6 @@ const CartMain = () => {
   }
 
   useEffect(() => {
-    const getCartList = async () => {
-      try {
-        setLoading(true)
-        const result = await getCartListAPI(token)
-        if (result.data.success) {
-          if (result.data.accessToken) setToken(result.data.accessToken)
-          setCartList(result.data.products)
-        } else {
-          setToken('')
-          setCartList([])
-          updateUID()
-        }
-        setLoading(false)
-      } catch (error) {
-        setError(true)
-      }
-    }
-    getCartList()
-  }, [setCartList, token, setToken])
-
-  useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
@@ -159,35 +108,31 @@ const CartMain = () => {
     <Container>
       <CartHeader>
         <h2>장바구니</h2>
-        <span>{`상품 (${loading ? '' : cartList.length})`}</span>
+        <span>{`상품 (${cartList.length})`}</span>
         <span className="a11y-hidden">개</span>
       </CartHeader>
-      {!error ? (
-        !loading && cartList.length !== 0 ? (
-          <>
-            <SelectContainer>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={isAllSelect}
-                  onChange={handleAllSelectChange}></input>
-                전체선택
-              </label>
-              <button
-                type="button"
-                onClick={handleDeleteClick}>
-                선택삭제
-              </button>
-            </SelectContainer>
-            <CartTable />
-            <CartCost />
-            <CartPurchase />
-          </>
-        ) : (
-          !loading && <NoItem>장바구니가 비어 있습니다</NoItem>
-        )
+      {cartList.length !== 0 ? (
+        <>
+          <SelectContainer>
+            <label>
+              <input
+                type="checkbox"
+                checked={isAllSelect}
+                onChange={handleAllSelectChange}></input>
+              전체선택
+            </label>
+            <button
+              type="button"
+              onClick={handleDeleteClick}>
+              선택삭제
+            </button>
+          </SelectContainer>
+          <CartTable />
+          <CartCost />
+          <CartPurchase />
+        </>
       ) : (
-        <ErrorItem />
+        <NoItem>장바구니가 비어 있습니다</NoItem>
       )}
     </Container>
   )
