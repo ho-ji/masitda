@@ -79,7 +79,7 @@ const getUser = async (req, res) => {
     return res.status(200).json({success: true, accessToken: newAccessToken, user: {name: user.name}})
   } catch (error) {
     console.error(error)
-    return res.status(500).json({message: 'Fail to Find User'})
+    return res.status(200).json({success: false, message: 'Fail to Find User'})
   }
 }
 
