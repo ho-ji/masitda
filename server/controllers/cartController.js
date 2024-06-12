@@ -5,7 +5,7 @@ const {getExpiresAt} = require('../utils/getExpiresAt')
 const postCart = async (req, res) => {
   const uid = req.params.uid
   const {productId, count} = req.body
-  const isLogIn = !uid.startsWith('guest_')
+  const isLogIn = !uid.startsWith('guest')
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
   try {
@@ -30,7 +30,7 @@ const postCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   const uid = req.params.uid
-  const isLogIn = !uid.startsWith('guest_')
+  const isLogIn = !uid.startsWith('guest')
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
   try {
@@ -62,7 +62,7 @@ const getCart = async (req, res) => {
 const deleteCart = async (req, res) => {
   const uid = req.params.uid
   const idList = req.body.productId
-  const isLogIn = !uid.startsWith('guest_')
+  const isLogIn = !uid.startsWith('guest')
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
   try {

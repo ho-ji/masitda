@@ -8,7 +8,7 @@ const getUserByAccount = async (account) => {
 }
 
 const getUserByUid = async (uid) => {
-  return await User.findById(uid)
+  return await User.findOne({uid})
 }
 
 const updateUser = async (user) => {
