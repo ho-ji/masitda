@@ -71,6 +71,9 @@ const Header = () => {
   const handleCartClick = () => {
     if (location.pathname === '/cart') window.location.reload()
   }
+  const handleUserClick = () => {
+    if (location.pathname === '/user') window.location.reload()
+  }
 
   useEffect(() => {
     const getCartCount = async () => {
@@ -113,7 +116,9 @@ const Header = () => {
             <span className="a11y-hidden">개</span>
           </CartCount>
         </MenuLink>
-        <MenuLink to="/user">
+        <MenuLink
+          to="/user"
+          onClick={handleUserClick}>
           <MenuImage
             src={userImage}
             alt="마이페이지"
