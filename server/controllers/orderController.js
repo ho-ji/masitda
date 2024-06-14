@@ -38,7 +38,7 @@ const getOrder = async (req, res) => {
     const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
     const orderList = await service.getOrderList(uid, page)
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    return res.status(200).json({success: true, accessToken: newAccessToken, orderList})
+    return res.status(200).json({success: true, accessToken: newAccessToken, orderList, message: 'Successfully get order list'})
   } catch (error) {
     console.error(error)
     res.status(500).json({message: 'Fail to load order list'})
@@ -60,7 +60,7 @@ const getRecentOrder = async (req, res) => {
     const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
     const orderList = await service.getRecentOrderList(uid, page)
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    return res.status(200).json({success: true, accessToken: newAccessToken, orderList})
+    return res.status(200).json({success: true, accessToken: newAccessToken, orderList, message: ' Successfully get recent order list'})
   } catch (error) {
     console.error(error)
     res.status(500).json({message: 'Fail to load order list'})

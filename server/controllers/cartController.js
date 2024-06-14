@@ -45,14 +45,14 @@ const getCart = async (req, res) => {
         cart = await service.createCartByUid(uid)
       }
       res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-      return res.status(200).json({success: true, accessToken: newAccessToken, products: cart.products})
+      return res.status(200).json({success: true, accessToken: newAccessToken, products: cart.products, message: 'Successfully get Cart List'})
     }
     let cart = await service.getCartProductByUid(uid)
     if (!cart) {
       const expiresAt = getExpiresAt()
       cart = await service.createCartByUid(uid, expiresAt)
     }
-    return res.status(200).json({success: true, products: cart.products})
+    return res.status(200).json({success: true, products: cart.products, message: 'Successfully get Cart List'})
   } catch (error) {
     console.error(error)
     res.status(500).json({message: 'Fail to load cart'})

@@ -53,7 +53,7 @@ const postUserLogIn = async (req, res) => {
 
     const {accessToken, refreshToken} = await service.createToken(user._id)
     res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 * 1000})
-    res.status(200).json({success: true, accessToken, uid: user._id})
+    res.status(200).json({success: true, accessToken, uid: user._id, message: 'Login success'})
   } catch (error) {
     console.error(error)
     res.status(500).json({
@@ -76,7 +76,7 @@ const getUser = async (req, res) => {
     if (!user) return res.status(200).json({success: false, message: 'User not found'})
 
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    return res.status(200).json({success: true, accessToken: newAccessToken, user: {name: user.name}})
+    return res.status(200).json({success: true, accessToken: newAccessToken, user: {name: user.name}, success: 'Successfully get user information'})
   } catch (error) {
     console.error(error)
     return res.status(200).json({success: false, message: 'Fail to Find User'})
