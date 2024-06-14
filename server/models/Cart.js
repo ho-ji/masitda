@@ -7,7 +7,7 @@ const cartItemSchema = new mongoose.Schema({
 const cartSchema = new mongoose.Schema({
   uid: {type: String, required: true},
   products: [cartItemSchema],
-  expiresAt: {type: Date, default: null},
+  expiresAt: {type: Date, default: null, index: {expires: '0s'}},
 })
 
 const Cart = mongoose.model('Cart', cartSchema)
