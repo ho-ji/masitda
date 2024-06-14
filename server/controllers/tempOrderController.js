@@ -36,9 +36,9 @@ const getTempOrder = async (req, res) => {
       return res.status(200).json(result)
     }
     const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
-    const order = await service.getTempOrderList(uid, orderId)
+    const order = await service.getTempOrder(uid, orderId)
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    if (!orderList) return res.status(200).json({success: false, accessToken: newAccessToken, message: 'Current Order is expired'})
+    if (!order) return res.status(200).json({success: false, accessToken: newAccessToken, message: 'Current Order is expired'})
     return res.status(200).json({success: true, accessToken: newAccessToken, order, message: ''})
   } catch (error) {
     console.error(error)

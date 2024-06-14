@@ -3,7 +3,7 @@ const userService = require('../services/userService')
 
 const postOrder = async (req, res) => {
   const uid = req.params.uid
-  const orderList = req.body.orderList
+  const {orderId, name, contactNumber, address} = req.body
   const isLogIn = !uid.startsWith('guest')
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
@@ -14,7 +14,7 @@ const postOrder = async (req, res) => {
       return res.status(200).json(result)
     }
     const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
-    await service.completeOrder({uid, orderList})
+    await service.completeOrder({uid, orderId, name, contactNumber, address})
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
     return res.status(200).json({success: true, accessToken: newAccessToken, message: 'Order Complete'})
   } catch (error) {

@@ -1,10 +1,13 @@
 const Order = require('../models/Order')
+const tempOrderService = require('../services/tempOrderService')
 
 const limit = 10
 
-const completeOrder = async ({uid, orderList}) => {
-  const order = new Order({uid, products: orderList, orderDate: new Date()})
+const completeOrder = async ({uid, orderId, name, contactNumber, address}) => {
+  const tempOrder = await tempOrderService.getTempOrder(uid, orderId)
+  const order = new Order({...tempOrder, orderDate: new Date(), name, contactNumber, address})
   await order.save()
+  await tempOrderService.deleteTempOrder(uid, orderId)
 }
 
 const getOrderList = async (uid, page = 1) => {
