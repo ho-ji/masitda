@@ -9,7 +9,18 @@ const orderItemSchema = new mongoose.Schema({
 const orderSchema = new mongoose.Schema({
   uid: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
   products: [orderItemSchema],
-  orderDate: {type: Date, default: Date.now},
+  orderDate: {type: Date, default: Date.now, required: true},
+  name: {type: String, required: true},
+  contactNumber: {
+    type: String,
+    match: /^\d{2,3}\d{3,4}\d{4}$/,
+    required: true,
+  },
+  address: {
+    zonecode: {type: String, match: /[0-9\-]{5}/, required: true},
+    road_address: {type: String, required: true},
+    detail_addresss: {type: String, required: true},
+  },
 })
 
 const Order = mongoose.model('Order', orderSchema)
