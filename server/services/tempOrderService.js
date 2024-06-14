@@ -6,7 +6,7 @@ const processingOrder = async ({uid, orderList}) => {
 }
 
 const getTempOrder = async (uid, orderId) => {
-  const order = await TempOrder.find({uid, _id: orderId})
+  const order = await TempOrder.findOne({uid, _id: orderId})
   return order
 }
 
