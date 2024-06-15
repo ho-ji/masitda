@@ -50,7 +50,6 @@ const getRecentOrder = async (req, res) => {
   const isLogIn = !uid.startsWith('guest')
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
-  const page = parseInt(req.query.page)
   try {
     if (!isLogIn) return res.status(200).json({success: false, message: 'No Login'})
     const result = await userService.verifyToken({uid, accessToken, refreshToken})
