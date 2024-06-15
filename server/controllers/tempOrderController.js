@@ -14,9 +14,9 @@ const postTempOrder = async (req, res) => {
       return res.status(200).json(result)
     }
     const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
-    await service.processingOrder({uid, order})
+    const orderId = await service.processingOrder({uid, order})
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    return res.status(200).json({success: true, accessToken: newAccessToken, message: 'Order in progress'})
+    return res.status(200).json({success: true, accessToken: newAccessToken, orderId, message: 'Order in progress'})
   } catch (error) {
     console.error(error)
     res.status(500).json({message: 'Order progress failed`'})

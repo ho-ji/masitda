@@ -2,7 +2,8 @@ const TempOrder = require('../models/TempOrder')
 
 const processingOrder = async ({uid, order}) => {
   const tempOrder = new TempOrder({uid, products: order, orderDate: new Date()})
-  await tempOrder.save()
+  const newTempOrder = await tempOrder.save()
+  return newTempOrder._id
 }
 
 const getTempOrder = async (uid, orderId) => {
