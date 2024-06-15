@@ -1,7 +1,19 @@
 import axios from 'axios'
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: 'http://localhost:4500/api',
+  withCredentials: true,
 })
-
-export default instance
+export const setAuthToken = (token) => {
+  instance.interceptors.request.use(
+    (config) => {
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      return config
+    },
+    (error) => {
+      return Promise.reject(error)
+    }
+  )
+}
