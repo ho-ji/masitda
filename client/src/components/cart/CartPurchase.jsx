@@ -36,7 +36,8 @@ const CartPurchase = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const postTempOrder = async () => {
+  const handlePurchaseClick = async () => {
+    if (loading) return
     try {
       setLoading(true)
       const result = await postTempOrderAPI({accessToken: token, order: selectedList})
@@ -48,12 +49,6 @@ const CartPurchase = () => {
       alert('잠시 후 다시 시도해주세요')
     } finally {
       setLoading(false)
-    }
-  }
-
-  const handlePurchaseClick = async () => {
-    if (!loading) {
-      postTempOrder()
     }
   }
 

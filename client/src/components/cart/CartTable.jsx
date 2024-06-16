@@ -1,5 +1,6 @@
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
+import {useNavigate} from 'react-router-dom'
 
 import {cartListState} from 'recoil/cart/atom'
 import {formatCostWithComma, formatSaleCost} from 'utils/cost'
@@ -10,6 +11,8 @@ import {deleteOneSelector, updateCountSelector, updateSelectSelector} from 'reco
 import useModal from 'hooks/useModal'
 import {deleleCartProductAPI, postCartProductAPI} from 'api/cart'
 import {tokenState} from 'recoil/token/atom'
+import {postTempOrderAPI} from 'api/tempOrder'
+import {useState} from 'react'
 
 const Container = styled.table`
   border-top: 1px solid black;
@@ -152,32 +155,39 @@ const DeleteButton = styled.button`
 `
 const CartTable = () => {
   const [token, setToken] = useRecoilState(tokenState)
+  const [loading, setLoading] = useState(false)
   const cartList = useRecoilValue(cartListState)
   const updateCheck = useSetRecoilState(updateSelectSelector)
   const updateCount = useSetRecoilState(updateCountSelector)
   const deleteOne = useSetRecoilState(deleteOneSelector)
   const {updateModal, openModal} = useModal()
+  const navigate = useNavigate()
 
   const handleSelectChange = (productId) => (e) => {
     updateCheck({productId, isSelected: e.target.checked})
   }
 
   const handleCountButtonClick = (currentCount, productId, count) => async () => {
-    if (currentCount + count > 0) {
-      try {
-        const result = await postCartProductAPI({productId, count, accessToken: token})
-        if (result.data.success) {
-          if (result.data.accessToken) setToken(result.data.accessToken)
-          updateCount({productId, count})
-        }
-      } catch (error) {
-        console.error(error)
+    if (loading) return
+    if (currentCount + count <= 0) return
+    try {
+      setLoading(true)
+      const result = await postCartProductAPI({productId, count, accessToken: token})
+      if (result.data.success) {
+        if (result.data.accessToken) setToken(result.data.accessToken)
+        updateCount({productId, count})
       }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   const deleteProduct = async (productId) => {
+    if (loading) return
     try {
+      setLoading(true)
       const result = await deleleCartProductAPI([productId], token)
       if (result.data.success) {
         if (result.data.accessToken) setToken(result.data.accessToken)
@@ -187,6 +197,24 @@ const CartTable = () => {
       }
     } catch (error) {
       console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleBuyNowClick = (product, count, cost) => async () => {
+    if (loading) return
+    try {
+      setLoading(true)
+      const result = await postTempOrderAPI({token, order: [{product, count, cost}]})
+      if (result.data.success) {
+        setToken(result.data.accessToken)
+        navigate(`/order/${result.data.orderId}`)
+      }
+    } catch {
+      alert('잠시 후 다시 시도해주세요')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -262,7 +290,11 @@ const CartTable = () => {
               </td>
               <td>
                 <Select>
-                  <BuyNowButton type="button">바로구매</BuyNowButton>
+                  <BuyNowButton
+                    type="button"
+                    onClick={handleBuyNowClick(item.product._id, item.count, item.product.cost)}>
+                    바로구매
+                  </BuyNowButton>
                   <DeleteButton
                     type="button"
                     onClick={handleDeleteOneClick(item.product._id)}>
