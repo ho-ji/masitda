@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import {Link, useNavigate} from 'react-router-dom'
 import {useRecoilState, useRecoilValue} from 'recoil'
+import {useState} from 'react'
 
 import {postTempOrderAPI} from 'api/tempOrder'
 import {getSelectedListSelector} from 'recoil/cart/selector'
@@ -32,17 +33,28 @@ const PurchaseButton = styled(Link)`
 const CartPurchase = () => {
   const selectedList = useRecoilValue(getSelectedListSelector)
   const [token, setToken] = useRecoilState(tokenState)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handlePurchaseClick = async () => {
+  const postTempOrder = async () => {
     try {
-      console.log(selectedList)
+      setLoading(true)
       const result = await postTempOrderAPI({accessToken: token, order: selectedList})
       if (result.data.success) {
         setToken(result.data.accessToken)
-        navigate(`/order/${result.order.orderId}`)
+        navigate(`/order/${result.data.orderId}`)
       }
-    } catch {}
+    } catch {
+      alert('잠시 후 다시 시도해주세요')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlePurchaseClick = async () => {
+    if (!loading) {
+      postTempOrder()
+    }
   }
 
   return (
