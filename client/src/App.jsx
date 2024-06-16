@@ -12,6 +12,7 @@ import Best from 'pages/Best'
 import MDPick from 'pages/MDPick'
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
+import Order from 'pages/Order'
 import {checkUID} from 'utils/uid'
 
 const App = () => {
@@ -51,6 +52,10 @@ const App = () => {
           <Route
             path="/signup"
             element={<SignUp />}
+          />
+          <Route
+            path="/order/:orderId"
+            element={<Order />}
           />
           <Route
             path="/*"

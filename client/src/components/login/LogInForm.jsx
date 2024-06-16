@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import {useSetRecoilState} from 'recoil'
-import {useNavigate} from 'react-router-dom'
 import {useRef} from 'react'
 
 import {postLoginAPI} from 'api/user'

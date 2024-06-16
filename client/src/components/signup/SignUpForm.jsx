@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import {useEffect, useRef, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 import SignUpInput from './SignUpInput'
 import regex from 'constants/regex'
 import {postSignUpAPI} from 'api/user'
-import {useNavigate} from 'react-router-dom'
 
 const Container = styled.form`
   width: 100%;
@@ -25,7 +25,7 @@ const Button = styled.button`
 `
 
 const SignUpForm = () => {
-  const navigator = useNavigate()
+  const navigate = useNavigate()
   const formRef = useRef()
   const [isValid, setIsValid] = useState(false)
   const [accountError, setaccountError] = useState(true)
@@ -49,7 +49,7 @@ const SignUpForm = () => {
     }
     try {
       await postSignUpAPI(info)
-      navigator('/login')
+      navigate('/login')
     } catch (error) {
       alert('회원가입 실패! 잠시 후 다시 시도해주세요')
     }

@@ -1,5 +1,10 @@
-import {Link} from 'react-router-dom'
 import styled from 'styled-components'
+import {Link, useNavigate} from 'react-router-dom'
+import {useRecoilState, useRecoilValue} from 'recoil'
+
+import {postTempOrderAPI} from 'api/tempOrder'
+import {getSelectedListSelector} from 'recoil/cart/selector'
+import {tokenState} from 'recoil/token/atom'
 
 const Container = styled.div`
   display: flex;
@@ -25,10 +30,25 @@ const PurchaseButton = styled(Link)`
 `
 
 const CartPurchase = () => {
+  const selectedList = useRecoilValue(getSelectedListSelector)
+  const [token, setToken] = useRecoilState(tokenState)
+  const navigate = useNavigate()
+
+  const handlePurchaseClick = async () => {
+    try {
+      console.log(selectedList)
+      const result = await postTempOrderAPI({accessToken: token, order: selectedList})
+      if (result.data.success) {
+        setToken(result.data.accessToken)
+        navigate(`/order/${result.order.orderId}`)
+      }
+    } catch {}
+  }
+
   return (
     <Container>
       <ContinueButton to="/">계속 쇼핑하기</ContinueButton>
-      <PurchaseButton>구매하기</PurchaseButton>
+      <PurchaseButton onClick={handlePurchaseClick}>구매하기</PurchaseButton>
     </Container>
   )
 }

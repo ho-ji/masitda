@@ -93,3 +93,20 @@ export const getTotalCostSelector = selector({
     return {totalCost, deliveryFee}
   },
 })
+
+export const getSelectedListSelector = selector({
+  key: 'getSelectedList',
+  get: ({get}) => {
+    const currentCartList = get(cartListState)
+    const selectedList = currentCartList
+      .filter((item) => item.isSelected !== false)
+      .map((item) => {
+        return {
+          count: item.count,
+          cost: item.product.cost,
+          product: item.product._id,
+        }
+      })
+    return selectedList
+  },
+})
