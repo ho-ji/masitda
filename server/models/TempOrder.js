@@ -7,7 +7,7 @@ const tempOrderItemSchema = new mongoose.Schema({
 })
 
 const tempOrderSchema = new mongoose.Schema({
-  uid: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+  uid: {type: String, required: true},
   products: [tempOrderItemSchema],
   orderDate: {type: Date, default: Date.now},
   expiresAt: {type: Date, default: () => new Date(), index: {expires: '30m'}},

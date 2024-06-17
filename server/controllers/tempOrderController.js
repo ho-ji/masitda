@@ -8,15 +8,18 @@ const postTempOrder = async (req, res) => {
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
   try {
-    if (!isLogIn) return res.status(200).json({success: false, message: 'No Login'})
-    const result = await userService.verifyToken({uid, accessToken, refreshToken})
-    if (!result.success) {
-      return res.status(200).json(result)
+    if (isLogIn) {
+      const result = await userService.verifyToken({uid, accessToken, refreshToken})
+      if (!result.success) {
+        return res.status(200).json(result)
+      }
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
+      const orderId = await service.processingOrder({uid, order})
+      res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
+      return res.status(200).json({success: true, accessToken: newAccessToken, orderId, message: 'Order in progress'})
     }
-    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
     const orderId = await service.processingOrder({uid, order})
-    res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    return res.status(200).json({success: true, accessToken: newAccessToken, orderId, message: 'Order in progress'})
+    return res.status(200).json({success: true, orderId, message: 'Order in progress'})
   } catch (error) {
     console.error(error)
     res.status(500).json({message: 'Order progress failed`'})
@@ -30,16 +33,20 @@ const getTempOrder = async (req, res) => {
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
   try {
-    if (!isLogIn) return res.status(200).json({success: false, message: 'No Login'})
-    const result = await userService.verifyToken({uid, accessToken, refreshToken})
-    if (!result.success) {
-      return res.status(200).json(result)
+    if (isLogIn) {
+      const result = await userService.verifyToken({uid, accessToken, refreshToken})
+      if (!result.success) {
+        return res.status(200).json(result)
+      }
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
+      const order = await service.getTempOrder(uid, orderId)
+      res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
+      if (!order) return res.status(200).json({success: false, accessToken: newAccessToken, message: 'Current Order is expired'})
+      return res.status(200).json({success: true, accessToken: newAccessToken, order, message: ''})
     }
-    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
     const order = await service.getTempOrder(uid, orderId)
-    res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    if (!order) return res.status(200).json({success: false, accessToken: newAccessToken, message: 'Current Order is expired'})
-    return res.status(200).json({success: true, accessToken: newAccessToken, order, message: ''})
+    if (!order) return res.status(200).json({success: false, message: 'Current Order is expired'})
+    return res.status(200).json({success: true, order, message: ''})
   } catch (error) {
     console.error(error)
     res.status(500).json({message: 'Fail to load temp order list'})

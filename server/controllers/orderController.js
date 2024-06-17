@@ -8,15 +8,18 @@ const postOrder = async (req, res) => {
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
   try {
-    if (!isLogIn) return res.status(200).json({success: false, message: 'No Login'})
-    const result = await userService.verifyToken({uid, accessToken, refreshToken})
-    if (!result.success) {
-      return res.status(200).json(result)
+    if (isLogIn) {
+      const result = await userService.verifyToken({uid, accessToken, refreshToken})
+      if (!result.success) {
+        return res.status(200).json(result)
+      }
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
+      await service.completeOrder({uid, orderId, name, contactNumber, address})
+      res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
+      return res.status(200).json({success: true, accessToken: newAccessToken, message: 'Order Complete'})
     }
-    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
     await service.completeOrder({uid, orderId, name, contactNumber, address})
-    res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    return res.status(200).json({success: true, accessToken: newAccessToken, message: 'Order Complete'})
+    return res.status(200).json({success: true, message: 'Order Complete'})
   } catch (error) {
     console.error(error)
     res.status(500).json({message: 'Fail to Order'})
@@ -30,7 +33,7 @@ const getOrder = async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
   const page = parseInt(req.query.page)
   try {
-    if (!isLogIn) return res.status(200).json({success: false, message: 'No Login'})
+    if (isLogIn) return res.status(200).json({success: false, message: 'No Login'})
     const result = await userService.verifyToken({uid, accessToken, refreshToken})
     if (!result.success) {
       return res.status(200).json(result)

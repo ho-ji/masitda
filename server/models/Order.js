@@ -7,7 +7,7 @@ const orderItemSchema = new mongoose.Schema({
 })
 
 const orderSchema = new mongoose.Schema({
-  uid: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+  uid: {type: String, required: true},
   products: [orderItemSchema],
   orderDate: {type: Date, default: Date.now, required: true},
   name: {type: String, required: true},
