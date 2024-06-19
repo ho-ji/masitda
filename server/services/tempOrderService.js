@@ -8,7 +8,7 @@ const processingOrder = async ({uid, order}) => {
 
 const getTempOrder = async (uid, orderId) => {
   const order = await TempOrder.findOne({uid, _id: orderId}).populate({path: 'products.product'})
-  return order
+  return order?.products
 }
 
 const deleteTempOrder = async (uid, orderId) => {
