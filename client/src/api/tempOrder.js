@@ -17,7 +17,7 @@ export const getTempOrderAPI = async (accessToken, orderId) => {
   const uid = localStorage.getItem('uid')
   setAuthToken(accessToken)
   try {
-    const result = await instance.get(`/temporder/${uid}?temp=${orderId}`)
+    const result = await instance.get(`/temporder/${uid}?orderId=${orderId}`)
     return result
   } catch (error) {
     throw error

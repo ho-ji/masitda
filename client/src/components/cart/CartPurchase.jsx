@@ -42,7 +42,7 @@ const CartPurchase = () => {
       setLoading(true)
       const result = await postTempOrderAPI({accessToken: token, order: selectedList})
       if (result.data.success) {
-        setToken(result.data.accessToken)
+        if (result.data.accessToken) setToken(result.data.accessToken)
         navigate(`/order/${result.data.orderId}`)
       }
     } catch {
