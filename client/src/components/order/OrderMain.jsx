@@ -8,6 +8,7 @@ import {getTempOrderAPI} from 'api/tempOrder'
 import SkeletonOrderListItem from 'components/common/order/SkeletonOrderListItem'
 import OrderListItem from 'components/common/order/OrderListItem'
 import {calculateSaleCost, formatCostWithComma} from 'utils/cost'
+import OrderForm from './OrderForm'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -19,12 +20,6 @@ const Container = styled.main`
     font-weight: bold;
     margin-bottom: 3rem;
   }
-  > div {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    gap: 3rem;
-  }
   h3 {
     font-size: var(--font-size-primary);
     font-weight: bold;
@@ -32,11 +27,19 @@ const Container = styled.main`
     border-bottom: 1px solid var(--color-gray);
   }
 `
+const OrderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  gap: 3rem;
+  > div {
+    flex: 1;
+  }
+`
 
 const OrderList = styled.section`
   display: flex;
   flex-direction: column;
-  flex: 1;
 `
 
 const CostContainer = styled.section`
@@ -111,24 +114,27 @@ const OrderMain = () => {
   return (
     <Container>
       <h2>주문/결제</h2>
-      <div>
-        <OrderList>
-          <h3>주문상품</h3>
-          <ul>
-            {order.length
-              ? order.map((item) => {
-                  return (
-                    <OrderListItem
-                      order={item}
-                      key={item._id}
-                    />
-                  )
-                })
-              : Array.from({length: 5}).map((_, i) => {
-                  return <SkeletonOrderListItem key={i} />
-                })}
-          </ul>
-        </OrderList>
+      <OrderContainer>
+        <div>
+          <OrderForm />
+          <OrderList>
+            <h3>주문상품</h3>
+            <ul>
+              {order.length
+                ? order.map((item) => {
+                    return (
+                      <OrderListItem
+                        order={item}
+                        key={item._id}
+                      />
+                    )
+                  })
+                : Array.from({length: 5}).map((_, i) => {
+                    return <SkeletonOrderListItem key={i} />
+                  })}
+            </ul>
+          </OrderList>
+        </div>
         <CostContainer>
           <h3>결제금액</h3>
           <Cost>
@@ -145,7 +151,7 @@ const OrderMain = () => {
           </PurchaseCost>
           <PurchaseButton>구매하기</PurchaseButton>
         </CostContainer>
-      </div>
+      </OrderContainer>
     </Container>
   )
 }

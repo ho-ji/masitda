@@ -9,6 +9,13 @@ import {tokenState} from 'recoil/token/atom'
 
 const Form = styled.form`
   width: 100%;
+  input {
+    &:focus {
+      z-index: 2;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
+    }
+  }
 `
 
 const InputContainer = styled.div`

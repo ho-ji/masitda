@@ -16,6 +16,11 @@ const Label = styled.label`
     border: 1px solid var(--color-border);
     border-color: ${(props) => props.$error === true && 'var(--color-red)'};
     border-radius: 5px;
+    &:focus {
+      z-index: 2;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
+    }
   }
 `
 const ErrorText = styled.p`

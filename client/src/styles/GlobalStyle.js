@@ -38,12 +38,10 @@ const GlobalStyle = createGlobalStyle`
   input[type="checkbox"]{
     cursor: pointer;
   }
-  input:not([type="checkbox"]){
-    &:focus {
-      z-index: 2;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.3);
-    }
+  select{
+    font:inherit;
+    margin: 0;
+    border: none;
   }
   .a11y-hidden{
     overflow: hidden;
