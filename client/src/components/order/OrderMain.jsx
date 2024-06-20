@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 import {tokenState} from 'recoil/token/atom'
 import {getTempOrderAPI} from 'api/tempOrder'
-import OrderList from 'components/common/order/OrderList'
 import SkeletonOrderListItem from 'components/common/order/SkeletonOrderListItem'
 import OrderListItem from 'components/common/order/OrderListItem'
 import {calculateSaleCost, formatCostWithComma} from 'utils/cost'
@@ -32,6 +31,12 @@ const Container = styled.main`
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-gray);
   }
+`
+
+const OrderList = styled.section`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `
 
 const CostContainer = styled.section`
@@ -107,19 +112,22 @@ const OrderMain = () => {
     <Container>
       <h2>주문/결제</h2>
       <div>
-        <OrderList title="주문상품">
-          {order.length
-            ? order.map((item) => {
-                return (
-                  <OrderListItem
-                    order={item}
-                    key={item._id}
-                  />
-                )
-              })
-            : Array.from({length: 5}).map((_, i) => {
-                return <SkeletonOrderListItem key={i} />
-              })}
+        <OrderList>
+          <h3>주문상품</h3>
+          <ul>
+            {order.length
+              ? order.map((item) => {
+                  return (
+                    <OrderListItem
+                      order={item}
+                      key={item._id}
+                    />
+                  )
+                })
+              : Array.from({length: 5}).map((_, i) => {
+                  return <SkeletonOrderListItem key={i} />
+                })}
+          </ul>
         </OrderList>
         <CostContainer>
           <h3>결제금액</h3>

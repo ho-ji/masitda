@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import {tokenState} from 'recoil/token/atom'
 import {getUserInformationAPI} from 'api/user'
 import iconImage from 'assets/images/user_icon.svg'
+import UserOrderList from './UserOrderList'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -72,13 +73,6 @@ const TotalOrder = styled.div`
   }
 `
 
-const OrderList = styled.div`
-  > h3 {
-    font-weight: bold;
-    font-size: var(--font-size-primary);
-  }
-`
-
 const UserInformation = () => {
   const [name, setName] = useState('')
   const [token, setToken] = useRecoilState(tokenState)
@@ -116,9 +110,7 @@ const UserInformation = () => {
           </div>
         </TotalOrder>
       </UserInfo>
-      <OrderList>
-        <h3>최근 주문내역</h3>
-      </OrderList>
+      <UserOrderList />
     </Container>
   )
 }
