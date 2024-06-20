@@ -1,14 +1,10 @@
-import {useNavigate, useParams} from 'react-router-dom'
 import {useEffect, useState} from 'react'
-import {useRecoilState} from 'recoil'
+
 import styled from 'styled-components'
 
-import {tokenState} from 'recoil/token/atom'
-import {getTempOrderAPI} from 'api/tempOrder'
-import SkeletonOrderListItem from 'components/common/order/SkeletonOrderListItem'
-import OrderListItem from 'components/common/order/OrderListItem'
 import {calculateSaleCost, formatCostWithComma} from 'utils/cost'
 import OrderForm from './OrderForm'
+import OrderList from './OrderList'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -35,11 +31,6 @@ const OrderContainer = styled.div`
   > div {
     flex: 1;
   }
-`
-
-const OrderList = styled.section`
-  display: flex;
-  flex-direction: column;
 `
 
 const CostContainer = styled.section`
@@ -81,26 +72,9 @@ const PurchaseButton = styled.button`
 `
 
 const OrderMain = () => {
-  const {orderId} = useParams()
-  const navigate = useNavigate()
   const [order, setOrder] = useState([])
-  const [token, setToken] = useRecoilState(tokenState)
   const [totalCost, setTotalCost] = useState(0)
   const [deliveryFee, setDeliveryFee] = useState(0)
-  useEffect(() => {
-    const getTempOrder = async () => {
-      try {
-        const result = await getTempOrderAPI(token, orderId)
-        if (result.data.accessToken) setToken(result.data.accessToken)
-        if (result.data.success) {
-          setOrder(result.data.order)
-        } else {
-          navigate(-1)
-        }
-      } catch {}
-    }
-    getTempOrder()
-  }, [orderId, token, setToken, navigate])
 
   useEffect(() => {
     if (order.length === 0) return
@@ -117,23 +91,10 @@ const OrderMain = () => {
       <OrderContainer>
         <div>
           <OrderForm />
-          <OrderList>
-            <h3>주문상품</h3>
-            <ul>
-              {order.length
-                ? order.map((item) => {
-                    return (
-                      <OrderListItem
-                        order={item}
-                        key={item._id}
-                      />
-                    )
-                  })
-                : Array.from({length: 5}).map((_, i) => {
-                    return <SkeletonOrderListItem key={i} />
-                  })}
-            </ul>
-          </OrderList>
+          <OrderList
+            order={order}
+            setOrder={setOrder}
+          />
         </div>
         <CostContainer>
           <h3>결제금액</h3>
