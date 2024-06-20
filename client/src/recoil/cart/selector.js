@@ -105,6 +105,7 @@ export const getSelectedListSelector = selector({
           count: item.count,
           cost: item.product.cost,
           product: item.product._id,
+          rate: item.product.rate,
         }
       })
     return selectedList

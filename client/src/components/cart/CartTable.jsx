@@ -1,6 +1,7 @@
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
+import {useState} from 'react'
 
 import {cartListState} from 'recoil/cart/atom'
 import {formatCostWithComma, formatSaleCost} from 'utils/cost'
@@ -12,7 +13,6 @@ import useModal from 'hooks/useModal'
 import {deleleCartProductAPI, postCartProductAPI} from 'api/cart'
 import {tokenState} from 'recoil/token/atom'
 import {postTempOrderAPI} from 'api/tempOrder'
-import {useState} from 'react'
 
 const Container = styled.table`
   border-top: 1px solid black;
@@ -202,11 +202,11 @@ const CartTable = () => {
     }
   }
 
-  const handleBuyNowClick = (product, count, cost) => async () => {
+  const handleBuyNowClick = (product, count, cost, rate) => async () => {
     if (loading) return
     try {
       setLoading(true)
-      const result = await postTempOrderAPI({token, order: [{product, count, cost}]})
+      const result = await postTempOrderAPI({token, order: [{product, count, cost, rate}]})
       if (result.data.success) {
         if (result.data.accessToken) setToken(result.data.accessToken)
         navigate(`/order/${result.data.orderId}`)
@@ -292,7 +292,7 @@ const CartTable = () => {
                 <Select>
                   <BuyNowButton
                     type="button"
-                    onClick={handleBuyNowClick(item.product._id, item.count, item.product.cost)}>
+                    onClick={handleBuyNowClick(item.product._id, item.count, item.product.cost, item.product.rate)}>
                     바로구매
                   </BuyNowButton>
                   <DeleteButton
