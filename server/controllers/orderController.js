@@ -60,7 +60,7 @@ const getRecentOrder = async (req, res) => {
       return res.status(200).json(result)
     }
     const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
-    const orderList = await service.getRecentOrderList(uid, page)
+    const orderList = await service.getRecentOrderList(uid)
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
     return res.status(200).json({success: true, accessToken: newAccessToken, orderList, message: ' Successfully get recent order list'})
   } catch (error) {

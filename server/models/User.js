@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema({
     road_address: {type: String},
     detail_addresss: {type: String},
   },
+  orderCount: {
+    type: Number,
+    default: 0,
+  },
 })
 
 userSchema.pre('save', async function (next) {

@@ -11,4 +11,8 @@ router.get('/:uid', controller.getUser)
 
 router.get('/login/:uid', controller.getVerifyToken)
 
+router.post('/orderCount', controller.postOrderCount)
+
+router.get('/orderCount', controller.getOrderCount)
+
 module.exports = router

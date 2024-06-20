@@ -103,10 +103,50 @@ const getVerifyToken = async (req, res) => {
   }
 }
 
+const postOrderCount = async (req, res) => {
+  const uid = req.params.uid
+  const accessToken = req.headers.authorization?.split('Bearer ')[1]
+  const refreshToken = req.cookies?.refreshToken
+  try {
+    const result = await service.verifyToken({uid, accessToken, refreshToken})
+    if (!result.success) {
+      return res.status(200).json(result)
+    }
+    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
+    const postResult = await service.postUserOrderCount(uid)
+    if (!postResult.success) return postResult
+    res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
+    res.status(200).json({...postResult, accessToken: newAccessToken})
+  } catch (error) {
+    res.status(200).json({success: false, message: 'No Log In'})
+  }
+}
+
+const getOrderCount = async (req, res) => {
+  const uid = req.params.uid
+  const accessToken = req.headers.authorization?.split('Bearer ')[1]
+  const refreshToken = req.cookies?.refreshToken
+  try {
+    const result = await service.verifyToken({uid, accessToken, refreshToken})
+    if (!result.success) {
+      return res.status(200).json(result)
+    }
+    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
+    const getResult = await service.getUserOrderCount(uid)
+    if (!getResult.success) return getResult
+    res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
+    res.status(200).json({...getResult, accessToken: newAccessToken})
+  } catch (error) {
+    res.status(200).json({success: false, message: 'No Log In'})
+  }
+}
+
 module.exports = {
   postUserLogIn,
   postUserSignUp,
   getUserCheckAccount,
   getUser,
   getVerifyToken,
+  postOrderCount,
+  getOrderCount,
 }

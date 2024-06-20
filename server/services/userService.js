@@ -57,6 +57,20 @@ const verifyToken = async ({uid, accessToken, refreshToken}) => {
   return {success: true}
 }
 
+const postUserOrderCount = async (uid) => {
+  const user = await getUserByUid(uid)
+  if (!user) return {success: false, message: 'No user'}
+  user.orderCount += 1
+  await user.save()
+  return {success: true, mesage: 'Update Order Count'}
+}
+
+const getUserOrderCount = async (uid) => {
+  const user = await getUserByUid(uid)
+  if (!user) return {success: false, message: 'No User'}
+  retrun
+}
+
 module.exports = {
   getUserByAccount,
   getUserByUid,
@@ -64,4 +78,6 @@ module.exports = {
   signUpUser,
   createToken,
   verifyToken,
+  postUserOrderCount,
+  getUserOrderCount,
 }
