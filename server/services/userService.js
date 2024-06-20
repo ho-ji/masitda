@@ -68,7 +68,7 @@ const postUserOrderCount = async (uid) => {
 const getUserOrderCount = async (uid) => {
   const user = await getUserByUid(uid)
   if (!user) return {success: false, message: 'No User'}
-  retrun
+  return {success: true, count: user.orderCount, message: 'Get Order count'}
 }
 
 module.exports = {
