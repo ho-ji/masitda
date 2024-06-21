@@ -5,7 +5,7 @@ const limit = 10
 
 const completeOrder = async ({uid, orderId, name, contactNumber, address}) => {
   const tempOrder = await tempOrderService.getTempOrder(uid, orderId)
-  const order = new Order({...tempOrder, orderDate: new Date(), name, contactNumber, address})
+  const order = new Order({...tempOrder, uid, orderDate: new Date(), name, contactNumber, address})
   await order.save()
   await tempOrderService.deleteTempOrder(uid, orderId)
 }

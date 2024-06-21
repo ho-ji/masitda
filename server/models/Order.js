@@ -19,8 +19,8 @@ const orderSchema = new mongoose.Schema({
   },
   address: {
     zonecode: {type: String, match: /[0-9\-]{5}/, required: true},
-    road_address: {type: String, required: true},
-    detail_addresss: {type: String, required: true},
+    roadAddress: {type: String, required: true},
+    detailAddress: {type: String, required: true},
   },
 })
 
