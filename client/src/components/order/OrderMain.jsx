@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 
 import styled from 'styled-components'
 
@@ -46,7 +46,7 @@ const CostContainer = styled.section`
 const Cost = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   color: var(--color-text-main);
 `
 
@@ -75,6 +75,11 @@ const OrderMain = () => {
   const [order, setOrder] = useState([])
   const [totalCost, setTotalCost] = useState(0)
   const [deliveryFee, setDeliveryFee] = useState(0)
+  const formRef = useRef(null)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     if (order.length === 0) return
@@ -85,12 +90,16 @@ const OrderMain = () => {
     setTotalCost(cost)
   }, [order])
 
+  const handlePurchaseClick = () => {
+    const {name, contactNumber1, contactNumber2, zonecode, roadAddress, detailAddress} = formRef.current
+  }
+
   return (
     <Container>
       <h2>주문/결제</h2>
       <OrderContainer>
         <div>
-          <OrderForm />
+          <OrderForm formRef={formRef} />
           <OrderList
             order={order}
             setOrder={setOrder}
@@ -110,7 +119,7 @@ const OrderMain = () => {
             <p>최종 결제 금액</p>
             <p>{formatCostWithComma(totalCost + deliveryFee)}원</p>
           </PurchaseCost>
-          <PurchaseButton>구매하기</PurchaseButton>
+          <PurchaseButton onClick={handlePurchaseClick}>구매하기</PurchaseButton>
         </CostContainer>
       </OrderContainer>
     </Container>

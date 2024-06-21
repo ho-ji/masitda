@@ -1,4 +1,7 @@
 import styled from 'styled-components'
+import {useState} from 'react'
+
+import useInput from 'hooks/useInput'
 
 const Container = styled.form`
   display: flex;
@@ -50,21 +53,44 @@ const AddressSearch = styled.button`
   padding: 0.5rem 1rem;
 `
 
-const OrderForm = () => {
+const OrderForm = ({formRef}) => {
+  const {value: name, handler: handleName} = useInput()
+  const {value: contactNumber, handler: handleContactNumber} = useInput()
+  const {value: detailAddress, handler: handleDetailAdress} = useInput()
+  const [zonecode, setZonecode] = useState('')
+  const [roadAddress, setRoadAddress] = useState('')
+
+  const handleContactNumberChange = (e) => {
+    const inputValue = e.target.value
+    if (/^\d*$/.test(inputValue)) handleContactNumber(e)
+  }
+
+  const handleAddressSearchClick = () => {
+    new window.daum.Postcode({
+      oncomplete: (data) => {
+        setRoadAddress(data.roadAddress)
+        setZonecode(data.zonecode)
+      },
+    }).open()
+  }
+
   return (
-    <Container>
+    <Container ref={formRef}>
       <h3>배송지</h3>
       <InputContainer>
-        <label for="delivery-name">배송지명</label>
+        <label htmlFor="delivery-name">배송지명</label>
         <input
           type="text"
           placeholder="최대 10자"
           id="delivery-name"
-          maxLength="10"></input>
+          maxLength="10"
+          value={name}
+          onChange={handleName}
+          name="name"></input>
       </InputContainer>
       <InputContainer>
-        <label>연락처</label>
-        <select>
+        <label htmlFor="contact-number">연락처</label>
+        <select name="contactNumber1">
           <option value="010">010</option>
           <option value="011">011</option>
           <option value="016">016</option>
@@ -72,26 +98,40 @@ const OrderForm = () => {
           <option value="018">018</option>
           <option value="019">019</option>
         </select>
-        <input type="text"></input>
+        <input
+          type="tel"
+          maxLength="8"
+          id="contact-number"
+          value={contactNumber}
+          onChange={handleContactNumberChange}
+          name="contactNumber2"></input>
       </InputContainer>
       <AddressContainer>
         <div>
-          <label for="delivery-address">배송지</label>
+          <label>배송지</label>
           <input
             type="text"
-            disabled></input>
-          <AddressSearch type="button">주소 검색</AddressSearch>
+            disabled
+            name="zonecode"
+            value={zonecode}></input>
+          <AddressSearch
+            type="button"
+            onClick={handleAddressSearchClick}>
+            주소 검색
+          </AddressSearch>
         </div>
         <input
           type="text"
-          disabled></input>
-        <input
-          type="text"
-          disabled></input>
+          disabled
+          name="roadAddress"
+          value={roadAddress}></input>
         <input
           type="text"
           placeholder="상세주소 입력"
-          id="delivery-address"></input>
+          value={detailAddress}
+          maxLength="50"
+          onChange={handleDetailAdress}
+          name="detailAddress"></input>
       </AddressContainer>
     </Container>
   )
