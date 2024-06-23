@@ -32,7 +32,9 @@ const Container = styled.form`
 const InputContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  > select {
+    margin-right: 1rem;
+  }
 `
 
 const AddressContainer = styled.div`

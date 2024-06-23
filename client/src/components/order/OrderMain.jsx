@@ -1,10 +1,13 @@
 import {useEffect, useRef, useState} from 'react'
-
 import styled from 'styled-components'
+import {useRecoilState} from 'recoil'
 
 import {calculateSaleCost, formatCostWithComma} from 'utils/cost'
 import OrderForm from './OrderForm'
 import OrderList from './OrderList'
+import {tokenState} from 'recoil/token/atom'
+import {useNavigate, useParams} from 'react-router-dom'
+import {postOrderAPI} from 'api/order'
 
 const Container = styled.main`
   margin: 5rem auto;
@@ -72,10 +75,13 @@ const PurchaseButton = styled.button`
 `
 
 const OrderMain = () => {
+  const {orderId} = useParams()
   const [order, setOrder] = useState([])
   const [totalCost, setTotalCost] = useState(0)
   const [deliveryFee, setDeliveryFee] = useState(0)
   const formRef = useRef(null)
+  const [token, setToken] = useRecoilState(tokenState)
+  const navigate = useNavigate()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -90,8 +96,27 @@ const OrderMain = () => {
     setTotalCost(cost)
   }, [order])
 
+  const postOrder = async (value) => {
+    try {
+      const result = postOrderAPI({...value, accessToken: token, orderId})
+      if (result.data.success) {
+        if (result.data.accessToken) setToken(result.data.accessToken)
+      }
+    } catch {}
+  }
+
   const handlePurchaseClick = () => {
     const {name, contactNumber1, contactNumber2, zonecode, roadAddress, detailAddress} = formRef.current
+    if (name.value === '') return alert('배송지명을 입력해주세요')
+    if (contactNumber2.value.length < 7) return alert('연락처를 입력해주세요')
+    if (zonecode.value === '' || detailAddress.value === '') return alert('배송지를 입력해주세요')
+
+    const deliveryData = {
+      name: name.value,
+      contactNumber: contactNumber1.value + contactNumber2.value,
+      address: {zonecode: zonecode.value, roadAddress: roadAddress.value, detailAddress: detailAddress.value},
+    }
+    postOrder(deliveryData)
   }
 
   return (
