@@ -12,8 +12,8 @@ const User = () => {
 
   useEffect(() => {
     const check = async () => {
-      const isLogin = await checkLogIn()
-      if (!isLogin) navigate('/login')
+      const isLogIn = await checkLogIn()
+      if (!isLogIn) navigate('/login')
       else setLoadingLogIn(true)
     }
     check()

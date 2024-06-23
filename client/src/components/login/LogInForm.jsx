@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {useSetRecoilState} from 'recoil'
 import {useRef} from 'react'
 
-import {postLoginAPI} from 'api/user'
+import {postLogInAPI} from 'api/user'
 import useInput from 'hooks/useInput'
 import {logInText} from 'constants/authText'
 import {tokenState} from 'recoil/token/atom'
@@ -54,9 +54,9 @@ const LogInForm = () => {
 
   const postLogIn = async () => {
     try {
-      const loginResult = await postLoginAPI(idInput, passwordInput)
-      if (loginResult.data.success) {
-        const {accessToken, uid} = loginResult.data
+      const result = await postLogInAPI(idInput, passwordInput)
+      if (result.data.success) {
+        const {accessToken, uid} = result.data
         localStorage.setItem('uid', uid)
         setToken(accessToken)
       } else {
@@ -64,7 +64,7 @@ const LogInForm = () => {
         clearPassword()
         passwordRef.current.focus()
       }
-    } catch (error) {}
+    } catch {}
   }
 
   const handleLogInSubmit = (e) => {

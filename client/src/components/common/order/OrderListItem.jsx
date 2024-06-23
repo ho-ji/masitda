@@ -1,4 +1,3 @@
-import {useEffect} from 'react'
 import styled from 'styled-components'
 import {calculateSaleCost, formatCostWithComma} from 'utils/cost'
 
@@ -41,10 +40,6 @@ const Cost = styled.p`
 `
 
 const OrderListItem = ({order}) => {
-  useEffect(() => {
-    console.log(order)
-  }, [order])
-
   return (
     <>
       {order && (
