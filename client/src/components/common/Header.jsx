@@ -60,6 +60,7 @@ const CartCount = styled.strong`
 const Header = () => {
   const [cartList, setCartList] = useRecoilState(cartListState)
   const [error, setError] = useState(false)
+  const [isLogIn, setIsLogIn] = useState(false)
   const [token, setToken] = useRecoilState(tokenState)
   const location = useLocation()
 
@@ -80,7 +81,10 @@ const Header = () => {
       try {
         const result = await getCartListAPI(token)
         if (result.data.success) {
-          if (result.data.accessToken) setToken(result.data.accessToken)
+          if (result.data.accessToken) {
+            setIsLogIn(true)
+            setToken(result.data.accessToken)
+          }
           setCartList(result.data.products)
         } else {
           setToken('')
@@ -117,7 +121,7 @@ const Header = () => {
           </CartCount>
         </MenuLink>
         <MenuLink
-          to="/user"
+          to={isLogIn ? '/user' : 'login'}
           onClick={handleUserClick}>
           <MenuImage
             src={userImage}
