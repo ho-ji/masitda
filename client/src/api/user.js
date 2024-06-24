@@ -1,6 +1,6 @@
 import {instance, setAuthToken} from 'api'
 
-export const postLoginAPI = async (account, password) => {
+export const postLogInAPI = async (account, password) => {
   try {
     const result = await instance.post('/user/login', {
       account,

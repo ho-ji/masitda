@@ -88,7 +88,9 @@ const UserInformation = () => {
       } catch (error) {}
     }
     getUserInformation()
-  }, [token, setToken])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Container>
       <h2>마이페이지</h2>

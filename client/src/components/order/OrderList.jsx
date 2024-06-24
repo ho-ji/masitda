@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import {useRecoilState} from 'recoil'
 import {useEffect} from 'react'
-import {useNavigate, useParams} from 'react-router-dom'
 
 import OrderListItem from 'components/common/order/OrderListItem'
 import SkeletonOrderListItem from 'components/common/order/SkeletonOrderListItem'
 import {getTempOrderAPI} from 'api/tempOrder'
+import {useNavigate, useParams} from 'react-router-dom'
 import {tokenState} from 'recoil/token/atom'
 
 const Container = styled.section`
@@ -30,7 +30,8 @@ const OrderList = ({order, setOrder}) => {
       } catch {}
     }
     getTempOrder()
-  }, [orderId, token, setToken, navigate, setOrder])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderId, navigate, setOrder])
 
   return (
     <Container>

@@ -14,6 +14,7 @@ import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
 import Order from 'pages/Order'
 import {checkUID} from 'utils/uid'
+import CompleteSplash from 'pages/CompleteSplash'
 
 const App = () => {
   useEffect(() => {
@@ -56,6 +57,10 @@ const App = () => {
           <Route
             path="/order/:orderId"
             element={<Order />}
+          />
+          <Route
+            path="/order/:orderId/complete-splash"
+            element={<CompleteSplash />}
           />
           <Route
             path="/*"

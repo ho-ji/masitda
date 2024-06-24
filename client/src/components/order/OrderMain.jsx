@@ -98,9 +98,13 @@ const OrderMain = () => {
 
   const postOrder = async (value) => {
     try {
-      const result = postOrderAPI({...value, accessToken: token, orderId})
+      const result = await postOrderAPI({...value, accessToken: token, orderId})
       if (result.data.success) {
         if (result.data.accessToken) setToken(result.data.accessToken)
+        navigate('./complete-splash', {
+          replace: true,
+          state: {length: order.length, complete: true},
+        })
       }
     } catch {}
   }
