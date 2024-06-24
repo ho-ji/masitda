@@ -62,7 +62,7 @@ const postUserOrderCount = async (uid) => {
   if (!user) return {success: false, message: 'No user'}
   user.orderCount += 1
   await user.save()
-  return {success: true, mesage: 'Update Order Count'}
+  return {success: true}
 }
 
 module.exports = {

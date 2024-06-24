@@ -15,6 +15,8 @@ const postOrder = async (req, res) => {
       }
       const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
       await service.completeOrder({uid, orderId, name, contactNumber, address})
+      const postResult = await userService.postUserOrderCount(uid)
+      if (!postResult.success) return postResult
       res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
       return res.status(200).json({success: true, accessToken: newAccessToken, message: 'Order Complete'})
     }

@@ -1,11 +1,18 @@
 const Order = require('../models/Order')
 const tempOrderService = require('../services/tempOrderService')
+const productService = require('../services/productService')
+const cartService = require('../services/cartService')
 
 const limit = 10
 
 const completeOrder = async ({uid, orderId, name, contactNumber, address}) => {
   const tempOrder = await tempOrderService.getTempOrder(uid, orderId)
   const order = new Order({products: tempOrder, uid, orderDate: new Date(), name, contactNumber, address})
+  await productService.updateProductSaleCount(tempOrder)
+  await cartService.deleteCartProduct(
+    uid,
+    tempOrder.map((v) => v.product._id)
+  )
   await order.save()
   await tempOrderService.deleteTempOrder(uid, orderId)
 }
