@@ -65,12 +65,6 @@ const postUserOrderCount = async (uid) => {
   return {success: true, mesage: 'Update Order Count'}
 }
 
-const getUserOrderCount = async (uid) => {
-  const user = await getUserByUid(uid)
-  if (!user) return {success: false, message: 'No User'}
-  return {success: true, count: user.orderCount, message: 'Get Order count'}
-}
-
 module.exports = {
   getUserByAccount,
   getUserByUid,
@@ -79,5 +73,4 @@ module.exports = {
   createToken,
   verifyToken,
   postUserOrderCount,
-  getUserOrderCount,
 }

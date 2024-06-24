@@ -76,7 +76,7 @@ const getUser = async (req, res) => {
     if (!user) return res.status(200).json({success: false, message: 'User not found'})
 
     res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    return res.status(200).json({success: true, accessToken: newAccessToken, user: {name: user.name}, success: 'Successfully get user information'})
+    return res.status(200).json({success: true, accessToken: newAccessToken, user: {name: user.name, orderCount: user.orderCount}, success: 'Successfully get user information'})
   } catch (error) {
     console.error(error)
     return res.status(200).json({success: false, message: 'Fail to Find User'})
@@ -122,25 +122,6 @@ const postOrderCount = async (req, res) => {
   }
 }
 
-const getOrderCount = async (req, res) => {
-  const uid = req.params.uid
-  const accessToken = req.headers.authorization?.split('Bearer ')[1]
-  const refreshToken = req.cookies?.refreshToken
-  try {
-    const result = await service.verifyToken({uid, accessToken, refreshToken})
-    if (!result.success) {
-      return res.status(200).json(result)
-    }
-    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
-    const getResult = await service.getUserOrderCount(uid)
-    if (!getResult.success) return getResult
-    res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
-    res.status(200).json({...getResult, accessToken: newAccessToken})
-  } catch (error) {
-    res.status(200).json({success: false, message: 'No Log In'})
-  }
-}
-
 module.exports = {
   postUserLogIn,
   postUserSignUp,
@@ -148,5 +129,4 @@ module.exports = {
   getUser,
   getVerifyToken,
   postOrderCount,
-  getOrderCount,
 }
