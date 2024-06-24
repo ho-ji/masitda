@@ -31,12 +31,20 @@ const Count = styled.p`
   text-align: right;
 `
 
+const CostContainer = styled.div`
+  width: 10rem;
+  text-align: right;
+`
+
 const Cost = styled.p`
   font-size: var(--font-size-primary);
   color: var(--color-main);
   font-weight: bold;
-  width: 10rem;
-  text-align: right;
+`
+const RegularCost = styled.p`
+  text-decoration: line-through;
+  color: var(--color-text-sub);
+  font-size: var(--font-size-subtext);
 `
 
 const OrderListItem = ({order}) => {
@@ -53,7 +61,10 @@ const OrderListItem = ({order}) => {
             <p>{order.product.name}</p>
           </div>
           <Count>{order.count}개</Count>
-          <Cost>{formatCostWithComma(order.count * calculateSaleCost(order.cost, order.rate))}원</Cost>
+          <CostContainer>
+            <Cost>{formatCostWithComma(order.count * calculateSaleCost(order.cost, order.rate))}원</Cost>
+            <RegularCost>{formatCostWithComma(order.count * order.cost)}원</RegularCost>
+          </CostContainer>
         </Container>
       )}
     </>

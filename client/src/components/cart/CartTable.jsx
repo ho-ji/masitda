@@ -102,7 +102,7 @@ const Cost = styled.p`
 
 const RegularCost = styled.p`
   text-decoration: line-through;
-  color: #666;
+  color: var(--color-text-sub);
   font-size: var(--font-size-subtext);
 `
 
