@@ -8,9 +8,9 @@ const Container = styled.li`
   gap: 2rem;
   padding: 2rem;
   border-bottom: 1px solid var(--color-border);
-  > div {
-    flex: 1;
-  }
+`
+const Info = styled.div`
+  flex: 1;
 `
 
 const Image = styled.img`
@@ -56,10 +56,10 @@ const OrderListItem = ({order}) => {
             src={order.product.image}
             alt="상품 이미지"
           />
-          <div>
+          <Info>
             <Temp>{order.product.temp}</Temp>
             <p>{order.product.name}</p>
-          </div>
+          </Info>
           <Count>{order.count}개</Count>
           <CostContainer>
             <Cost>{formatCostWithComma(order.count * calculateSaleCost(order.cost, order.rate))}원</Cost>
