@@ -75,6 +75,7 @@ const TotalOrder = styled.div`
 
 const UserInformation = () => {
   const [name, setName] = useState('')
+  const [orderCount, setOrderCount] = useState(0)
   const [token, setToken] = useRecoilState(tokenState)
 
   useEffect(() => {
@@ -84,6 +85,7 @@ const UserInformation = () => {
         if (result.data.success) {
           if (result.data.accessToken) setToken(result.data.accessToken)
           setName(result.data.user.name)
+          setOrderCount(result.data.user.orderCount)
         }
       } catch (error) {}
     }
@@ -108,7 +110,7 @@ const UserInformation = () => {
         <TotalOrder>
           <p>주문 배송</p>
           <div>
-            <span>{'N'}</span> 회
+            <span>{orderCount}</span> 회
           </div>
         </TotalOrder>
       </UserInfo>
