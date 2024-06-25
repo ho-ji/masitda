@@ -1,4 +1,5 @@
 const service = require('../services/userService')
+const cartService = require('../services/cartService')
 
 const postUserSignUp = async (req, res) => {
   const info = req.body.info
@@ -43,6 +44,7 @@ const getUserCheckAccount = async (req, res) => {
 }
 
 const postUserLogIn = async (req, res) => {
+  const uid = req.params.uid
   const {account, password} = req.body
   try {
     const user = await service.getUserByAccount(account)
@@ -50,6 +52,8 @@ const postUserLogIn = async (req, res) => {
 
     const successLogIn = await user.checkPassword(password)
     if (!successLogIn) return res.status(200).json({success: false, message: 'Invalid ID or password'})
+
+    await cartService.updateUserCart(uid, user._id)
 
     const {accessToken, refreshToken} = await service.createToken(user._id)
     res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 * 1000})

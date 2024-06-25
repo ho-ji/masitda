@@ -18,6 +18,10 @@ const updateCart = async (cart) => {
   await cart.save()
 }
 
+const deleteCart = async (uid) => {
+  await Cart.deleteOne({uid})
+}
+
 const addToCart = async ({uid, productId, count, expiresAt = null}) => {
   let cart = await getCartByUid(uid)
   if (!cart) cart = await createCartByUid(uid, expiresAt)
@@ -41,11 +45,33 @@ const deleteCartProduct = async (uid, idList) => {
   }
 }
 
+const updateUserCart = async (guestUid, uid) => {
+  const guestCart = await getCartByUid(guestUid)
+  if (!guestCart) return
+  let cart = await getCartByUid(uid)
+  if (!cart) {
+    cart = await createCartByUid(uid)
+    cart.products = guestCart.products
+  } else {
+    const userProducts = cart.products
+    for (const product of guestCart.products) {
+      const findProduct = userProducts.find((item) => item.product.equals(product.product))
+      if (findProduct) findProduct.count += product.count
+      else userProducts.push(product)
+    }
+    cart.products = userProducts
+  }
+  await cart.save()
+  await deleteCart(guestUid)
+}
+
 module.exports = {
   getCartByUid,
   getCartProductByUid,
   createCartByUid,
   updateCart,
+  deleteCart,
   addToCart,
   deleteCartProduct,
+  updateUserCart,
 }

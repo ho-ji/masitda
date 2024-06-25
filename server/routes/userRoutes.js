@@ -5,7 +5,7 @@ router.post('/signup', controller.postUserSignUp)
 
 router.get('/check/:account', controller.getUserCheckAccount)
 
-router.post('/login', controller.postUserLogIn)
+router.post('/login/:uid', controller.postUserLogIn)
 
 router.get('/:uid', controller.getUser)
 
