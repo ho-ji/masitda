@@ -1,8 +1,9 @@
 import {instance, setAuthToken} from 'api'
 
 export const postLogInAPI = async (account, password) => {
+  const uid = localStorage.getItem('uid')
   try {
-    const result = await instance.post('/user/login', {
+    const result = await instance.post(`/user/login/${uid}`, {
       account,
       password,
     })
