@@ -1,4 +1,5 @@
 const service = require('../services/userService')
+const tokenService = require('../services/tokenService')
 const cartService = require('../services/cartService')
 
 const postUserSignUp = async (req, res) => {
@@ -55,7 +56,7 @@ const postUserLogIn = async (req, res) => {
 
     await cartService.updateUserCart(uid, user._id)
 
-    const {accessToken, refreshToken} = await service.createToken(user._id)
+    const {accessToken, refreshToken} = await tokenService.createToken(user._id)
     res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 * 1000})
     res.status(200).json({success: true, accessToken, uid: user._id, message: 'Login success'})
   } catch (error) {
@@ -66,16 +67,32 @@ const postUserLogIn = async (req, res) => {
   }
 }
 
+const deleteUserLogOut = async (req, res) => {
+  const uid = req.params.uid
+  const refreshToken = req.cookies?.refreshToken
+  try {
+    await tokenService.deleteToken({uid, refreshToken})
+    res.clearCookie('refreshToken', {httpOnly: true, secure: true})
+    res.status(200).json({message: 'Logout success'})
+  } catch (error) {
+    console.error(error)
+    res.clearCookie('refreshToken', {httpOnly: true, secure: true})
+    res.status(500).json({
+      message: 'Fail to Log out',
+    })
+  }
+}
+
 const getUser = async (req, res) => {
   const uid = req.params.uid
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
   try {
-    const result = await service.verifyToken({uid, accessToken, refreshToken})
+    const result = await tokenService.verifyToken({uid, accessToken, refreshToken})
     if (!result.success) {
       return res.status(200).json(result)
     }
-    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
+    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await tokenService.createToken(uid)
     const user = await service.getUserByUid(uid)
     if (!user) return res.status(200).json({success: false, message: 'User not found'})
 
@@ -92,11 +109,11 @@ const getVerifyToken = async (req, res) => {
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
   const refreshToken = req.cookies?.refreshToken
   try {
-    const result = await service.verifyToken({uid, accessToken, refreshToken})
+    const result = await tokenService.verifyToken({uid, accessToken, refreshToken})
     if (!result.success) {
       return res.status(200).json(result)
     }
-    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await service.createToken(uid)
+    const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await tokenService.createToken(uid)
     const user = await service.getUserByUid(uid)
     if (!user) return res.status(200).json({success: false, message: 'User not found'})
 
@@ -109,6 +126,7 @@ const getVerifyToken = async (req, res) => {
 
 module.exports = {
   postUserLogIn,
+  deleteUserLogOut,
   postUserSignUp,
   getUserCheckAccount,
   getUser,

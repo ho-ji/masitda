@@ -1,5 +1,5 @@
 const service = require('../services/tempOrderService')
-const userService = require('../services/userService')
+const tokenService = require('../services/tokenService')
 
 const postTempOrder = async (req, res) => {
   const uid = req.params.uid
@@ -9,11 +9,11 @@ const postTempOrder = async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
   try {
     if (isLogIn) {
-      const result = await userService.verifyToken({uid, accessToken, refreshToken})
+      const result = await tokenService.verifyToken({uid, accessToken, refreshToken})
       if (!result.success) {
         return res.status(200).json(result)
       }
-      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await tokenService.createToken(uid)
       const orderId = await service.processingOrder({uid, order})
       res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
       return res.status(200).json({success: true, accessToken: newAccessToken, orderId, message: 'Order in progress'})
@@ -34,11 +34,11 @@ const getTempOrder = async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
   try {
     if (isLogIn) {
-      const result = await userService.verifyToken({uid, accessToken, refreshToken})
+      const result = await tokenService.verifyToken({uid, accessToken, refreshToken})
       if (!result.success) {
         return res.status(200).json(result)
       }
-      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await userService.createToken(uid)
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = await tokenService.createToken(uid)
       const order = await service.getTempOrder(uid, orderId)
       res.cookie('refreshToken', newRefreshToken, {httpOnly: true, secure: true})
       if (!order) return res.status(200).json({success: false, accessToken: newAccessToken, message: 'Current Order is expired'})

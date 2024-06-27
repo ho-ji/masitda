@@ -11,4 +11,6 @@ router.get('/:uid', controller.getUser)
 
 router.get('/login/:uid', controller.getVerifyToken)
 
+router.delete('/logout/:uid', controller.deleteUserLogOut)
+
 module.exports = router
