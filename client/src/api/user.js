@@ -55,3 +55,13 @@ export const getVerifyTokenAPI = async (accessToken) => {
     throw error
   }
 }
+
+export const deleteLogOutAPI = async () => {
+  const uid = localStorage.getItem('uid')
+  try {
+    const result = await instance.delete(`/user/logout/${uid}`)
+    return result
+  } catch (error) {
+    throw error
+  }
+}

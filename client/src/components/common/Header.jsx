@@ -10,19 +10,39 @@ import {cartListState} from 'recoil/cart/atom'
 import {getCartListAPI} from 'api/cart'
 import {tokenState} from 'recoil/token/atom'
 import {updateUID} from 'utils/uid'
+import {deleteLogOutAPI} from 'api/user'
 
 const Container = styled.header`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  position: sticky;
-  top: 0;
-  height: 7rem;
-  padding: 0 2rem;
-  z-index: 100;
   background-color: white;
   border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: -3rem;
+  z-index: 100;
 `
+const TopBar = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: var(--color-light-gray);
+  padding: 0 1rem;
+  font-size: var(--font-size-subtext);
+  height: 3rem;
+  color: var(--color-text-sub);
+  a {
+    margin: 0 1rem;
+  }
+`
+const Menu = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  height: 7rem;
+`
+
 const Logo = styled(Link)`
   display: block;
   width: 10rem;
@@ -76,6 +96,14 @@ const Header = () => {
     if (location.pathname === '/user') window.location.reload()
   }
 
+  const handleLogOutClick = async () => {
+    try {
+      setToken('')
+      await deleteLogOutAPI()
+      updateUID()
+    } catch {}
+  }
+
   useEffect(() => {
     const getCartCount = async () => {
       try {
@@ -101,34 +129,50 @@ const Header = () => {
 
   return (
     <Container>
-      <h1>
-        <span className="a11y-hidden">마싯다 로고</span>
-        <Logo
-          to="/"
-          onClick={handleLogoClick}></Logo>
-      </h1>
-      <nav>
-        <MenuLink
-          to="/cart"
-          onClick={handleCartClick}>
-          <MenuImage
-            src={cartImage}
-            alt="장바구니"
-          />
-          <CartCount>
-            {!error ? (cartList.length >= 100 ? '99+' : cartList.length) : ' '}
-            <span className="a11y-hidden">개</span>
-          </CartCount>
-        </MenuLink>
-        <MenuLink
-          to={isLogIn ? '/user' : 'login'}
-          onClick={handleUserClick}>
-          <MenuImage
-            src={userImage}
-            alt="마이페이지"
-          />
-        </MenuLink>
-      </nav>
+      <TopBar>
+        {isLogIn ? (
+          <Link
+            to="/login"
+            onClick={handleLogOutClick}>
+            로그아웃
+          </Link>
+        ) : (
+          <nav>
+            <Link to="/signup">회원가입</Link>
+            <Link to="/login">로그인</Link>
+          </nav>
+        )}
+      </TopBar>
+      <Menu>
+        <h1>
+          <span className="a11y-hidden">마싯다 로고</span>
+          <Logo
+            to="/"
+            onClick={handleLogoClick}></Logo>
+        </h1>
+        <nav>
+          <MenuLink
+            to="/cart"
+            onClick={handleCartClick}>
+            <MenuImage
+              src={cartImage}
+              alt="장바구니"
+            />
+            <CartCount>
+              {!error ? (cartList.length >= 100 ? '99+' : cartList.length) : ' '}
+              <span className="a11y-hidden">개</span>
+            </CartCount>
+          </MenuLink>
+          <MenuLink
+            to={isLogIn ? '/user' : 'login'}
+            onClick={handleUserClick}>
+            <MenuImage
+              src={userImage}
+              alt="마이페이지"
+            />
+          </MenuLink>
+        </nav>
+      </Menu>
     </Container>
   )
 }
